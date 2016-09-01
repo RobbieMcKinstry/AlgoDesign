@@ -80,4 +80,22 @@ However, an optimal solution would cover $A$ in two intervals, selecting $[0.25,
 \vskip .6cm
 {\bf Question 5 Part B}
 
+Let $G(A)$ be the output of the Greedy algorithm on input $A$. For proof by contradiction, assume $G$ is not optimal. Let $Opt(A)$ be an optimal output on input A that is closest in selection order to $G(A)$.
+
+Let $i$ be the index of the first disagreement between $G(A)$ and $Opt(A)$, let $G(A)_{i}$ be the interval $[x_{i}, x_{i} + 1]$ selected by $G$, and $Opt(A)_{i}$ be the interval $[x'_{i}, y'_{i}]$ selected by $Opt$.
+
+Since the intervals are not identical, either $x_{i} < x'_{i}$, or $x_{i} > x'_{i}$. 
+
+Consider the case where $x_{i} < x'_{i}$:
+
+Since $x_{i}$ is the leftmost point, and $x'_{i}$, $Opt$ has yet to cover $x_{i}$. Thus, there is an index $j : j > i$ where $Opt(A)_{j}$ covers $x'_{i}$.
+
+Let $Opt(A)' = Opt(A) - Opt(A)_{j} + G(A)_{i}$. Now, it is obvious that $Opt(A)'$ has the same cardinality as $Opt(A)$. $Opt(A)'$ is still an optimal solution, because it has the optimal cardinality, and because $Opt(A)'$ doesn't cover any points left uncovered by $G(A)_{i}$; there are no points less than $x_{i}$ because if there were, they would have been selected by greedy algorithm, and there are no points greater than $x_{i}$ covered by $Opt(A)_{j}$ not covered by $G(A)_{i}$ because $G(A)_{i}$ covers all points within the range of 1 full interval, since it covers $[x_{i}, x_{i} + 1]$ by definition. Thus, $Opt(A)'$ is an optimal solution, which violates the premise that $Opt(A)$ is the optimal solution closest to $G$. $\bot$.
+
+Now, consider the case where $x_{i} > x'_{i}$:
+
+Let $Opt(A)' = Opt(A) - Opt(A)_{i} + G(A)_{i}$. It is obvious that $Opt(A)'$ has the same cardinality as $Opt(A)$. $Opt(A)'$ does not leave any points less than $x_{i}$ uncovered because by the definition of the greedy algorithm $x_{i}$ is the leftmost point. $Opt(A)'$ does not leave any points greater than $x_{i}$ uncovered because any point covered by the interval $[x_{i}, y'_{i}]$ will be covered by $[x_{i}, x_{i} + 1]$ since $y'_{i}$ is necessarily less than $x_{i} + 1$. Thus, $Opt(A)'$ is an optimal solution, which violates the premise that $Opt(A)$ is the optimal solution closest to $G$. $\bot$.
+
+Since both cases result in contradiction, by disjunctive elimination the assumption introduces contradiction, and thus the assumption is proven false and $G(A)$ is necessarily a solution.
+
 \end{document}
