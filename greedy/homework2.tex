@@ -1,0 +1,76 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb}
+\usepackage{mathtools}
+\usepackage{proof}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{stmaryrd}
+\usepackage{graphicx}
+
+\renewcommand{\baselinestretch}{1.5}
+
+\begin{document}
+\vskip -3cm
+\vskip 0.8cm
+
+{\bf \centerline{Homework 2}}
+\vskip 0.4cm
+
+{\bf \centerline{Robbie McKinstry, Jack McQuown, and Cyrus Ramavarapu}}
+\vskip .8cm
+
+{\bf Question 4 Part A}
+
+Let $S$ be the set of all gas stations. 
+Let $G(A)$ be the output of the greedy algorithm on input $A$.
+Assume $G_{A}(A)$ is not optimal for proof by contradiction.
+
+Let $Opt$ be an optimal solution.
+
+There are two possible scenarios: Either $G(A)$ and $Opt$ select the same gas stations to stop at or they do not. First, we address the former before tackling the latter.
+
+Assume that $G(A)$ and $Opt$ select all of the same gas stations.
+Then, for an arbitrary gas station $p$, let the amount of time $G(A)$ spends filling up be $x$.
+Now, since $Opt$ must also stop at that gas station, and $Opt \neq G(A)$, $Opt$ must spend more time filling up than $G(A)$, since $G(A)$ fills up the minimum at every stop. Thus, $Opt$ stops for some $y : x \leq y$.  Since $Opt$ and $G(A)$ stop at all the same gas stations, total time $t$ is
+\[
+t_{Opt} = \sum_{p \in S} y_{p} 
+\]
+for $Opt$, and 
+
+\[
+t_{G(A)} = \sum_{p \in S} x_{p} 
+\] for $G(A)$. By the properties of addition, $ t_{G(A)} \leq t_{Opt}$, and thus is an optimal solution. $\bot$.
+Since we have resolved a contradiction, our assumption must be false. Thus, $G(A)$ is optimal and a solution, in the case where $G(A)$ and $Opt$ stop at all of the same gas stations.
+
+Now, we address the case where $Opt$ and $G(A)$ do not stop at the same gas stations. Since $\forall p \in S . G(A)$ stops at $p$., then $\exists p \in S . Opt$ does not stop at $p$.
+
+Let $S$ be the gas station before $p$.
+
+Let $Opt' = Opt$ such that $Opt$ stops at $S$ and fills the distance necessary to reach $p$, just as $G(A)$ does, and subtract that amount from the amount filled up at $p$.
+
+$Opt'$ is at least as optimal as $Opt$ since the total amount of time spent filling is the same. It is obvious that $Opt'$ is more like $G(A)$ than $Opt$, which violates our assumption. $\bot$.
+
+Thus, $G(A)$ is an optimal solution.
+
+\vskip .6cm
+{\bf Question 4 Part B}
+
+This algorithm does not work. Consider the following counterexample:
+
+Let $ F = 1 \text{liter} / 95 \text{kilo}$.
+Let $C = 1 \text{liter}$.
+Let $r = 1 \text{liter} / 95 \text{minutes}$.
+Let the distance between $A$ and $B$ be $100 \text{kilos}$.
+Let there be a single gas station 95 miles from A and 5 miles from B (that is, at the 95th mile marker).
+
+The greedy algorithm specified will stop at the gas station and fill the tank 1 liter. Filling the tank 1 liter takes 95 minutes.
+An optimal solution is to stop at the gas station and fill the tank $1/19$ liters, which will only take 5 minutes.
+
+\vskip .6cm
+{\bf Question 5 Part A}
+
+
+\vskip .6cm
+{\bf Question 5 Part B}
+
+\end{document}
