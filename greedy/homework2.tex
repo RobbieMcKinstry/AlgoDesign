@@ -27,7 +27,6 @@ Assume $G_{A}(A)$ is not optimal for proof by contradiction.
 
 Let $Opt$ be an optimal solution.
 
-
 Consider the case where $Opt$ and $G(A)$ do not stop at the same gas stations. Since $\forall p \in S . G(A)$ stops at $p$., then $\exists p \in S . Opt$ does not stop at $p$.
 
 Let $S$ be the gas station before $p$.
@@ -61,7 +60,7 @@ Consider the set $A = \{ 0.25, 1, 1.25, 1.75, 2, 2.75 \}$
 
 The greedy algorithm can cover four points by selecting the interval $[1, 2]$. Then, the greedy algorithm must cover the remaining two points individually, selecting an interval that covers $0.25$ and another interval that covers $2.25$, resulting in a total of $3$ intervals used.
 
-However, an optimal solution would cover $A$ in two intervals, selecting $[0.25, 1.25]$ and $[1.75, 2.25]$ . Thus, greedy is not a solution.
+However, an optimal solution would cover $A$ in two intervals, selecting $[0.25, 1.25]$ and $[1.75, 2.25]$ . Thus, this greedy algorithm is not a solution.
 
 \vskip .6cm
 {\bf Question 5 Part B}
