@@ -3,12 +3,13 @@
 \usepackage{amsmath}
 
 \begin{document}
-\title{Greedy Problem 9}
+\title{Homework 3}
+\author{Robbie Mckinstry, Jack, Cyrus}
 \renewcommand{\today}{4 September 2016}
 \maketitle
 
-\section{Problem 9:}
-\subsection{A}
+\section*{Problem 9:}
+\subsection*{A}
 
 The algorithm whereby the skier and ski whose height difference
 is minimized gets assigned first and then the process is repeated
@@ -23,7 +24,7 @@ The optimal pairing would be:\\\\
 (Skiers, Skis) = $\{(1,2.5),(2,2.6),(3,3.6)\}$\\
 This has an average height difference of $2.7/3$
 
-\subsection{A}
+\subsection*{B}
 This greedy algorithm can be shown to be correct using an
 exchange argument.\\\\
 Let $Alg$ be the process by which the greedy algorithm operates.
@@ -31,7 +32,26 @@ Assume there exists some input $I$ such that $Alg(I)$ is incorrect.
 Let $Opt(I)$ be the optimal output for input $I$ that agrees with
 $Alg(I)$ for the greatest number of steps.\\\\
 Since $Opt(I)$ cannot equal $Alg(I)$, there must be an earliest
-step of disagreement.  Label this step $i$.
+step of disagreement.  Label this step $i$.\\\\
+At step $i$, let $Alg(I)$ select $(x_a, y_a)$ and let $Opt(I)$ select
+$(x_i,y_i)$.\\\\
+Since for all steps $t < i$, $Opt_t(I) = Alg_t(I)$, the values $x_a$ and
+$y_a$ must be used at some step after $i$ in $Opt(I)$; however, $x_a$ and
+$y_a$ need not be used together in the same step.\\\\
+Additionally, since $Alg(I)$ always picks the two smallest available
+elements and pairs them together, the pair $x_a$ and $y_a$ are the smallest
+possible values available at step $i$.  Therefore, in $Opt(I)$, $x_a$ and
+$y_a$ are respectively smaller than any other $x$ and $y$ used by $Opt(I)$
+after step $i$.\\\\
+Let the step beyond $i$ that $Opt(I)$ uses
+$x_a$ and $y_a$ be respectively $u$ and $v$.  Without loss of generality,
+let $u < v$.  Define $Opt'(I)$ as $Opt(I)$ execept for all steps $k: i \leq 
+k \leq v$ sort the $x$ and $y$ values in ascending order.  Since $x_a$ and $y_a$
+are the minimum values in the range $k: i \leq k \leq v$, they will be placed
+at step $i$.  Hence, $Opt'(I)$ agrees with $Alg(I)$ for at least one more
+step than $Opt(I)$.\\\\
+To show that $Opt'(I)$ is at least as optimal as $Opt(I)$\dots \textit{Working on this 
+now peeps.}    
 
 
 \end{document}
