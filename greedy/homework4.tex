@@ -1,10 +1,12 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 
 \usepackage{amsmath}
 
 \begin{document}
 \title{Greedy Problem 9}
 \renewcommand{\today}{4 September 2016}
+\renewcommand{\baselinestretch}{1.5}
+
 \maketitle
 
 \section{Problem 9:}
@@ -12,26 +14,44 @@
 
 The algorithm whereby the skier and ski whose height difference
 is minimized gets assigned first and then the process is repeated
-is incorrect.\\\\
-Consider the following counter example:\\\\
-Skiers = $\{1,2,3\}$\\
-Skis = $\{2.5, 2.6, 3.6\}$\\\\
-This greedy algorithm will produce the following pairings:\\\\
-(Skiers, Skis) = $\{(1,3.6),(2,2.5),(3,2.6)\}$\\
-This has an average height difference of $3.5/3$.\\
-The optimal pairing would be:\\\\
-(Skiers, Skis) = $\{(1,2.5),(2,2.6),(3,3.6)\}$\\
-This has an average height difference of $2.7/3$
+is incorrect.
+
+
+Consider the following counter example:
+
+\[
+\text{Skiers } = \{1,2,3\}
+\]
+\[
+\text{Skis } = \{2.5, 2.6, 3.6\}
+\]
+
+This greedy algorithm will produce the following pairings:
+
+\[
+\text{(Skiers, Skis) } = \{(1,3.6),(2,2.5),(3,2.6)\}
+\]
+
+This has an average height difference of $3.5/3$.
+
+An optimal pairing would be:
+\[
+\text{(Skiers, Skis) } = \{(1,2.5),(2,2.6),(3,3.6)\}
+\]
+
+This has an average height difference of $2.7/3$.
 
 \subsection{A}
 This greedy algorithm can be shown to be correct using an
-exchange argument.\\\\
+exchange argument.
+
 Let $Alg$ be the process by which the greedy algorithm operates.
 Assume there exists some input $I$ such that $Alg(I)$ is incorrect.
+
 Let $Opt(I)$ be the optimal output for input $I$ that agrees with
-$Alg(I)$ for the greatest number of steps.\\\\
+$Alg(I)$ for the greatest number of steps.
+
 Since $Opt(I)$ cannot equal $Alg(I)$, there must be an earliest
 step of disagreement.  Label this step $i$.
-
 
 \end{document}
