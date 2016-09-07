@@ -64,7 +64,10 @@ after step $i$.\\\\
 Let the step beyond $i$ that $Opt(I)$ uses
 $x_a$ and $y_a$ be respectively $u$ and $v$.  Without loss of generality,
 let $u < v$.  Define $Opt'(I)$ as $Opt(I)$ execept for all steps $k: i \leq 
-k \leq v$ sort the $x$ and $y$ values in ascending order.  Since $x_a$ and $y_a$
+k \leq v$ sort the $x$ and $y$ values in ascending order.  This sort is done
+independently on the $x$ and $y$ values.  For example, if $x_i > x_j$ and
+$y_i < y_j$, $Sort((x_i,y_i),(x_j,y_j))\to((x_j,y_i),(x_i,y_j))$.\\\\
+Since $x_a$ and $y_a$
 are the minimum values in the range $k: i \leq k \leq v$, they will be placed
 at step $i$.  Hence, $Opt'(I)$ agrees with $Alg(I)$ for at least one more
 step than $Opt(I)$.  $Opt'(I)$ is also a feasible solution since every element
@@ -72,8 +75,8 @@ is still used.\\\\
 To show that $Opt'(I)$ is at least as optimal as $Opt(I)$ upon sorting requires
 showing that $|x_i - y_i| + |x_j - y_j|$ does not increase after the sort.  This
 follows from the following cases which fix $y_i < y_j$.  The cases where
-$y_i \nless y_j$ are analogous since a conflict only arises when both $x$ and $y$
-are sorted.\\\\  
+$y_i$ is not less than $y_j$ are analogous since a conflict only arises when both $x$ and $y$
+are sorted.\\\\\\\\  
 \textit{Case 1:} $x_i < y_i$\\
 In this case $x_j < x_i < y_i < y_j$.  Therefore, $(x_i - y_i) < 0$
 and $(x_j - y_j) < 0$.  By the defintion of the absolute value, the following holds
@@ -82,11 +85,11 @@ $|x_i - y_i| + |x_j - y_j| = -(x_i - y_i) - (x_j - y_j) = -x_i + y_i - x_j + y_j
 This can be rearranged and the absolute values can be replaced, giving: $|x_i - y_j| + |x_j - y_i|$.\\
 This is equivalent to the sum if the values were sorted, thereby showing that the value
 of the sum does not change under sorting.\\\\
-\textit{Case 2:} $x_i = y_i$
+\textit{Case 2:} $x_i = y_i$\\
 Since $x_i = y_i$, $(x_i - y_i) = 0$. The sum can therefore be expanded as
 $-(x_i - y_i) - (x_j - y_j)$ since $x_j < x_i$.  Rearranging these values
 give and adding the absolute values gives $|x_i - y_j| + |x_j - y_i|$.\\\\ 
-\textit{Case 3:} $x_j < y_i < x_i < y_j$
+\textit{Case 3:} $x_j < y_i < x_i < y_j$\\
 Based on the inequality, the defintion of the absolute value function can be used to show
 $|x_i - y_i| + |x_j - y_j| = x_i - y_i - (x_j - y_j) = x_i - y_i - x_j + y_j$.  Since 
 $y_i < y_j$, $x_i - y_i - x_j + y_j > x_i + y_i - x_j - y_j$ because the positive quantity
