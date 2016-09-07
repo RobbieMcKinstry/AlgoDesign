@@ -71,7 +71,9 @@ step than $Opt(I)$.  $Opt'(I)$ is also a feasible solution since every element
 is still used.\\\\
 To show that $Opt'(I)$ is at least as optimal as $Opt(I)$ upon sorting requires
 showing that $|x_i - y_i| + |x_j - y_j|$ does not increase after the sort.  This
-follows from the following cases which fix $y_i < y_j$.\\\\  
+follows from the following cases which fix $y_i < y_j$.  The cases where
+$y_i \nless y_j$ are analogous since a conflict only arises when both $x$ and $y$
+are sorted.\\\\  
 \textit{Case 1:} $x_i < y_i$\\
 In this case $x_j < x_i < y_i < y_j$.  Therefore, $(x_i - y_i) < 0$
 and $(x_j - y_j) < 0$.  By the defintion of the absolute value, the following holds
