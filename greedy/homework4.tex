@@ -72,7 +72,33 @@ are the minimum values in the range $k: i \leq k \leq v$, they will be placed
 at step $i$.  Hence, $Opt'(I)$ agrees with $Alg(I)$ for at least one more
 step than $Opt(I)$.  $Opt'(I)$ is also a feasible solution since every element
 is still used.\\\\
-To show that $Opt'(I)$ is at least as optimal as $Opt(I)$\dots \textit{Working on this 
-now peeps.}    
+To show that $Opt'(I)$ is at least as optimal as $Opt(I)$ upon sorting requires
+showing that $|x_i - y_i| + |x_j - y_j|$ does not increase after the sort.  This
+follows from the following cases which fix $y_i < y_j$.\\\\  
+\textit{Case 1:} $x_i < y_i$\\
+In this case $x_j < x_i < y_i < y_j$.  Therefore, $(x_i - y_i) < 0$
+and $(x_j - y_j) < 0$.  By the defintion of the absolute value, the following holds
+true:\\
+$|x_i - y_i| + |x_j - y_j| = -(x_i - y_i) - (x_j - y_j) = -x_i + y_i - x_j + y_j$\\
+This can be rearranged and the absolute values can be replaced, giving: $|x_i - y_j| + |x_j - y_i|$.\\
+This is equivalent to the sum if the values were sorted, thereby showing that the value
+of the sum does not change under sorting.\\\\
+\textit{Case 2:} $x_i = y_i$
+Since $x_i = y_i$, $(x_i - y_i) = 0$. The sum can therefore be expanded as
+$-(x_i - y_i) - (x_j - y_j)$ since $x_j < x_i$.  Rearranging these values
+give and adding the absolute values gives $|x_i - y_j| + |x_j - y_i|$.\\\\ 
+\textit{Case 3:} $x_j < y_i < x_i < y_j$
+Based on the inequality, the defintion of the absolute value function can be used to show
+$|x_i - y_i| + |x_j - y_j| = x_i - y_i - (x_j - y_j) = x_i - y_i - x_j + y_j$.  Since 
+$y_i < y_j$, $x_i - y_i - x_j + y_j > x_i + y_i - x_j - y_j$ because the positive quantity
+$(y_j - y_i)$ has been replaced with the negative quantity $(y_i - y_j)$.  This lower bound
+can be rewritten as $|x_i - y_j| + |x_j - y_i|$, thereby showing that the sorting of the
+values actually reduces the sum.\\\\
+Cases such as $y_i < x_j < x_i < y_j$ and $y_i < y_j < x_j < x_i$ have similar explanations
+showing the sum after a sort being equal to or less than the unsorted sum.\\\\
+Since sorting will produce at least as optimal a result as $Opt(I)$, $Opt'(I)$ is at least
+as optimal as $Opt'(I)$, but agrees with more steps than $Opt(I)$ which is a contradiction,
+proving that there is no input $I$ for which the greedy algorithm $Alg$ is incorrect.     
+
 
 \end{document}
