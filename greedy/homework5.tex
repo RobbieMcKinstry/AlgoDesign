@@ -1,5 +1,7 @@
 \documentclass[12pt]{article}
 
+\usepackage{tikz}
+\usetikzlibrary{trees}
 \usepackage[]{algorithm2e}
 \usepackage{amsmath}
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
@@ -17,8 +19,10 @@
 This greedy algorithm can be shown to be correct by an exchange argument.\\\\
 Let $Alg$ be the process by which the greedy algorithm operates.  Assume that
 there is some input $I$ such that $Alg(I)$ is incorrect. Let $Opt(I)$ be an
-optimal solution that agrees with the most number of steps with $Alg(I)$.
-
+optimal solution that agrees with the most number of steps with $Alg(I)$.\\\\
+$Opt(I)$ and $Alg(I)$ must have a first point of disagreement which must occur
+at some row, since $Alg(I)$ works row by row.  Label the row in which the
+disagreement occurs $r_i$.  
 \subsection*{Problem 18:}
 \subsubsection*{A:}
 The following counter example shows that this algorithm does not work.\\\\
@@ -67,6 +71,24 @@ This algorithm will do the following scheduling:\\
 \section*{Dynamic Programming}
 \subsection*{Problem 1:}
 \subsubsection*{A:}
+A direct implementation of this recurrence relation leads to an exponential
+runtime because every $T(i)$ requires $2^{i}$ recurvsive calls.  This can
+seen using a tree diagram.\\ 
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+    level 1/.style={sibling distance=3cm},
+    level 2/.style={sibling distance=1.75cm}]
+    \node {$T(n)$}
+        child {node {$T(n-1)$}
+            child {node {$T(n-2)$}}
+            child {node {$T(n-3)$}}
+        }
+        child {node {$T(n-2)$}};
+\end{tikzpicture}
+\end{center}    
+This tree will have a depth of $i$ and at every point branches by into 
+two at every node.  Hence the \BigO{2^{i}} calculations. 
+
 \subsubsection*{B:}
 To show that only \BigO{n^2} operations are needed if every duplicate
 $T(i)$ is calculated only once, begin by expanding the sum in the 
@@ -124,7 +146,7 @@ Equivalently,
 \[
 T(n) = T(n-1)[1+T(n-2)]
 \]
-This expression is easily expressed as a single \BigO{n} loop.\\
+This expression is easily expressed as a single \BigO{n} loop.\\\\
 \begin{algorithm}[H]
 $Array:\ T$\\
 $T[0] = 2$\\
