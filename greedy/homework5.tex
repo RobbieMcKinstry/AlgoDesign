@@ -14,9 +14,15 @@
 
 \section*{Greedy Problems}
 \subsection*{Problem 12:}
-
+This greedy algorithm can be shown to be correct by an exchange argument.\\\\
+Let $Alg$ be the process by which the greedy algorithm operates.  Assume that
+there is some input $I$ such that $Alg(I)$ is incorrect. Let $Opt(I)$ be an
+optimal solution that agrees with the most number of steps with $Alg(I)$.
 
 \subsection*{Problem 18:}
+\subsubsection*{A:}
+\subsubsection*{B:}
+\subsubsection*{C:}
 
 
 \section*{Dynamic Programming}
@@ -38,12 +44,11 @@ can be observed by counting the number of operations needed to determine
 each $T(i)$.
 
 \begin{center}
-    \begin{tabular}{c|c|c|c|c|c}
-    T(i) & T(2) & T(3) & T(4) & T(5) & T(6) \\ 
+    \begin{tabular}{c| c c c c c}
+    T (i) & T (2) & T (3) & T (4) & T (5) & T (6) \\ \hline  
     Ops & 1 & 3 & 5 & 7 & 9 \\
     \end{tabular}
 \end{center}
-
 It can be shown that the $T(i+1)$ element of the sum requires two additional
 operations to calculate: \textit{a multiplication and an addition}.  Hence,
 this sequence will continue.  It can be proven inductively that a closed
