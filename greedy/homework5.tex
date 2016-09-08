@@ -22,7 +22,43 @@ there is some input $I$ such that $Alg(I)$ is incorrect. Let $Opt(I)$ be an
 optimal solution that agrees with the most number of steps with $Alg(I)$.\\\\
 $Opt(I)$ and $Alg(I)$ must have a first point of disagreement which must occur
 at some row, since $Alg(I)$ works row by row.  Label the row in which the
-disagreement occurs $r_i$.  
+disagreement occurs $r_i$.\\\\
+A general case of this disagreement can be demonstrated by the following two
+matrices.
+\begin{center}
+$
+Alg(I)_{n,n} = 
+    \begin{pmatrix}
+    a_{1,1} & \cdots & a_{1,u} & \cdots & a_{1,v} & \cdots & a_{1.n} \\
+    a_{2,1} & \cdots & a_{2,u} & \cdots & a_{1,v} & \cdots & a_{1.n} \\
+    \vdots  & \ddots & a_{i,u} & \ddots & a_{i,v} & \ddots & \vdots \\ 
+    a_{n,1} & \cdots & a_{n,u} & \cdots & a_{n,v} & \cdots & a_{n.n} \\
+    \end{pmatrix}
+$ 
+\end{center}
+
+\begin{center}
+$
+Opt(I)_{n,n} = 
+    \begin{pmatrix}
+    o_{1,1} & \cdots & o_{1,u} & \cdots & o_{1,v} & \cdots & o_{1.n} \\
+    o_{2,1} & \cdots & o_{2,u} & \cdots & o_{1,v} & \cdots & o_{1.n} \\
+    \vdots  & \ddots & o_{i,u} & \ddots & o_{i,v} & \ddots & \vdots \\ 
+    o_{n,1} & \cdots & o_{n,u} & \cdots & o_{n,v} & \cdots & o_{n.n} \\
+    \end{pmatrix}
+$ 
+\end{center}
+Without loss of generality, allow the disagreement to be between columns
+$u$ and $v$.  In the matrices above, this could mean $a_{i,u}=1$ and
+$a_{i,v}=0$ whereas $o_{i,v}=0$ and $o_{i,u}=1$.\\\\
+Naievely defining $Opt'{I}$ as $Opt{I}$ except $o_{i,v}=1$ and $o_{i,u}=0$
+does make $Opt'{I}$ agree with $Alg{I}$ for an additional step and maintains
+the necessary sum of row $r_i$, labeled $|r_i|$.\\\\
+However, it invalidates the
+column sums for $c_u$ and $c_v$, respectively $|c_u|$ and $|c_v|$, since they
+previously aggreed in $Opt$, but the swap altered the values to $|c_u|' = |c_u|+1$
+and $|c_v|'=|c_v|-1$, where $|c_u|'$ and $|c_v|'$ are the analogous column values
+in $Opt'(I)$.     
 \subsection*{Problem 18:}
 \subsubsection*{A:}
 The following counter example shows that this algorithm does not work.\\\\
