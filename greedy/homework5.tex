@@ -21,7 +21,46 @@ optimal solution that agrees with the most number of steps with $Alg(I)$.
 
 \subsection*{Problem 18:}
 \subsubsection*{A:}
+The following counter example shows that this algorithm does not work.\\\\
+Let the jobs be
+\[
+J_1=(1,5,5)
+\]
+\[
+J_2=(4,2,100)
+\]
+This algorithm will do the following scheduling:\\
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+    Time & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+    Job & $J_1$ & $J_1$ & $J_1$ & $J_1$ & $J_2$ & $J_2$ & $J_1$ \\
+    \end{tabular}
+\end{center}  
+Since $J_1$ was scheduled needed to finish after its deadline, the algorithm
+outputs $0$.  However, there is a feasible schedule for these two jobs.\\
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+    Time & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
+    Job & $J_1$ & $J_1$ & $J_1$ & $J_1$ & $J_1$ & $J_2$ & $J_2$ \\
+    \end{tabular}
+\end{center}  
 \subsubsection*{B:}
+The following counter example show that this algorithm does not work.\\\\
+Let the jobs be
+\[
+J_1=(1,2,2)
+\]
+\[
+J_2=(1,1,100)
+\]
+This algorithm will do the following scheduling:\\
+\begin{center}
+    \begin{tabular}{c|c|c|c|c}
+    Time & 1 & 2 & 3 & 4 \\ \hline
+    Job & $J_2$ & $J_1$ & $J_1$ & $J_2$ \\
+    \end{tabular}
+\end{center}
+
 \subsubsection*{C:}
 
 
@@ -93,8 +132,5 @@ $T[1] = 2$\\
 \For{$i\leftarrow 2$ to $n$}
 {$T[i] = T[i-1]*(1+T[i-2])$}
 $Output:\ T[n]$
-
 \end{algorithm}
-
-
 \end{document}
