@@ -1,0 +1,69 @@
+\documentclass[12pt]{article}
+
+\usepackage[]{algorithm2e}
+\usepackage{amsmath}
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
+
+\begin{document}
+\title{Homework 4}
+\author{Robbie McKinstry, Jack McQuown, Cyrus Ramavarapu}
+\renewcommand{\today}{9 September 2016}
+\renewcommand{\baselinestretch}{1.5}
+
+\maketitle
+
+\section*{Greedy Problems}
+\subsection*{Problem 12:}
+
+
+\subsection*{Problem 18:}
+
+
+\section*{Dynamic Programming}
+\subsection*{Problem 1:}
+\subsubsection*{A:}
+\subsubsection*{B:}
+\subsubsection*{C:}
+A \BigO{n} algorithm can be derived from the original recurrence
+relationship by first eliminating the summation by calculating
+$T(n+1)$ in the following manner.
+\[
+T(n+1) = \sum_{i=1}^{n}T(i)T(i-1)
+\]
+\[
+T(n) = \sum_{i=1}^{n-1}T(i)T(i-1)
+\]
+\[
+T(n+1) - T(n) = \sum_{i=1}^{n}T(i)T(i-1) - \sum_{i=1}^{n-1}T(i)T(i-1)  
+\]
+$T(n+1)$ and $T(n)$ overlap for all values $i:1\leq i\leq n-1$, therefore
+subtracting the two sums leaves only the the final in the sum for $T(n+1)$.
+\[
+T(n+1) - T(n) = T(n)T(n-1)
+\] 
+The values for n can be shifted by setting $n = m-1$.
+\[
+T(m) - T(m-1) = T(m-1)T(m-2)
+\]
+However, the label $m$ is without meaning, so label $m=n$.
+\[
+T(n) - T(n-1) = T(n-1)T(n-2)
+\]
+Equivalently,
+\[
+T(n) = T(n-1)[1+T(n-2)]
+\]
+This expression is easily expressed in code.\\
+\begin{algorithm}[H]
+$Array:\ T$\\
+$T[0] = 2$\\
+$T[1] = 2$\\
+\For{$i\leftarrow 2$ to $n$}{
+$T[i] = T[i-1]*(1+T[i-2])$
+}
+$Output:\ T[n]$
+
+\end{algorithm}
+
+
+\end{document}
