@@ -92,8 +92,9 @@ This algorithm will do the following scheduling:\\
     Job & $J_1$ & $J_1$ & $J_1$ & $J_1$ & $J_2$ & $J_2$ & $J_1$ \\
     \end{tabular}
 \end{center}  
-Since $J_1$ was scheduled needed to finish after its deadline, the algorithm
-outputs $0$.  However, there is a feasible schedule for these two jobs.\\
+Since $J_1$ was scheduled to finish after its deadline, the algorithm
+outputs $0$.  However, there is a feasible schedule for these two jobs.
+
 \begin{center}
     \begin{tabular}{c|c|c|c|c|c|c|c}
     Time & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \hline
@@ -101,7 +102,7 @@ outputs $0$.  However, there is a feasible schedule for these two jobs.\\
     \end{tabular}
 \end{center}  
 \subsubsection*{B:}
-The following counter example show that this algorithm does not work.\\\\
+The following counter example shows that this algorithm does not work.\\\\
 Let the jobs be
 \[
 J_1=(1,2,2)
@@ -141,7 +142,7 @@ This quantity represents the urgency with which a job must be scheduled, with $A
 the most urgent job at every step.  Therefore, since at step $u$ $Alg(I)$ chose $J_i$ whereas
 $Opt(I)$ has $J_j$ at step $u$, $J_i$ must have a lower laxity than $J_j$.\\\\
 Alternatively, laxity can be viewed as the number of available slots a job has between time $t$
-and its deadline.  Since $J_j$ has a higher laxity than $J_i$, it must have free slots in which
+and its deadline where it does not need to be schedule while still completing before its deadline.  Since $J_j$ has a higher laxity than $J_i$, it must have free slots in which
 another job could be scheduled.\\\\
 Therefore, define $Opt'(I)$ as $Opt(I)$ except at step $u$ schedule $J_i$ and schedule $J_j$ down
 by one unit, thereby using one of its lax spaces.\\\\
