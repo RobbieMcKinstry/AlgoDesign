@@ -123,8 +123,30 @@ The correctness of this algorithm can be shown by the following exchange argumen
 Let $Alg$ be the process by which this algorithm operates.
 Assume that there exists some input $I$ such that $Alg(I)$ is incorect.  Let $Opt(I)$
 be the optimal solution for input $I$ that agrees with the most number of steps with
-$Alg(I)$
-
+$Alg(I)$.\\\\
+As a result, there must be some first point of disagreement between $Alg(I)$ and $Opt(I)$.
+Label this step $u$ and let $Alg_u(I)$ be $J_i$ and $Opt_u(I)$ be $J_j$.\\\\
+The process by which $Alg$ operates is to schedule the job with the least laxity, defined as
+\[
+l = d_i - t - x_i(t)
+\]   
+This quantity represents the urgency with which a job must be scheduled, with $Alg$ scheduling
+the most urgent job at every step.  Therefore, since at step $u$ $Alg(I)$ chose $J_i$ whereas
+$Opt(I)$ has $J_j$ at step $u$, $J_i$ must have a lower laxity than $J_j$.\\\\
+Alternatively, laxity can be viewed as the number of available slots a job has at a time $t$
+and its deadline.  Since $J_j$ has a higher laxity than $J_i$, it must have free slots in which
+another job can be scheduled.\\\\
+Therefore, define $Opt'(I)$ as $Opt(I)$ except at step $u$ schedule $J_i$ and schedule $J_j$ down
+by one unit, thereby using one of its lax spaces.\\\\
+To show
+that $Opt'(I)$ is at least as optimal as $Opt(I)$ it needs to be recognized that $J_i$ must have
+fewer lax slots than $J_j$, otherwise $Alg$ would have picked $J_j$ at step $u$.  This includes
+the case in which $J_j$ can't be shifted because it would violate its deadline $d_j$.  Additionally,
+if $J_i$ and $J_j$ must overlap due, both $Opt'(I)$ and $Opt(I)$ would produce $0$ for no viable
+schedule since only a single unit is changed in $Opt(I)$ and deadlines remain constant.\\\\
+As a result,
+$Opt'(I)$ agrees with $Alg(I)$ for more steps than $Opt(I)$, contradicing the initial assuptions. 
+Therefore there is not an input $I$ such that $Alg(I)$ is incorrect.  
 \section*{Dynamic Programming}
 \subsection*{Problem 1:}
 \subsubsection*{A:}
@@ -203,6 +225,7 @@ Equivalently,
 \[
 T(n) = T(n-1)[1+T(n-2)]
 \]
+\newpage
 This expression is easily expressed as a single \BigO{n} loop.\\\\
 \begin{algorithm}[H]
 $Array:\ T$\\
