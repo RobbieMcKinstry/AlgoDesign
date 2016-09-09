@@ -51,8 +51,8 @@ $
 Without loss of generality, allow the disagreement to be between columns
 $u$ and $v$.  In the matrices above, this could mean $a_{i,u}=1$ and
 $a_{i,v}=0$ whereas $o_{i,v}=0$ and $o_{i,u}=1$.\\\\
-Naievely defining $Opt'{I}$ as $Opt{I}$ except $o_{i,v}=1$ and $o_{i,u}=0$
-does make $Opt'{I}$ agree with $Alg{I}$ for an additional step and maintains
+Naively defining $Opt'(I)$ as $Opt(I)$ except $o_{i,v}=1$ and $o_{i,u}=0$
+makes $Opt'(I)$ agree with $Alg(I)$ for an additional step and maintains
 the necessary sum of row $r_i$, labeled $|r_i|$.\\\\
 However, this swap invalidates the
 column sums for $c_u$ and $c_v$, respectively $|c_u|$ and $|c_v|$, since they
@@ -60,7 +60,7 @@ previously aggreed in $Opt$, but the swap altered the values to $|c_u|' = |c_u|+
 and $|c_v|'=|c_v|-1$, where $|c_u|'$ and $|c_v|'$ are the analogous column values
 in $Opt'(I)$.\\\\
 The column sums in $Opt'(I)$ can be rectified, while still maintaining the row sums
-and the additional step agreement with $Opt(I)$ if there exists a row, $r_j$, such
+and the additional step agreement with $Alg(I)$ if there exists a row, $r_j$, such
 that $i < j$, where $o_{j,v} = 1$ and $o_{j,u}=1$.\\\\
 Since $Alg$ operates row-by-row placing $1$s in those columns which have the greatest
 need, $c_i$ required more $1$s than $c_j$ at $r_i$.  Since $Opt(I)$ deprived $c_i$ a 
@@ -69,12 +69,11 @@ by giving $c_j$ a $1$ at $r_i$, $Opt(I)$ is guaranteed to satisfy value $|c_j|$ 
 $1$s than needed to satisfy $|c_i|$.  This ensures the existence of a row with the
 above mentioned property.\\\\
 Therefore redefine $Opt'(I)$ such that $Opt(I)$ except $o_{i,v}=1$, $o_{i,u}=0$ and
-$o_{j,v}=0$,$o_{j,u}=1$
+$o_{j,v}=0$, $o_{j,u}=1$
 where $j$ is the row where in $Opt(I)$, $o_{j,v}=1$ and $o_{j,u}=1$.  This gives an optimal
 solution that agrees with at least $1$ more step than $Opt(I)$ does with $Alg(I)$, which
 contradicts the original assumption that there exists an $I$ such that $Alg$ is incorrect.
-Therefore $Alg$ is correct.
-
+Therefore $Alg$ is correct for all input $I$.
 
 \subsection*{Problem 18:}
 \subsubsection*{A:}
@@ -112,12 +111,20 @@ J_2=(1,1,100)
 \]
 This algorithm will do the following scheduling:\\
 \begin{center}
-    \begin{tabular}{c|c|c|c|c}
-    Time & 1 & 2 & 3 & 4 \\ \hline
-    Job & $J_2$ & $J_1$ & $J_1$ & $J_2$ \\
+    \begin{tabular}{c|c|c|c}
+    Time & 1 & 2 & 3 \\ \hline
+    Job & $J_2$ & $J_1$ & $J_1$ \\
     \end{tabular}
 \end{center}
-
+Since $J_1$ finished after its deadline, the algorithm will say that
+there is no feasible schedule.  However, there is a feasible schedule for these
+two jobs.\\
+\begin{center}
+    \begin{tabular}{c|c|c|c}
+    Time & 1 & 2 & 3 \\ \hline
+    Job & $J_1$ & $J_1$ & $J_2$ \\
+    \end{tabular}
+\end{center}
 \subsubsection*{C:}
 The correctness of this algorithm can be shown by the following exchange argument.\\\\ 
 Let $Alg$ be the process by which this algorithm operates.
@@ -133,9 +140,9 @@ l = d_i - t - x_i(t)
 This quantity represents the urgency with which a job must be scheduled, with $Alg$ scheduling
 the most urgent job at every step.  Therefore, since at step $u$ $Alg(I)$ chose $J_i$ whereas
 $Opt(I)$ has $J_j$ at step $u$, $J_i$ must have a lower laxity than $J_j$.\\\\
-Alternatively, laxity can be viewed as the number of available slots a job has at a time $t$
+Alternatively, laxity can be viewed as the number of available slots a job has between time $t$
 and its deadline.  Since $J_j$ has a higher laxity than $J_i$, it must have free slots in which
-another job can be scheduled.\\\\
+another job could be scheduled.\\\\
 Therefore, define $Opt'(I)$ as $Opt(I)$ except at step $u$ schedule $J_i$ and schedule $J_j$ down
 by one unit, thereby using one of its lax spaces.\\\\
 To show
@@ -145,7 +152,7 @@ the case in which $J_j$ can't be shifted because it would violate its deadline $
 if $J_i$ and $J_j$ must overlap due, both $Opt'(I)$ and $Opt(I)$ would produce $0$ for no viable
 schedule since only a single unit is changed in $Opt(I)$ and deadlines remain constant.\\\\
 As a result,
-$Opt'(I)$ agrees with $Alg(I)$ for more steps than $Opt(I)$, contradicing the initial assuptions. 
+$Opt'(I)$ agrees with $Alg(I)$ for more steps than $Opt(I)$, contradicting the initial assumptions. 
 Therefore there is not an input $I$ such that $Alg(I)$ is incorrect.  
 \section*{Dynamic Programming}
 \subsection*{Problem 1:}
@@ -167,7 +174,6 @@ seen using a tree diagram.\\
 \end{center}    
 This tree will have a depth of $i$ and at every point branches by into 
 two at every node.  Hence the \BigO{2^{i}} calculations. 
-
 \subsubsection*{B:}
 To show that only \BigO{n^2} operations are needed if every duplicate
 $T(i)$ is calculated only once, begin by expanding the sum in the 
