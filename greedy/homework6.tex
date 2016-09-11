@@ -40,24 +40,35 @@ LCS(A_{i-1}, B_{j-1}, C_{k-1}) + A_i \overset{?}{\geq} LCS(A_{i-1}, B_{j-1}, C_{
 \]
 This analysis leads to the following recursive algorithm:\\\\
 \begin{algorithmic}[H]
-\Function{LCS}{$int$ $i$,$j$,$k$}
-\If {$i\equiv0 \vee j\equiv0 \vee k\equiv0$}
+
+\Function{LCS}{$int$ $i$,$j$,$k$}:
+\If{$i\equiv j\equiv k\equiv0$}
     \State $return\ 0$
-\EndIf
-\If {$A_i\equiv B_j\equiv C_k$}
-    \State $LCS(i-1,\ j-1,\ k-1) + A_i$
+\EndIf\\
+\If{$A_i\equiv B_j\equiv C_k$}
+    \State$LCS(i-1,j-1,k-1) + A_i$
 \Else 
-    \If {$(A_i\equiv B_j)\neq C_k$}
+    \If{$(A_i\equiv B_j)\neq C_k$}
+        \State$max(LCS(i-1,\ j-1,\ k),\ LCS(i,\ j,\ k-1))$
     \Else
-        \If {$(A_i\equiv C_k)\neq B_j$}
+        \If{$(A_i\equiv C_k)\neq B_j$}
+            \State $max(LCS(i-1,\ j,\ k-1),\ LCS(i, j-1, k))$
         \Else
-            \If {$A_i\neq (B_j\equiv C_k)$}
+            \If{$A_i\neq (B_j\equiv C_k)$}
+                \State$max(LCS(i,\ j-1,\ k-1),\ LCS(i-1,\ j,\ k))$
             \Else
                 % A_i\neq B_j\neq C_k)
+                \State$LCS(i-1,\ j-1,\ k-1)$
             \EndIf
        \EndIf
    \EndIf
 \EndIf  
 \EndFunction
+Although this algorithm produces the longest common subsequence for
+three given strings, it runs in exponential time due to the numerous
+recursive calls that operate on a problem of only $1$ letter smaller.\\\\
+By moving to an array based solution and changing the recursive calls 
+to array look-ups, a polynomial runtime algorithm can be developed.  
+%j -> i -> k order and lowest to highest indices
 \end{algorithmic}
 \end{document}
