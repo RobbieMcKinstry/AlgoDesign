@@ -2,7 +2,9 @@
 
 \usepackage{tikz}
 \usetikzlibrary{trees}
-\usepackage{algpseudocode}
+\usepackage[]{algorithm2e}
+%\usepackage{algpseudocode}
+%\usepackage{algorithmicx}
 \usepackage{amsmath}
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 
@@ -37,36 +39,74 @@ S_C = C_1, C_2, C_3,\dots,C_{k-1},C_k
 \]
 %Insert sentence here 
 This analysis leads to the following recursive algorithm:\\\\
-\begin{algorithmic}[H]
-
-\Function{LCS}{$int$ $i$,$j$,$k$}:
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\Func{LCS\\}
+\Inp{$int\ i$, $int\ j$, $int\ k$}\\
 \If{$i\equiv j\equiv k\equiv0$}
-    \State $return\ 0$
-\EndIf\\
-\If{$A_i\equiv B_j\equiv C_k$}
-    \State$LCS(i-1,j-1,k-1) + A_i$
-\Else 
-    \If{$(A_i\equiv B_j)\neq C_k$}
-        \State$max(LCS(i-1,\ j-1,\ k),\ LCS(i,\ j,\ k-1))$
-    \Else
-        \If{$(A_i\equiv C_k)\neq B_j$}
-            \State $max(LCS(i-1,\ j,\ k-1),\ LCS(i, j-1, k))$
-        \Else
-            \If{$A_i\neq (B_j\equiv C_k)$}
-                \State$max(LCS(i,\ j-1,\ k-1),\ LCS(i-1,\ j,\ k))$
-            \Else
-                % A_i\neq B_j\neq C_k)
-                \State $max($\[LCS(i,\ j-1,\ k-1),\]\[LCS(i-1,\ j,\ k-1),\]\[LCS(i-1,\ j-1,\ k))\]
-            \EndIf
-       \EndIf
-   \EndIf
-\EndIf  
-\EndFunction\\\\
+{$return\ 0$}
+\uIf{$A_i\equiv B_j\equiv C_k$}
+{$LCS(i-1,j-1,k-1) + A_i$}
+\uElseIf{$(A_i\equiv B_j)\neq C_k$}
+{$\max(LCS(i-1,\ j-1,\ k),\ LCS(i,\ j,\ k-1))$}
+\uElseIf{$(A_i\equiv C_k)\neq B_j$}
+{$\max(LCS(i-1,\ j,\ k-1),\ LCS(i, j-1, k))$}
+\uElseIf{$A_i\neq (B_j\equiv C_k)$}
+{$\max(LCS(i,\ j-1,\ k-1),\ LCS(i-1,\ j,\ k))$}
+\Else{$\max(LCS(i,\ j-1,\ k-1),LCS(i-1,\ j,\ k-1),LCS(i-1,\ j-1,\ k))$}
+\end{algorithm}
 Although this algorithm produces the longest common subsequence for
 three given strings, it runs in exponential time due to the numerous
 recursive calls that operate on a problem of only $1$ letter smaller.\\\\
 By moving to an array based solution and changing the recursive calls 
-to array look-ups, a polynomial runtime algorithm can be developed.  
-%j -> i -> k order and lowest to highest indices
-\end{algorithmic}
+to array look-ups, a polynomial runtime algorithm can be developed.
+%\\\\$Array = LCS$
+%\begin{algorithmic}[H]
+%\For{$i=0$ to $len(A)$}
+%$LCS[i][0][0]=0$
+%\EndFor
+%\For{$j=0$ to $len(B)$}
+%$LCS[0][j][0]=0$
+%\EndFor
+%\For{$k=0$ to $len(C)$}
+%$LCS[0][0][k]=0$
+%\EndFor
+%\\\\
+%\For{$i=0$ to $len(A)$}
+%\For{$j=0$ to $len(B)$}
+%\For{$k=0$ to $len(C)$}
+%
+%\If{$A_i\equiv B_j\equiv C_k$}
+%    \State $LCS[i][j][k] = LCS[i-1][j-1][k-1] + 1$
+%\Else 
+%    \If{$(A_i\equiv B_j)\neq C_k$}
+%        \State$LCS[i][j][k]=max($
+%        \[[LCS[i-1][j-1][k],\]
+%        \[LCS[i][j][k-1])\]
+%    \Else
+%        \If{$(A_i\equiv C_k)\neq B_j$}
+%            \State$LCS[i][j][k]=max($
+%            \[LCS[i-1][j][k-1],\]
+%            \[LCS[i][j-1][k])\]
+%        \Else
+%            \If{$A_i\neq (B_j\equiv C_k)$}
+%                \State$LCS[i][j][k]= max($
+%                \[LCS(i,\ j-1,\ k-1),\]
+%                \[ LCS(i-1,\ j,\ k))\]
+%            \Else
+%                % A_i\neq B_j\neq C_k)
+%                \State $LCS[i][j][k]=max($
+%                \[LCS(i,\ j-1,\ k-1),\]
+%                \[LCS(i-1,\ j,\ k-1),\]
+%                \[LCS(i-1,\ j-1,\ k))\]
+%            \EndIf
+%        \EndIf
+%    \EndIf
+%\EndIf
+%\EndFor
+%\EndFor
+%\EndFor
+%\end{algorithmic}
+
 \end{document}
