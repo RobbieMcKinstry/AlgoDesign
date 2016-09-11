@@ -34,10 +34,8 @@ S_B = B_1, B_2, B_3,\dots,B_{j-1},B_j
 \]
 \[
 S_C = C_1, C_2, C_3,\dots,C_{k-1},C_k
-\] 
-\[
-LCS(A_{i-1}, B_{j-1}, C_{k-1}) + A_i \overset{?}{\geq} LCS(A_{i-1}, B_{j-1}, C_{k-1}) 
 \]
+%Insert sentence here 
 This analysis leads to the following recursive algorithm:\\\\
 \begin{algorithmic}[H]
 
@@ -58,12 +56,12 @@ This analysis leads to the following recursive algorithm:\\\\
                 \State$max(LCS(i,\ j-1,\ k-1),\ LCS(i-1,\ j,\ k))$
             \Else
                 % A_i\neq B_j\neq C_k)
-                \State$LCS(i-1,\ j-1,\ k-1)$
+                \State $max($\[LCS(i,\ j-1,\ k-1),\]\[LCS(i-1,\ j,\ k-1),\]\[LCS(i-1,\ j-1,\ k))\]
             \EndIf
        \EndIf
    \EndIf
 \EndIf  
-\EndFunction
+\EndFunction\\\\
 Although this algorithm produces the longest common subsequence for
 three given strings, it runs in exponential time due to the numerous
 recursive calls that operate on a problem of only $1$ letter smaller.\\\\
