@@ -48,7 +48,7 @@ Let $r = 1 \text{liter} / 95 \text{minutes}$.
 Let the distance between $A$ and $B$ be $100 \text{kilos}$.
 Let there be a single gas station 95 miles from A and 5 miles from B (that is, at the 95th mile marker).
 
-The greedy algorithm specified will stop at the gas station and fill the tank 1 liter. Filling the tank 1 liter takes 95 minutes.
+This greedy algorithm specified will stop at the gas station and fill the tank 1 liter. Filling the tank 1 liter takes 95 minutes.
 An optimal solution is to stop at the gas station and fill the tank $1/19$ liters, which will only take 5 minutes.
 
 \vskip .6cm
@@ -65,7 +65,7 @@ However, an optimal solution would cover $A$ in two intervals, selecting $[0.25,
 \vskip .6cm
 {\bf Question 5 Part B}
 
-Let $G(A)$ be the output of the Greedy algorithm on input $A$. For proof by contradiction, assume $G$ is not optimal. Let $Opt(A)$ be an optimal output on input A that is closest in selection order to $G(A)$.
+Let $G(A)$ be the output of this greedy algorithm on input $A$. For proof by contradiction, assume $G$ is not optimal. Let $Opt(A)$ be an optimal output on input A that is closest in selection order to $G(A)$.
 
 Let $i$ be the index of the first disagreement between $G(A)$ and $Opt(A)$, let $G(A)_{i}$ be the interval $[x_{i}, x_{i} + 1]$ selected by $G$, and $Opt(A)_{i}$ be the interval $[x'_{i}, y'_{i}]$ selected by $Opt$.
 
