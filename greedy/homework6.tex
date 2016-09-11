@@ -2,7 +2,7 @@
 
 \usepackage{tikz}
 \usetikzlibrary{trees}
-\usepackage[]{algorithm2e}
+\usepackage{algpseudocode}
 \usepackage{amsmath}
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 
@@ -21,7 +21,43 @@
 
 \section*{Dynamic Programming}
 \subsection*{Problem 2:}
-
-
-
+The longest common subsequence between the three can be
+initially defined recursively by considering the last 
+letter in common between the three strings and then 
+seeing if this letter is in the longest common subsequence
+of one letter shorter.
+\[
+S_A = A_1, A_2, A_3,\dots,A_{i-1},A_i
+\]
+\[
+S_B = B_1, B_2, B_3,\dots,B_{j-1},B_j
+\]
+\[
+S_C = C_1, C_2, C_3,\dots,C_{k-1},C_k
+\] 
+\[
+LCS(A_{i-1}, B_{j-1}, C_{k-1}) + A_i \overset{?}{\geq} LCS(A_{i-1}, B_{j-1}, C_{k-1}) 
+\]
+This analysis leads to the following recursive algorithm:\\\\
+\begin{algorithmic}[H]
+\Function{LCS}{$int$ $i$,$j$,$k$}
+\If {$i\equiv0 \vee j\equiv0 \vee k\equiv0$}
+    \State $return\ 0$
+\EndIf
+\If {$A_i\equiv B_j\equiv C_k$}
+    \State $LCS(i-1,\ j-1,\ k-1) + A_i$
+\Else 
+    \If {$(A_i\equiv B_j)\neq C_k$}
+    \Else
+        \If {$(A_i\equiv C_k)\neq B_j$}
+        \Else
+            \If {$A_i\neq (B_j\equiv C_k)$}
+            \Else
+                % A_i\neq B_j\neq C_k)
+            \EndIf
+       \EndIf
+   \EndIf
+\EndIf  
+\EndFunction
+\end{algorithmic}
 \end{document}
