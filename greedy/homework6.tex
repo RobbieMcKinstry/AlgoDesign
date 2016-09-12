@@ -16,14 +16,32 @@
 
 \section*{Greedy Problems}
 \subsection*{Problem 7:}
-
+A greedy algorithm that will minimize evictions is to 
+select the page that will be accessed furthest in the future
+from the current time.\\\\
+For example, assuming $k=4$ let the current state of the system be the
+following:
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c|c}
+    Time & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+    Input & A & C & D & A & B & A & A \\   
+    \end{tabular}
+    Fast Memory ($k=4$) 
+    \begin{tabular}{c|c|c|c}
+    E & D & F & B 
+    \end{tabular}
+\end{center}
+In this situation, the algorithm will evict page B, since
+it is not used until time 5.  Any other choice will result
+in an earlier eviction. 
+\subsubsection*{Proof by Exchange:}
 \subsection*{Problem 17:}
 A greedy algorithm that will determine if there is enough
 information available to fairly partition the goods is as 
 follows:\\\\
 Given a set of goods $\mathcal{G}={G_1,\ G_2,\dots,G_n}$,
 and two orderings on this set, $\mathcal{H}=G_a > G_b >
-\dots > G_n$ and $\mathcal{W}=G_i > G_k > \dots > G_m$,
+\cdots > G_n$ and $\mathcal{W}=G_i > G_k > \cdots > G_m$,
 partition the goods by initially giving $\mathcal{W}$ and 
 $\mathcal{H}$ their maximal elements.
 Remove the element given to the opposing list from each list.
@@ -35,7 +53,7 @@ While there are elements in $\mathcal{G}$, continue
 giving $\mathcal{W}$ and $\mathcal{H}$ their second
 most desired element.  Ties are broken arbitrarily.  For 
 example, if at a given step both $\mathcal{W}$ and $\mathcal{H}$
-want $G_c$, arbitrarily give $G_C$ to $\mathcal{W}$ and
+want $G_c$, arbitrarily give $G_c$ to $\mathcal{W}$ and
 cross it off in the ordering for $\mathcal{H}$ and give
 $\mathcal{H}$ the next element in the ordering.\\\\
 After all elements have been assigned,first evenly parition  
