@@ -35,6 +35,30 @@ In this situation, the algorithm will evict page B, since
 it is not used until time 5.  Any other choice will result
 in an earlier eviction. 
 \subsubsection*{Proof by Exchange:}
+Let $Alg$ be the process by which the above algorithm operates.
+Assume there exists an input $I$ such that $Alg(I)$ is 
+incorrect.  Let $Opt(I)$ be the optimal result for $I$
+that agrees with the greatest number of steps with $Alg(I)$.
+$Alg(I)$ and $Opt(I)$ must have a first point of disagreement.
+Label this time $t_i$.\\\\
+At time $i$, $Alg(I)$ must have evicted some page $u$ and 
+$Opt(I)$ has some page $v$ evicted.  Since $Alg(I)$ always
+picks the page that will be used furthest in the future,
+the next time page $u$ will be used must be further into
+the future than the next time page $v$ is used.  Let these
+times be respectively $t_u$ and $t_v$.\\\\
+Since $Alg(I)$ and $Opt(I)$ both agreed upto time $t_i$,
+pages $u$ and $v$ must be in the fast memory of $Opt(I)$
+at $t_i$.  Therefore, define $Opt'(I)$ as $Opt(I)$ except
+at time $t_i$ evict page $u$ instead of $v$.\\\\
+To show that $Opt'(I)$ is at least as optimal as $Opt(I)$     
+it needs to be recognized that since $t_u > t_v$, page $v$
+will have to be brought back into memory at least $1$ more
+time before page $u$ is brought back into memory.\\\\
+Since $Opt'(I)$ is at least as optimal as $Opt(I)$ and 
+agrees with $Alg(I)$ for $1$ more step a contradiction has
+be reached.  Therefore, there is not input for which $Alg$
+is incorrect.   
 \subsection*{Problem 17:}
 A greedy algorithm that will determine if there is enough
 information available to fairly partition the goods is as 
