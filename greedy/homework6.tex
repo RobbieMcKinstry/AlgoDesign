@@ -105,9 +105,38 @@ must have a first point of disagreement.  Label this step $s_i$.\\\\
 At $s_i$, $Alg(I)$ must have given a different pair of goods to
 $\mathcal{H}$ and $\mathcal{W}$ than $Opt(I)$.  This could mean that
 $Alg(I)$ respectiely gave $\mathcal{H}$ and $\mathcal{W}$ $G_a,\ G_b$      
-whereas $Opt(I)$ gave $G_c,\ G_d$.
-%Have to consider the case where they have alternating patterns or 
-%balanced partitions.
+whereas $Opt(I)$ gave $G_c,\ G_d$.  However, since $Alg$ attempts
+to assign the maximal element at each step to $\mathcal{H}$ and 
+$\mathcal{W}$ and the agreement of $Alg(I)$ and $Opt(I)$ upto 
+step $s_i$, the items $G_a,\ G_b$ must be assigned in $Opt(I)$
+at a step, $s_j$, after $s_i$.  As a result, define $Opt'(I)$
+as $Opt(I)$ except at $s_i$ assign $G_a$ and $G_b$ to the
+same lists as $Alg(I)$ and move the items originally assigned
+in $Opt(I)$ at $s_i$ to $s_j$.\\\\
+To check that $Opt'(I)$ is at least as optimal as $Opt(I)$,
+the case in which $Opt(I)$ determines that there is enough
+information to partition the goods and the case in which it
+finds the information insufficient need to be considered 
+separately.  In the first case, the condition for enough
+information requires the sequence of assigned goods and
+unassigned goods follow an alternating pattern.  Since 
+$Alg(I)$ and $Opt(I)$ agreed until step $s_i$ alternation
+must have already started and to continue, $G_a,\ G_b$ and 
+$G_c,\ G_d$ must have been in alternating positions.  Exchanging
+these values therefore does not change the pattern, giving
+the same result.\\\\    
+In the case that $Opt(I)$ find the ordering information
+insufficient to fairly partition the goods, there will
+not be any pattern to the elements assigned to $\mathcal{H}$
+and $\mathcal{W}$.  Since the elements assigned by $Opt(I)$ at
+$s_i$ are not the maximal elements available, swaping $G_a,\ G_b$
+instead of $G_c,\ G_b$, will not change the patterning since
+the elements are ordered.  As a result, $Opt'(I)$ will also
+conclude that there is not enough information available.\\\\
+Since in both cases $Opt'(I)$ is at least as optimal as $Opt(I)$
+and agrees with $Alg(I)$ for one more step than $Opt(I)$, a 
+contradiction has been reached.  Therefore there does not exist 
+an input for which $Alg(I)$ is incorrect.   
 \section*{Dynamic Programming}
 \subsection*{Problem 2:}
 The longest common subsequence between the three can be
