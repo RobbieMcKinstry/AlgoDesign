@@ -21,6 +21,8 @@
 
 \subsection*{Problem 17:}
 
+
+
 \section*{Dynamic Programming}
 \subsection*{Problem 2:}
 The longest common subsequence between the three can be
@@ -37,7 +39,11 @@ S_B = B_1, B_2, B_3,\dots,B_{j-1},B_j
 \[
 S_C = C_1, C_2, C_3,\dots,C_{k-1},C_k
 \]
-%Insert sentence here 
+Reading right to left, the first letter common to each string will
+be the last letter in the longest common subsequence.  As a result,
+once this letter is found, problem can be redefined in terms of the 
+shorter substrings formed by ignoring the first common point and 
+all suceeding letters.\\\\
 This analysis leads to the following recursive algorithm:\\\\
 \begin{algorithm}[H]
 \SetKw{Func}{Function:}
@@ -60,53 +66,38 @@ Although this algorithm produces the longest common subsequence for
 three given strings, it runs in exponential time due to the numerous
 recursive calls that operate on a problem of only $1$ letter smaller.\\\\
 By moving to an array based solution and changing the recursive calls 
-to array look-ups, a polynomial runtime algorithm can be developed.
-%\\\\$Array = LCS$
-%\begin{algorithmic}[H]
-%\For{$i=0$ to $len(A)$}
-%$LCS[i][0][0]=0$
-%\EndFor
-%\For{$j=0$ to $len(B)$}
-%$LCS[0][j][0]=0$
-%\EndFor
-%\For{$k=0$ to $len(C)$}
-%$LCS[0][0][k]=0$
-%\EndFor
-%\\\\
-%\For{$i=0$ to $len(A)$}
-%\For{$j=0$ to $len(B)$}
-%\For{$k=0$ to $len(C)$}
-%
-%\If{$A_i\equiv B_j\equiv C_k$}
-%    \State $LCS[i][j][k] = LCS[i-1][j-1][k-1] + 1$
-%\Else 
-%    \If{$(A_i\equiv B_j)\neq C_k$}
-%        \State$LCS[i][j][k]=max($
-%        \[[LCS[i-1][j-1][k],\]
-%        \[LCS[i][j][k-1])\]
-%    \Else
-%        \If{$(A_i\equiv C_k)\neq B_j$}
-%            \State$LCS[i][j][k]=max($
-%            \[LCS[i-1][j][k-1],\]
-%            \[LCS[i][j-1][k])\]
-%        \Else
-%            \If{$A_i\neq (B_j\equiv C_k)$}
-%                \State$LCS[i][j][k]= max($
-%                \[LCS(i,\ j-1,\ k-1),\]
-%                \[ LCS(i-1,\ j,\ k))\]
-%            \Else
-%                % A_i\neq B_j\neq C_k)
-%                \State $LCS[i][j][k]=max($
-%                \[LCS(i,\ j-1,\ k-1),\]
-%                \[LCS(i-1,\ j,\ k-1),\]
-%                \[LCS(i-1,\ j-1,\ k))\]
-%            \EndIf
-%        \EndIf
-%    \EndIf
-%\EndIf
-%\EndFor
-%\EndFor
-%\EndFor
-%\end{algorithmic}
-
+to array look-ups, a polynomial runtime algorithm can be developed.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Init}{Initialization:}
+\SetKw{Calc}{Array Calculations:}
+\SetKw{Arr}{Array$[\ ][\ ][\ ]$}
+\Func{Array LCS\\}
+\Inp{$string\ A$, $String\ B$, $String\ C$}\\ 
+\Init\\
+\Arr{LCS}\\
+\For{$i\leftarrow 0$ to $len(A)$}
+{$LCS[i][0][0] = 0$}
+\For{$j\leftarrow 0$ to $len(B)$}
+{$LCS[0][j][0] = 0$}
+\For{$k\leftarrow 0$ to $len(C)$}
+{$LCS[0][0][k] = 0$}
+\Calc\\
+\For{$i\leftarrow 0$ to $len(A)$}
+{\For{$j\leftarrow 0$ to $len(B)$}
+{\For{$k\leftarrow 0$ to $len(C)$}
+{\uIf{$A_i\equiv B_j\equiv C_k$}
+{$LCS[i][j][k] = LCS[i-1][j-1][k-1] + 1$}
+\uElseIf{$(A_i\equiv B_j)\neq C_k$}
+{$LCS[i][j][k]=\max(LCS[i-1][j-1][k],\ LCS[i][j][k-1])$}
+\uElseIf{$(A_i\equiv C_k)\neq B_j$}
+{$\max(LCS[i][j][k]=LCS[i-1][j][k-1],\ LCS[i][j-1][k])$}
+\uElseIf{$A_i\neq (B_j\equiv C_k)$}
+{$LCS[i][j][k] = \max(LCS[i][j-1][k-1],\ LCS[i-1][j],[k])$}
+\Else{$LCS[i][j][k] = \max(LCS[i][j-1][k-1]$,\\$LCS[i-1][j][k-1],\ LCS[i-1][j-1][k])$}
+}
+}
+}
+\end{algorithm}
 \end{document}
