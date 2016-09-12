@@ -3,8 +3,6 @@
 \usepackage{tikz}
 \usetikzlibrary{trees}
 \usepackage[]{algorithm2e}
-%\usepackage{algpseudocode}
-%\usepackage{algorithmicx}
 \usepackage{amsmath}
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{O}\bigl(#1\bigr)}}
 
@@ -20,9 +18,43 @@
 \subsection*{Problem 7:}
 
 \subsection*{Problem 17:}
-
-
-
+A greedy algorithm that will determine if there is enough
+information available to fairly partition the goods is as 
+follows:\\\\
+Given a set of goods $\mathcal{G}={G_1,\ G_2,\dots,G_n}$,
+and two orderings on this set, $\mathcal{H}=G_a > G_b >
+\dots > G_n$ and $\mathcal{W}=G_i > G_k > \dots > G_m$,
+partition the goods by initially giving $\mathcal{W}$ and 
+$\mathcal{H}$ their maximal elements.
+Remove the element given to the opposing list from each list.
+If this is not possible
+because the maximal elements for both $\mathcal{W}$ and
+$\mathcal{H}$ are the same, conclude \textit{that there is not
+enough information guarantee a fair partitioning}.\\\\  
+While there are elements in $\mathcal{G}$, continue
+giving $\mathcal{W}$ and $\mathcal{H}$ their second
+most desired element.  Ties are broken arbitrarily.  For 
+example, if at a given step both $\mathcal{W}$ and $\mathcal{H}$
+want $G_c$, arbitrarily give $G_C$ to $\mathcal{W}$ and
+cross it off in the ordering for $\mathcal{H}$ and give
+$\mathcal{H}$ the next element in the ordering.\\\\
+After all elements have been assigned,first evenly parition  
+$\mathcal{H}$ and $\mathcal{W}$ into two equal portions.
+If this is not possible because $|\mathcal{G}|$ is odd,
+conclude that \textit{there is not enough information available
+to fairly partition the goods}.  If the upper half of  
+$\mathcal{H}$ and $\mathcal{W}$ is full, conclude that 
+\textit{there is enough information to fairly partition}.\\\\
+If the upper half of $\mathcal{H}$ or $\mathcal{W}$ are
+not full, begin iterating through both orderings and 
+check to see that items given alternate with items not given.
+If an assignment was reach such that elements from $\mathcal{G}$
+can be given to $\mathcal{H}$ and $\mathcal{W}$ such that both
+pass at least one test, conclude that \textit{there is enough
+information to fairly partition the goods}.  Otherwise, conclude
+that \textit{there is not enough information available}.
+\subsubsection*{Proof by Exchange:}
+This algorithm can be    
 \section*{Dynamic Programming}
 \subsection*{Problem 2:}
 The longest common subsequence between the three can be
