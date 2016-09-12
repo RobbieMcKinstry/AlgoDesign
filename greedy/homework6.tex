@@ -53,8 +53,15 @@ at $t_i$.  Therefore, define $Opt'(I)$ as $Opt(I)$ except
 at time $t_i$ evict page $u$ instead of $v$.\\\\
 To show that $Opt'(I)$ is at least as optimal as $Opt(I)$     
 it needs to be recognized that since $t_u > t_v$, page $v$
-will have to be brought back into memory at least $1$ more
-time before page $u$ is brought back into memory.\\\\
+will have to be brought back into memory at least as many
+times as page $u$ before
+page $u$ is brought back into memory.\\\\
+Additionally, due to the fact that the pages in $Opt'(I)$
+and $Opt(I)$ are the same except for the page needed at
+$t_u$ is repalced with that at $t_v$, $Opt'(I)$ will not
+evict a page that $Opt(I)$ will not evict until at least
+after time $t_u$.  This means that there will be no
+more evictions in $Opt'(I)$ than in $Opt(I)$.   
 Since $Opt'(I)$ is at least as optimal as $Opt(I)$ and 
 agrees with $Alg(I)$ for $1$ more step a contradiction has
 be reached.  Therefore, there is not input for which $Alg$
@@ -72,7 +79,7 @@ Remove the element given to the opposing list from each list.
 If this is not possible
 because the maximal elements for both $\mathcal{W}$ and
 $\mathcal{H}$ are the same, conclude \textit{that there is not
-enough information guarantee a fair partitioning}.\\\\  
+enough information to guarantee a fair partitioning}.\\\\  
 While there are elements in $\mathcal{G}$, continue
 giving $\mathcal{W}$ and $\mathcal{H}$ their second
 most desired element.  Ties are broken arbitrarily.  For 
@@ -93,7 +100,7 @@ check to see that items given alternate with items not given.
 Repeat this process for alternation in groups of $2,\ 3,\dots
 ,\ |\mathcal{G}|/2$.  Every assigned element must belong
 to at least $1$ of the alternating patterns.
-If an assignment was reach such that elements from $\mathcal{G}$
+If an assignment was reached such that elements from $\mathcal{G}$
 can be given to $\mathcal{H}$ and $\mathcal{W}$ such that both
 pass at least one test, conclude that \textit{there is enough
 information to fairly partition the goods}.  Otherwise, conclude
