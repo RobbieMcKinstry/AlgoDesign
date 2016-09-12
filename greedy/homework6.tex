@@ -96,7 +96,18 @@ pass at least one test, conclude that \textit{there is enough
 information to fairly partition the goods}.  Otherwise, conclude
 that \textit{there is not enough information available}.
 \subsubsection*{Proof by Exchange:}
-This algorithm can be    
+This algorithm can be shown to be correct by an exchange argument.
+Let $Alg$ be the process by which the above algorithm operates.
+Assume there exists some input $I$ such that $Alg(I)$ is incorrect.
+Let $Opt(I)$ be the optimal output for input $I$ that aggrees with
+$Alg(I)$ for the most number of steps.  Therefore, $Alg(I)$ and $Opt(I)$
+must have a first point of disagreement.  Label this step $s_i$.\\\\
+At $s_i$, $Alg(I)$ must have given a different pair of goods to
+$\mathcal{H}$ and $\mathcal{W}$ than $Opt(I)$.  This could mean that
+$Alg(I)$ respectiely gave $\mathcal{H}$ and $\mathcal{W}$ $G_a,\ G_b$      
+whereas $Opt(I)$ gave $G_c,\ G_d$.
+%Have to consider the case where they have alternating patterns or 
+%balanced partitions.
 \section*{Dynamic Programming}
 \subsection*{Problem 2:}
 The longest common subsequence between the three can be
