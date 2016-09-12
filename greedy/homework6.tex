@@ -90,6 +90,9 @@ $\mathcal{H}$ and $\mathcal{W}$ is full, conclude that
 If the upper half of $\mathcal{H}$ or $\mathcal{W}$ are
 not full, begin iterating through both orderings and 
 check to see that items given alternate with items not given.
+Repeat this process for alternation in groups of $2,\ 3,\dots
+,\ |\mathcal{G}|/2$.  Every assigned element must belong
+to at least $1$ of the alternating patterns.
 If an assignment was reach such that elements from $\mathcal{G}$
 can be given to $\mathcal{H}$ and $\mathcal{W}$ such that both
 pass at least one test, conclude that \textit{there is enough
@@ -104,10 +107,10 @@ $Alg(I)$ for the most number of steps.  Therefore, $Alg(I)$ and $Opt(I)$
 must have a first point of disagreement.  Label this step $s_i$.\\\\
 At $s_i$, $Alg(I)$ must have given a different pair of goods to
 $\mathcal{H}$ and $\mathcal{W}$ than $Opt(I)$.  This could mean that
-$Alg(I)$ respectiely gave $\mathcal{H}$ and $\mathcal{W}$ $G_a,\ G_b$      
+$Alg(I)$ respectively gave $\mathcal{H}$ and $\mathcal{W}$ $G_a,\ G_b$      
 whereas $Opt(I)$ gave $G_c,\ G_d$.  However, since $Alg$ attempts
 to assign the maximal element at each step to $\mathcal{H}$ and 
-$\mathcal{W}$ and the agreement of $Alg(I)$ and $Opt(I)$ upto 
+$\mathcal{W}$ and since $Alg(I)$ and $Opt(I)$ agree upto 
 step $s_i$, the items $G_a,\ G_b$ must be assigned in $Opt(I)$
 at a step, $s_j$, after $s_i$.  As a result, define $Opt'(I)$
 as $Opt(I)$ except at $s_i$ assign $G_a$ and $G_b$ to the
@@ -125,9 +128,10 @@ must have already started and to continue, $G_a,\ G_b$ and
 $G_c,\ G_d$ must have been in alternating positions.  Exchanging
 these values therefore does not change the pattern, giving
 the same result.\\\\    
-In the case that $Opt(I)$ find the ordering information
-insufficient to fairly partition the goods, there will
-not be any pattern to the elements assigned to $\mathcal{H}$
+In the case that $Opt(I)$ finds the ordering information
+insufficient to fairly partition the goods, there will be
+an element that does not belong to any alternating pattern 
+of the elements assigned to $\mathcal{H}$
 and $\mathcal{W}$.  Since the elements assigned by $Opt(I)$ at
 $s_i$ are not the maximal elements available, swaping $G_a,\ G_b$
 instead of $G_c,\ G_b$, will not change the patterning since
@@ -214,4 +218,8 @@ to array look-ups, a polynomial runtime algorithm can be developed.\\\\
 }
 }
 \end{algorithm}
+By tracing backwards from $LCS[len(A)-1][len(B)-1][len(C)-1]$
+following the path of the largest lengths, the \textit{String}
+value of the longest common subsequence can be recovered.
+
 \end{document}
