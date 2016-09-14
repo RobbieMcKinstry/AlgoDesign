@@ -1,0 +1,138 @@
+\documentclass[12pt]{article}
+
+\usepackage{tikz}
+\usepackage[]{algorithm2e}
+\usepackage{float}
+\begin{document}
+\title{Homework 6}
+\author{Robbie McKinstry, Jack McQuown, Cyrus Ramavarapu}
+\renewcommand{\today}{13 September 2016}
+\renewcommand{\baselinestretch}{1.5}
+
+\maketitle
+
+\section*{Problem 3: }
+The shortest common super-sequence between A and B can be defined recursively by considering
+the last letter of A and B and concatenating one of the letters onto a new string C depending on if the letters are equal or not.
+The algorithm will read A and B from right to left, and if the letters are equal it will concatenate that letter to the string C. If the letters are not equal, it will recursively form the String C using both letters and choose the string C that has the shortest length.\\\\
+This can be expressed in the following algorithm\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input: }
+\Func{super\\}
+\Inp{$int\ i$, $int\ j$, $String\ A$, $String\ B$}\\
+\uIf{$A[i]\equiv B[j]$}
+{$return\ super(i - 1, j - 1, A, B)$}
+\Else{$return \min(len(super(i - 1, j)\cdot A[i]), len(super(i, j - 1)\cdot B[j]))$}
+\end{algorithm}
+Although this algorithm produces the shortest common super-sequence for the given strings A and B, it runs in exponential time because of the recursive calls that only decrease the problem size by 1.\\\\
+By moving to an array based, iterative solution and changing the recursive calls to array look-ups, a polynomial time algorithm can be developed.\\\\
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input: }
+\SetKw{Init}{Initialization: }
+\SetKw{Calc}{Array Calculations:}
+\SetKw{Arr}{Array$[\ ][\ ][\ ]$}
+\Func{super\\}
+{Inp}{$int\ i$, $int\ j$, $String\ A$, $String\ B$}\\
+\Init\\
+\Arr{super}\\
+\For{$i\leftarrow 0$ to $len(A)$}
+{$super[i][0] = i$}
+\For{$j\leftarrow 0$ to $len(B)$}
+{$super[0][j] = j$}
+\Calc\\
+\For{$i\leftarrow 0$ to $len(A)$}
+{\For{$j\leftarrow 0$ to $len(B)$}
+{\uIf{$A[i] \equiv B[j]$}
+{$super[i][j] = super[i - 1][j - 1] + 1$}
+\Else{$super[i][j] = \min(super[i - 1][j], super[i][j - 1]) + 1$}
+}
+}
+\end{algorithm}
+\subsection*{(a)}
+Below is the table that the SCS algorithm constructs for inputs A = zxyyzz, and B = zzyxzy\\
+\begin{table}[H]
+\centering
+\caption{SCS Table}
+\label{my-label}
+\begin{tabular}{l|lllllll}
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+0 & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\
+1 & 1 & 1 & 2 & 3 & 4 & 5 & 6 \\
+2 & 2 & 2 & 3 & 4 & 5 & 5 & 6 \\
+3 & 3 & 3 & 4 & 4 & 5 & 6 & 7 \\
+4 & 4 & 4 & 4 & 5 & 6 & 7 & 8 \\
+5 & 5 & 5 & 5 & 6 & 7 & 7 & 8 \\
+6 & 6 & 6 & 6 & 6 & 7 & 8 & 9
+\end{tabular}
+\end{table}
+
+\subsection*{(b)}
+The length of the shortest common super-sequence can be found in the bottom right of the table, or index (6,6)\\
+
+\subsection*{(c)}
+\begin{table}[H]
+\centering
+\caption{SCS Table}
+\label{my-label}
+\begin{tabular}{l|lllllll}
+  & 0 & 1 & 2 & 3 & 4 & 5 & 6 \\ \hline
+0 &   &   &   &   &   &   &   \\
+1 &   &  &   &   &   &   &   \\
+2 &   &  {$\nwarrow$} &  {$\leftarrow$} &   &   &   &   \\
+3 &   &   &   &  {$\nwarrow$} &   &   &   \\
+4 &   &   &   & {$\uparrow$}  & {$\leftarrow$}  &   &   \\
+5 &   &   &   &   &  & {$\nwarrow$}  &   \\
+6 &   &   &   &   &   & {$\uparrow$}  &  {$\leftarrow$}
+\end{tabular}
+\end{table}
+The way to compute the shortest common super-sequence from the table is to follow the arrows above and record the letter at the index that the arrow points to. When A = zxyyzz and B = zzyxzy, the first letter to record is C = z from {$A_6$}. Then record the letter y from {$B_6$}, so that C = yz. Then move to (5,5) in the table where we have a match, {$A_5 \equiv B_5$}, and record the letter z, C = zyz. Then move to (4,4) in the table where no match occurs so we record the letter x from {$B_4$} and y from {$A_4$}, where now C = yxzyz. Then move to (3,3) in the table where we have another match, {$A_3 \equiv B_3$}, and record the letter y, C = yyxzyz. Then continue following the arrows and recording the appropriate letters from A and B, and then adding them to C.
+
+
+\section*{Problem 4: }
+In order to find the cheapest total cost to convert a string A to a string B, we can define a recursive solution that will attempt each option and choose the string of options with the minimum total cost. This recursive solution will read the strings A and B from right to left, and move farther down the string according to the action that is performed.\\\\
+This is expressed in the following algorithm\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input: }
+\Func{diff\\}
+\Inp{$int\ i$, $int\ j$, $String\ A$, $String\ B$}\\
+\uIf{$A[i] \equiv B[j]$}
+{$return\ \mathit{diff}(i - 1, j - 1)$}
+\Else{$opt_1 = \mathit{diff}(i - 1, j, A, B) + 3$ 
+\\$opt_2 = \mathit{diff}(i, j - 1, A, B) + 4$ 
+\\$opt_3 = \mathit{diff}(i - 1, j - 1, A, B) + 5$ 
+\\$return \min(opt_1, opt_2, opt_3)$}
+\end{algorithm}
+This algorithm will produce the shortest common super-sequence for two given strings, however it runs in exponential time due to the recursive calls that operate on a problem of only 1 or two letters smaller.\\\\
+Moving to an array based, iterative solution and changing the recursive function calls to array look-ups can change this to a polynomial time algorithm.\\\\
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input: }
+\SetKw{Init}{Initialization: }
+\SetKw{Calc}{Array Calculations:}
+\SetKw{Arr}{Array$[\ ][\ ][\ ]$}
+\Func{Array diff\\}
+\Inp{$int\ i$, $int\ j$, $String\ A$, $String\ B$}\\
+\Init\\
+\Arr{diff}\\
+\For{$i\leftarrow 0$ to $len(A)$}
+{$\mathit{diff}[i][0] = 0$}
+\For{$j\leftarrow 0$ to $len(B)$}
+{$\mathit{diff}[0][j] = 0$}
+\Calc\\
+\For{$i\leftarrow 0$ to $len(A)$}
+{\For{$j\leftarrow 0$ to $len(B)$}
+{\uIf{$A[i] \equiv B[j]$}
+{$\mathit{diff}[i][j] = \mathit{diff}[i - 1][j - 1]$}
+\Else{$\mathit{diff}[i][j] = \min(\mathit{diff}[ji - 1][j] + 3,$
+\\$\mathit{diff}[i][j - 1] + 4,$
+\\$\mathit{diff}[i - 1][j - 1] + 5)$}
+}
+}
+\end{algorithm}
+
+\end{document}
