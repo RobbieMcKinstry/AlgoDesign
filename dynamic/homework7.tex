@@ -3,6 +3,7 @@
 \usepackage{tikz}
 \usepackage[]{algorithm2e}
 \usepackage{pst-node,pst-plot}
+\usepackage{amsmath}
 \usepackage{float}
 \begin{document}
 \title{Homework 6}
@@ -12,6 +13,50 @@
 \maketitle
 
 \section*{Problem 5: }
+Below is the table constructed to show the total weight of the Optimal Binary Search Tree.
+\begin{table}[H]
+\centering
+\caption{Weight}
+\label{my-label}
+\begin{tabular}{l|lllll}
+  & 1   & 2    & 3    & 4    & 5    \\ \hline
+1 & 0.5 & 0.6  & 0.85 & 1.4  & 2.1  \\
+2 &     & 0.05 & 0.2  & 0.55 & 1.05 \\
+3 &     &      & 0.1  & 0.4  & 0.85 \\
+4 &     &      &      & 0.2  & 0.65 \\
+5 &     &      &      &      & 0.25\\
+\end{tabular}
+\end{table}
+Below is the table constructed to show the roots for the Optimal Binary Search Tree.
+\begin{table}[H]
+\centering
+\caption{Roots}
+\label{my-label}
+\begin{tabular}{l|lllll}
+  & 1   & 2    & 3   & 4   & 5    \\ \hline
+1 & 0.5 & 0.5  & 0.5 & 0.5 & 0.5  \\
+2 &     & 0.05 & 0.1 & 0.2 & 0.25 \\
+3 &     &      & 0.1 & 0.2 & 0.25 \\
+4 &     &      &     & 0.2 & 0.25 \\
+5 &     &      &     &     & 0.25
+\end{tabular}
+\end{table}
+In order to recompute the tree from the table of roots, first you have to start in the upper right corner. The upper right corner will be the root for the entire tree. Now to find the next node, find the next value that not the root in the table. In this case it is 0.25, so that will be a child of 0.5 in the right subtree because the key {$k_5 > k_1$}. Next, get 0.2 from the left of 0.25 in the table and use that as a child to 0.25 in the left subtree because the key {$k_5 > k_4$}. Then continue this for the other two keys and the following tree will be constructed.\\ This tree's weight is equal to 0.5(1) + 0.25(2) + 0.2(3) + 0.1(4) + 0.05(5) = 2.25. Which is the value in the upper right corner of the weight table above.\\\\
+\begin{table}[H]
+\centering
+\label{my-label}
+\begin{tabular}{lllllll}
+     &  &     &  & 0.5 &  &      \\
+     &  &     &  &     & {$\searrow$} &      \\
+     &  &     &  &     &  & 0.25 \\
+     &  &     &  &     & {$\swarrow$} &      \\
+     &  &     &  & 0.2 &  &      \\
+     &  &     & {$\swarrow$} &     &  &      \\
+     &  & 0.1 &  &     &  &      \\
+     & {$\swarrow$} &     &  &     &  &      \\
+0.05 &  &     &  &     &  &     
+\end{tabular}
+\end{table}
 \section*{Problem 6: }
 Let $\mathcal{P}$ be an $n$ sided convex polygon with vertex set
 $\mathcal{V}$.  Pick a vertex $v\in\mathcal{V}$ and label it $1$.
@@ -86,5 +131,65 @@ $A[Polygon(i,j+1)]=min(P)$
 \end{algorithm}
 
 \section*{Problem 7: }
+
+Consider the following input array:
+
+\[
+A =
+  \begin{bmatrix}
+    1 & 2 & -2 & 10
+  \end{bmatrix}
+\]
+
+Let $MCS$ be the function that calculates the maximum consecutive subarray of $A$, $A[0, n]$ where $n$ is a parameter to the function. Obviously, $MCS(3)$ will return $3$, taking the values 1 and 2 from index 1 and 2 respectively and not taking the value $-2$. Now, a naive implementation of $MCS(n)$ will have a call site with a call to $MCS(n-1)$, but with the above case, knowing that $MCS(3) = 3$ is not enough to know that $MCS(4)$ must be 9. The naive implementation, which has no knowledge that index $n-1$ was not taken, requiring the recombination step to be slightly more sophisticated that simply adding the value at the current index with the value returned from the recursive call site.
+
+To strengthen the inductive hypothesis, we require that $MCS$ not only return the maximum sum of the contiguous subarray elements, but also the index of the final element selected as a member of the contiguous subarray.
+
+Thus, our function signature is now
+\[
+MCS(n) \to j, max
+\]
+
+To implement our algorithm, we first perform a preprocessing step which calculates the sum from an index to the end of the array in linear time. \\
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{An empty, global array B of length $n$}
+\BlankLine
+
+\For{$i \leftarrow n $ \KwTo 0}{
+	\If{ i == n }{
+		$B[n] \leftarrow 0$ \\
+		continue
+	} 
+	$ B[n] \leftarrow B[n-1] + A[n]$
+}
+\end{algorithm}
+
+This allows the $MCS$ algorithm to look up the sum of the values from a single index to the end of the array in constant time.
+Now, we implement $MCS$ as follows... \\
+
+\begin{algorithm}[H]
+\SetKwInOut{Input}{input}\SetKwInOut{Output}{output}
+\Input{$n$}
+\Output{$j, max$}
+\BlankLine
+	\If{ n == 0 }{
+		return 0, 0
+	} 
+	$k, max = MCS(n-1)$
+	
+	\If{$Sum(j+1, n) \mathrel{>} 0 $}{
+		$return \text{ } n, max \mathrel{+} Sum(j+1, n)$
+	}
+	\If{$max < A[n]$}{
+		$return \text{ } n, n$
+	}
+	$return \text{ } j, max$
+\end{algorithm}
+
+As you can see, this operations acts in linear time, reducing the size of $n$ by 1 until reaching a base case, while only producing a single recursive function call. We still have to define $Sum$, which also acts in linear time. $Sum(i, j)$ is the function that calculates the sum of the values $A[i...j]$ inclusively. To calculate the sum, $Sum$ simply returns the difference between $B[j]$ and $B[i]$, a constant time operation.
+
+Unlike the other problems we did in class, there are no overlapping subproblems that need to be cached for this solution to be efficient. Thus, there is no need to convert the above algorithm to an iterative, array based approach.
 
 \end{document}
