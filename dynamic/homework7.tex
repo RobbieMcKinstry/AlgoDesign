@@ -101,6 +101,7 @@ The triangulation process can be improved significantly by moving to an
 array based as follows.\\\\
 \begin{algorithm}[H]
 \SetKw{Func}{Function:}
+\SetKw{Ret}{Rerturn:}
 \SetKw{Inp}{Input:}
 \SetKw{Glob}{Globals:}
 \SetKw{Def}{Define:}
@@ -110,24 +111,27 @@ array based as follows.\\\\
 \For{$i\leftarrow 1$ to $n$}
 {\For{$j\leftarrow 1$ to $n$}
 {
-\If{$i-j<2$}{$A[i][j]=0$}
+\If{$i-j<2$}{$A[i][i][i]=0$}
 }
-\If{$i-j=2$}{$A[i][j]=Perimeter(i,j)$}
+\If{$i-j=1$}{$A[i][j][0]=0$}
 }
 \tcc{calculation}
 \Def{$P[\ ]$}\\
-\For{$i\leftarrow 1$ to $|\mathcal{V}|-1$}
-{\tcc{[a,b] means the line from vertex a to vertex b}
-\Def{$e:=[i,i+1]$}\\
-\For{$j\leftarrow |v|$ to $1$}
+\For{$i\leftarrow 1$ to $n$}
+{\ForEach{$j$ not $i,i+1$}
 {
-\Def{$P_1:=Polygon(i,j)$}\\
-\Def{$P_2:=Polygon(i+1,j)$}\\
-\Def{$P_3:=Polygon(i,i+1,j)$}\\
-$P.append(A(P1)+A(P2)+A(P3)-dist(i,j)-dist(i+1,j))$
-}    
-$A[Polygon(i,j+1)]=min(P)$
+$A[i][(i+1)\ mod\ n][j] = Perimeter(i,i+1,j)$
 }
+}
+\For{$i\leftarrow 1$ to $n$}
+{
+    \For{$j\leftarrow i+2$ to $n$}
+    {
+        $P[i][j] = P[i][j-1]+A[i][i+1][j]$
+    }
+}
+\Ret{$min(P[n]$}
+
 \end{algorithm}
 
 \section*{Problem 7: }
