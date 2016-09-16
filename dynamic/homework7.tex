@@ -26,14 +26,14 @@ define recursively as follows.\\\\
 \SetKw{Inp}{Input:}
 \SetKw{Glob}{Globals:}
 \SetKw{Def}{Define:}
-\Func{$N2Trig$}\\
+\Func{$N\_2Trig$}\\
 \Glob{$Polygon\ \mathcal{P}$}\\
 \Inp{$Polygon\ P$}\\
 \Def{$\mathcal{V}:=Numbered\ vertices\ of\ P$}\\
 \uIf{$|\mathcal{V}|=3$}
 {$return\ Perimeter(P)$}
 \Else{
-\Def{$P[\ ]$}
+\Def{$P[\ ]$}\\
 \For{$i\leftarrow 1$ to $|\mathcal{V}|-1$}
 {\tcc{[a,b] means the line from vertex a to vertex b}
 \Def{$e:=[i,i+1]$}\\
@@ -44,10 +44,41 @@ define recursively as follows.\\\\
 \Def{$P_a:=Polygon(i,v)$}\\
 \Def{$P_b:=Polygon(i+1,v)$}\\
 \Def{$P_3:=Polygon(i,i+1,v)$}\\
-$P.append(N2Trig(P1)+N2Trig(P2)+N2Trig(P3)-dist(i,v)-dist(i+1,v)$
+$P.append(N2Trig(P1)+N2Trig(P2)+N2Trig(P3)-dist(i,v)-dist(i+1,v))$
 }    
 }    
 return $min(P)$    
+}
+\end{algorithm}
+Although this algorithm produces a minimum perimeter $n-2$ triangulation of
+polygon $\mathcal{P}$, it runs in exponential time due to the recursive calls
+placed within $2$ nested loops.\\\\
+The triangulation process can be improved significantly by moving to an
+array based as follows.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\Func{$Dyn\_N_2Trig$}\\
+\Inp{$Polygon\ P$}\\
+\Glob{$Polygon\ \mathcal{P}$}\\
+\Def{$\mathcal{V}:=Numbered\ vertices\ of\ P$}\\
+\tcc{Initialization}
+\If{$|\mathcal{V}|<3$}
+{$return\ 0$}
+\If{$|\mathcal{V}|=3$}
+{$return\ Perimeter({V})$}
+\tcc{calculation}
+\Def{$P[\ ]$}\\
+\For{$i\leftarrow 1$ to $|\mathcal{V}|-1$}
+{\tcc{[a,b] means the line from vertex a to vertex b}
+\Def{$e:=[i,i+1]$}\\
+\ForEach{$v$ not $i$,$i+1$ and $v\leftarrow |v|$ to $1$}
+{
+$P.append(A[i,v]+A[i+1,v]+Perimeter(i,i+1,v)-dist(i,v)-dist(i+1,v))$
+}    
+$A[i,j]=min(P)$
 }
 \end{algorithm}
 \end{document}
