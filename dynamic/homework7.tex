@@ -11,7 +11,52 @@
 \maketitle
 
 \section*{Problem 5: }
+Below is the table constructed to show the total weight of the Optimal Binary Search Tree.
+\begin{table}[H]
+\centering
+\caption{Weight}
+\label{my-label}
+\begin{tabular}{l|lllll}
+  & 1   & 2    & 3    & 4    & 5    \\ \hline
+1 & 0.5 & 0.6  & 0.85 & 1.4  & 2.1  \\
+2 &     & 0.05 & 0.2  & 0.55 & 1.05 \\
+3 &     &      & 0.1  & 0.4  & 0.85 \\
+4 &     &      &      & 0.2  & 0.65 \\
+5 &     &      &      &      & 0.25\\
+\end{tabular}
+\end{table}
+Below is the table constructed to show the roots for the Optimal Binary Search Tree.
+\begin{table}[H]
+\centering
+\caption{Roots}
+\label{my-label}
+\begin{tabular}{l|lllll}
+  & 1   & 2    & 3   & 4   & 5    \\ \hline
+1 & 0.5 & 0.5  & 0.5 & 0.5 & 0.5  \\
+2 &     & 0.05 & 0.1 & 0.2 & 0.25 \\
+3 &     &      & 0.1 & 0.2 & 0.25 \\
+4 &     &      &     & 0.2 & 0.25 \\
+5 &     &      &     &     & 0.25
+\end{tabular}
+\end{table}
+In order to recompute the tree from the table of roots, first you have to start in the upper right corner. The upper right corner will be the root for the entire tree. Now to find the next node, find the next value that not the root in the table. In this case it is 0.25, so that will be a child of 0.5 in the right subtree because the key {$k_5 > k_1$}. Next, get 0.2 from the left of 0.25 in the table and use that as a child to 0.25 in the left subtree because the key {$k_5 > k_4$}. Then continue this for the other two keys and the following tree will be constructed.\\ This tree's weight is equal to 0.5(1) + 0.25(2) + 0.2(3) + 0.1(4) + 0.05(5) = 2.25. Which is the value in the upper right corner of the weight table above.\\\\
+\begin{table}[H]
+\centering
+\label{my-label}
+\begin{tabular}{lllllll}
+     &  &     &  & 0.5 &  &      \\
+     &  &     &  &     & {$\searrow$} &      \\
+     &  &     &  &     &  & 0.25 \\
+     &  &     &  &     & {$\swarrow$} &      \\
+     &  &     &  & 0.2 &  &      \\
+     &  &     & {$\swarrow$} &     &  &      \\
+     &  & 0.1 &  &     &  &      \\
+     & {$\swarrow$} &     &  &     &  &      \\
+0.05 &  &     &  &     &  &     
+\end{tabular}
+\end{table}
 \section*{Problem 6: }
+Hey friends
 \section*{Problem 7: }
 
 \end{document}
