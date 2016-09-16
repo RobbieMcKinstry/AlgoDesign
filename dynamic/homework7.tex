@@ -2,6 +2,7 @@
 
 \usepackage{tikz}
 \usepackage[]{algorithm2e}
+\usepackage{pst-node,pst-plot}
 \usepackage{float}
 \begin{document}
 \title{Homework 6}
@@ -13,5 +14,40 @@
 \section*{Problem 5: }
 \section*{Problem 6: }
 \section*{Problem 7: }
-
+Let $\mathcal{P}$ be an $n$ sided convex polygon with vertex set
+$\mathcal{V}$.  Pick a vertex $v\in\mathcal{V}$ and label it $1$.
+In a clockwise manner starting from the vertex labeled $1$, continue
+labeling the vertices $2,3,\dots,n$.\\\\
+%Try to insert a figure here
+The minimum permimeter $n-2$ triangulation of $\mathcal{P}$ can be
+define recursively as follows.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\Func{$N2Trig$}\\
+\Glob{$Polygon\ \mathcal{P}$}\\
+\Inp{$Polygon\ P$}\\
+\Def{$\mathcal{V}:=Numbered\ vertices\ of\ P$}\\
+\uIf{$|\mathcal{V}|=3$}
+{$return\ Perimeter(P)$}
+\Else{
+\Def{$P[\ ]$}
+\For{$i\leftarrow 1$ to $|\mathcal{V}|-1$}
+{\tcc{[a,b] means the line from vertex a to vertex b}
+\Def{$e:=[i,i+1]$}\\
+\ForEach{$v$ not $i$,$i+1$}
+{
+\tcc{Polygon(a,b) constructs polygon with edge a,b embedded on $\mathcal{P}$}
+\tcc{Polygon(x,y,z) constructs a polygon with vertices x,y,z}
+\Def{$P_a:=Polygon(i,v)$}\\
+\Def{$P_b:=Polygon(i+1,v)$}\\
+\Def{$P_3:=Polygon(i,i+1,v)$}\\
+$P.append(N2Trig(P1)+N2Trig(P2)+N2Trig(P3)-dist(i,v)-dist(i+1,v)$
+}    
+}    
+return $min(P)$    
+}
+\end{algorithm}
 \end{document}
