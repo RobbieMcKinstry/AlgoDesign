@@ -112,11 +112,16 @@ Now, we formalize our iterative specification of the algorithm below.
 			\For{$i \leftarrow start$ to $end$}{
 				Let $left = A[start][i]$
 				Let $right = A[i+1][end]$
-				
+
+				\tcc{Recombine the left and right subtrees, which are AVL trees with the selected root.}				
 				\ForEach{$height, weight \leftarrow left$}{
+					\tcc{The combined subtree can only be an AVL tree if the heights differ by 1 or less.}
 					\If{$right[height] != empty $}{
+						\tcc{If the subtree has been cached by a different loop iteration,}
+						\tcc{then take whichever tree is least weighted}
 						$A[start][end][height+1] = min(left[height] + right[height], A[start][end][height+1])$
 					}
+					
 					\If{$right[height+1] != empty $}{
 						$A[start][end][height+2] = min(left[height] + right[height+1], A[start][end][height+2])$
 					}
