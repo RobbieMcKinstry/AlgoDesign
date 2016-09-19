@@ -1,7 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{tikz}
-\usepackage[]{algorithm2e}
+\usepackage[ruled, vlined]{algorithm2e}
 \usepackage{pst-node,pst-plot}
 \usepackage{amsmath}
 \usepackage{float}
@@ -14,5 +14,57 @@
 
 \section*{Problem 8: }
 \section*{Problem 9: }
+
+To find the minimum AVL tree, first note certain properties of the tree:
+
+\begin{enumerate}
+	\item In the general case, any key could serve as the root of the tree. This is obvious, because $K_1$ could be used in the case where the tree has only 2 keys (this is also true for $K_n$). Internal nodes can of course be used to create an AVL tree (obvious from looking at most examples of AVL trees).
+	\item Because the problem of minimizing the expected depth of the keys is reducible to weighing each key and minimizing the weights, the whole problem is reducible to finding the best OBST that is also an AVL tree. (\textit{Introduction to Algorithms} by CLRS explains this in more detail). This means we can apply our same weight calculation tricks from the OBST problem to this problem as well.
+\end{enumerate}
+
+Our approach is to find all AVL trees, and then finally take the minimum-valued AVL tree from that set. It operates in cubic space complexity and polynomial time complexity.
+
+We summarize our approach as follows, before giving a specification of the algorithm in more detail:
+
+Because each key can serve as the root of the AVL tree, we iterate over all of the keys, selecting each to serve as that root. Call the selected key $K_i$. This creates two partitions of the remaining keys in the set: $K[1\dots i]$ and $K[i+1 \dots n]$. Recursively calculate all possible AVL trees for each of those sets, storing only the most optimal AVL tree with height $h$ for all $h$ (i.e. do not store duplicate trees. You need not store two trees with the same height but different weights for a given set of keys, instead only the most efficient of those two trees). 
+
+Now, we need to recombine the left and right subtrees with our root node such that the whole subtree is still an AVL tree. Currently, we have stored an array (indexed by height) of weights of the possible AVL trees created on the left, and the same on the right. The recombination is the Cartesian product of the right and left sets, then filtered by removing any ordered pairs that differ in height by more than 1. This can be done in linear time by looping over the left array for $j = 1 \text{ to } i$, and looking in the right array at indices $j-1, j, j+1$, and selecting those non-empty array elements and summing their weights. Finally, you can return the array of weights indexed by height to the caller, and when the call stack is empty, simply take the tree with the minimum weight. Note the degenerate case for this algorithm is when the input is of length 1; simply populate the array with the single weight.
+
+Now, we formalize our iterative specification of the algorithm below.
+
+\begin{algorithm}
+\DontPrintSemicolon
+\KwData{Array $A[n][n][n]$ where $n$ is the size of the input}
+\KwIn{$K_1 \dots K_n$ and $W_1 \dots W_n$}
+\KwOut{The minimum of $A[n][n]$}
+
+\For{$i \leftarrow 1$ to $n$}{
+	$A[i][i] = [ W_i ]$
+}
+\Begin{
+	\For{$start \leftarrow 1$ to $n$}{
+		\For{$end \leftarrow start$ to $1$}{
+			\For{$i \leftarrow start$ to $end$}{
+				Let $left = A[start][i]$
+				Let $right = A[i+1][end]$
+				
+				\ForEach{$height, weight \leftarrow left$}{
+					\If{$right[height] != empty $}{
+						$A[start][end][height+1] = min(left[height] + right[height], A[start][end][height+1])$
+					}
+					\If{$right[height+1] != empty $}{
+						$A[start][end][height+2] = min(left[height] + right[height+1], A[start][end][height+2])$
+					}
+					\If{$right[height-1] != empty $}{
+						$A[start][end][height] = min(left[height] + right[height-1], A[start][end][height])$
+					}
+				}		
+			}
+		}
+	}
+}
+\caption{Optimal AVL Tree \label{AVL}}
+\end{algorithm}
+
 
 \end{document}
