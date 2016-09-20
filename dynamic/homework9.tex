@@ -13,6 +13,40 @@
 \maketitle
 
 \section*{Problem 13: }
+The algorithm in order to solve this problem first requires pruning rules in order to decrease the size of the binary tree that is generated from the subsets of {$v_1$},{\ldots},{$v_n$}.\\\\
+The two pruning rules are:\\\\
+1) If the absolute value of a node v is greater than (L/2), then we can prune that subtree rooted at the node v.\\
+2) If two nodes have the same value and are at the same depth in the binary tree, then we can arbitrarily select one of the nodes and prune the subtree rooted at that node.\\\\
+Below is a line representation of the valid area that a node can occupy in terms of the value it holds.\\
+\begin{picture}(100,100)
+\put(24,60){$-L/2$}
+\put(150,60){$L/2$}
+\put(97,30){$0$}
+\multiput(10,50)(10,0){19}{\line(0,1){5}}
+\thicklines
+\put(40,50){\circle{3}}
+\put(160,50){\circle{3}}
+\put(0,50){\vector(1,0){200}}
+\put (0,50){\vector(-1,0){1}}
+\linethickness{2pt}
+\put(40,50){\line(1,0){120}}
+\end{picture}\\\\
+Now we will derive an iterative, array-based algorithm.\\
+Let A[k, S] hold the bitstring of the subset k with sum S, where a 1 in the bitstring indicates {$x_i$} = 1 and a 0 indicates {$x_i$} = 0. We compute A[k, S]: \\\\
+\begin{algorithm}
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\Func{Sum\\}
+\Inp {$int\ v_1$, $\ldots$, $v_n$}\\
+\For{$k\leftarrow 1$ to $n$}
+{\For{$S\leftarrow 0$ to $L$}
+{$A[k][S] = A[k][S] :: 1$\\
+{$A[k][S] = A[k][S - v_k] :: 0$}
+}
+}
+{return $A[k][0]$}
+\end{algorithm}\\
+At A[k][0], the bitstring is stored for the subset k with a sum of 0.
 \section*{Problem 14: }
 \section*{Problem 15: }
 \section*{Problem 16: }
