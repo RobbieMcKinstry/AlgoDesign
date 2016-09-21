@@ -46,7 +46,8 @@ Let A[k, S] hold the bitstring of the subset k with sum S, where a 1 in the bits
 }
 {return $A[k][0]$}
 \end{algorithm}\\
-At A[k][0], the bitstring is stored for the subset k with a sum of 0.
+At A[k][0], the bitstring is stored for the subset k with a sum of 0, if a solution
+exists.
 \section*{Problem 14: }
 The goal of this problem to to find a 
 solution to the polynomial \[\left(\sum_{i=1}^{n}x_iv_i\right)\bmod n=\ L\bmod n\]
@@ -57,7 +58,8 @@ values larger than $L$ can not be immediately pruned.
 Instead, at a given level, if two nodes have the same value 
 $modulo\ n$, one can be arbitrarily pruned.\\\\
 Additionally, since the goal is to find a solution to the
-polynomial, a bit string can be created to consider the
+polynomial, a bit string can be created by appending a 0 or a 1
+to consider the
 possibilities in which a value was included or discluded in
 the sum.\\\\
 Enumerating all possibilities and then considering the 
