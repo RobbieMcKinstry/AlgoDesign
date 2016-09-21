@@ -14,6 +14,44 @@
 
 \section*{Problem 13: }
 \section*{Problem 14: }
+The goal of this problem to to find a 
+solution to the polynomial \[\left(\sum_{i=1}^{n}x_iv_i\right)\bmod n=\ L\bmod n\]
+given a series of positive values for $v$ and $L$.  Also, $x$
+can be $0$ or $1$.\\\\  
+This problem is similar to the subset sum problem, except that
+values larger than $L$ can not be immediately pruned.
+Instead, at a given level, if two nodes have the same value 
+$modulo\ n$, one can be arbitrarily pruned.\\\\
+Additionally, since the goal is to find a solution to the
+polynomial, a bit string can be created to consider the
+possibilities in which a value was included or discluded in
+the sum.\\\\
+Enumerating all possibilities and then considering the 
+above pruning rule gives way to the following algorithm.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{$Modular\ Subset\ Sum$}\\
+\Inp{$Positive\ Integers\ v_1,\dots,v_n, L$}\\
+\For{$i$ to $n$}
+{\For{$s$ to $L\bmod n$}
+{\If{A[k,s] is defined}
+{
+\tcc{$::$ is the concatentation operator.  $a::c \rightarrow ac$}
+   $A[k+1,s] = A[k,s]::0$\\
+   $A[k+1, (s + v_{k+1}\bmod n)\bmod n] = A[k,s]::1$\\
+}
+}
+}
+\Ret{$A[n,L\bmod n]$}
+\end{algorithm}
+When this algorithm completes, the answer, if it exists,
+will be the bit string at $A[n,L\mod n]$.  This bit string
+starting, read from left to right, will represent the 
+coefficient of each $v$ in the polynomial.
 \section*{Problem 15: }
 \section*{Problem 16: }
 \end{document}
