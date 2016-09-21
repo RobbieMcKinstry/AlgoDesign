@@ -117,7 +117,7 @@ This problem is very similar to the Knapsack problem from class, except that it 
 
 \section*{Problem 16: }
 
-For this problem, we maintain a tuple representing a subset's current values and it's potential to catch to the other sequence. Once a term is not able to catch up, we prune that node from the tree. Lastly, we represent the subset as a bitstring, where each bit represents the inclusion or exclusion of the corresponding set element. Note that the number of inner loop iterations sums to $L$ since our "catch up" factor, which is monotone decreasing, can cross no more than an $L$-length distance, which is obvious when the inner list is represented as a linked list instead of as an array.
+For this problem, we maintain a tuple representing a subset's current values and it's potential to catch to the other sequence. Once a term is not able to catch up, we prune that node from the tree. Lastly, we represent the subset as a bitstring, where each bit represents the inclusion or exclusion of the corresponding set element. Note that the number of inner loop iterations sums to $L$ since our ``catch up" factor, which is monotone decreasing, can cross no more than an $L$-length distance (just like with the real line shown in \#13), which is obvious when the inner list is represented as a linked list instead of as an array.
 
 \begin{algorithm}[H]
 \SetKw{Func}{Function:}
