@@ -70,8 +70,8 @@ above pruning rule gives way to the following algorithm.\\\\
 \SetKw{Ret}{Return:}
 \Func{$Modular\ Subset\ Sum$}\\
 \Inp{$Positive\ Integers\ v_1,\dots,v_n, L$}\\
-\For{$i$ to $n$}
-{\For{$s$ to $L\bmod n$}
+\For{$k = 0$ to $n$}
+{\For{$s = 0$ to $L\bmod n$}
 {\If{A[k,s] is defined}
 {
 \tcc{$::$ is the concatentation operator.  $a::c \rightarrow ac$}
@@ -86,6 +86,72 @@ When this algorithm completes, the answer, if it exists,
 will be the bit string at $A[n,L\mod n]$.  This bit string
 starting, read from left to right, will represent the 
 coefficient of each $v$ in the polynomial.
+
 \section*{Problem 15: }
+This problem is very similar to the Knapsack problem from class, except that it can be conceptualized slightly differently: instead of having a single list of items where you can only take an item once with no repeats, now you have a class of identical items, which you can select from repeatedly. This additional complexity adds a single inner loop to our otherwise fairly standard computation. The new loop represents choosing an item one, twice, thrice, \textit{etc}. Below, $max$ takes the pairwise maximum of scalar values, while $maxElement$ returns the highest scalar value in the array argument. 
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{$Repeated\ Knapsack$} \\
+\Inp{$Positive\ Integers\ v_1,\dots,v_n, w_1, \dots w_n, W$} \\
+\Glob{A zeroed array $A[n][W]$}
+\For{$k = 1$ to $n$}{
+	\tcc{generate level k+1 from level k}
+	\For{$s = 1$ to $W$}{
+		\tcc{generate solutions for each of the weights}
+		\If{$A[k, s]$ is defined]}{
+			\For{$p = 1$ to $W$}{
+				$A[k+1, s + pw_{k}] = max(A[k+1, s + pw_{k}], maxElement(A[k, s]) + pv_{k})$
+			}
+		}
+	}
+}
+\Ret{$maxElement(A[n, W]$}
+\end{algorithm}
+
 \section*{Problem 16: }
+
+For this problem, we maintain a tuple representing a subset's current values and it's potential to catch to the other sequence. Once a term is not able to catch up, we prune that node from the tree. Lastly, we represent the subset as a bitstring, where each bit represents the inclusion or exclusion of the corresponding set element. Note that the number of inner loop iterations sums to $L$ since our "catch up" factor, which is monotone decreasing, can cross no more than an $L$-length distance, which is obvious when the inner list is represented as a linked list instead of as an array.
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{$Repeated\ Knapsack$} \\
+\Inp{$Positive\ Integers\ v_1,\dots,v_n$} \\
+\Glob{A array A[n] holding linked lists}
+
+Let $S = \sum_{i=1}^{n} v_{i}^{3}$ and $P = \prod_{i=1}^{n} v_{i}$
+
+$A[1] \leftarrow  (0, 1, S, P, emptyString )$ 
+
+\For{$i = 1$ to $n$}{
+	\tcc{generate level i+1 from level i}
+	\ForEach{$(sum, prod, Rsum, Rprod, str) \in A[i]$}{
+		\If{$sum = prod$}{
+			\Ret{str}
+		}
+		\If{$sum+RSum < prod$}{
+			Continue
+		}
+		\If{$prod*Rprod < sum$}{
+			Continue
+		}
+		$A[i+1]$.append(
+			$(sum, prod, Rsum, Rprod, str :: 0 )$
+		)
+		$A[i+1]$.append(
+			$(sum + v_{i}^{3}, prod*v_{i}, Rsum - v_{i}^{3}, Rprod / v_{i}, str :: 1 )$
+		)
+	}
+}
+
+\end{algorithm}
+
 \end{document}
