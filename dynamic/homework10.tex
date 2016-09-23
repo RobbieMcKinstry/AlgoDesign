@@ -14,5 +14,18 @@
 
 \section*{Problem 10: }
 \section*{Problem 11: }
+
+\subsection{Part A:}
+
+Given the final array, backtracking to identify which items were added to the knapsack is fairly straight-forward. The value $V[n, S]$ is the maximum of the values $Value[n-1, S]$ and $Value[n-1, S-w(n)] + v(n)$. To determine which of those two terms was selected as the final value, look at those two cells in the table and determine which is larger: $Value[n-1, S]$ or $Value[n-1, S-w(n)] + v(n)$. 
+
+If the former is larger, then the nth item added was not added to the knapsack. Repeat this process starting at the cell $Value[n-1, S]$ until you terminate at the beginning of the array. 
+
+If the latter is larger, then the nth item was added to the knapsack. Repeat this process starting at the cell $Value[n-1, S-w(n)] + v(n)$ until you terminate at the beginning of the array.
+
+\subsection{Part B:}
+
+To solve the Knapsack Problem using only O(L) space and in time O(nL), create an array $A$ of length $L$. The $i$th element in $A$ represents the maximum value available with a weight constraint $i$. Thus, the final element represents the solution. Populate the $i$th element in $A$ by taking the larger of the $A[i-1]$ and $A[i-w(i)] + v(i)$. The first of those two values is the maximum value when you do not add the $i$th element to the array (it is, of course, the maximum value of the previous weight). The second value is the maximum value available to the knapsack at weight $i$ if you definitely add the $i$th element to the knapsack.
+
 \section*{Problem 17: }
 \end{document}
