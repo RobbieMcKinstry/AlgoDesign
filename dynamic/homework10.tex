@@ -11,7 +11,7 @@
 \begin{document}
 \title{Homework 9}
 \author{Robbie McKinstry, Jack McQuown, Cyrus Ramavarapu}
-\renewcommand{\today}{22 September 2016}
+\renewcommand{\today}{23 September 2016}
 \renewcommand{\baselinestretch}{1.5}
 \maketitle
 
@@ -19,9 +19,9 @@
 \subsection*{(a)}
 In order to develop a recursive algorithm for this problem, we first need to know two pieces of information about the interval. First we need to know the sum of the length of the collection of intervals, and second we need to know the right endpoint of this collection. By knowing both of these, we are able to verify that we are only picking the most optimal intervals for each collection up to the maximum length. They are the most optimal because if two collections have the same sum, then we will choose the collection that ends with the smallest right endpoint. By choosing the collection with the smallest right endpoint we are able to have more options as to which interval we want to add to the end of this collection.\\\\
 The recursive algorithm is as follows:\\
-k = the number of intervals in the collection\\
-s = the sum of the collection\\
-maxCollection(k, s) = the smallest right endpoint with k number of intervals and sum s\\
+$k$ = the number of intervals in the collection\\
+$s$ = the sum of the collection\\
+$maxCollection(k, s)$ = the smallest right endpoint with $k$ number of intervals and sum $s$\\
 \begin{algorithm}[H]
 \SetKw{Func}{Function: }
 \SetKw{Inp}{Input: }
@@ -73,38 +73,34 @@ This can then be further developed in an iterative, array-based solution with a 
 {$return$ $\max(maxCollection[n][n])$}
 \end{algorithm}
 \subsection*{(b)}
-In order to develop an algorithm for this problem, it is first necessary to set some pruning rules.\\\\
-Pruning Rules: \\
-1) If two nodes have the same sum and are at the same depth, prune the subtree with the larger right endpoint.\\
-2) If two nodes have the same right endpoint and are at the same depth, prune the subtree with the smaller sum.\\\\
+In order to develop an algorithm for this problem, it is first necessary to set the following pruning rules.
+\begin{enumerate}
+    \item If two nodes have the same sum and are at the same depth, prune the subtree with the larger right endpoint.
+    \item If two nodes have the same right endpoint and are at the same depth, prune the subtree with the smaller sum.
+\end{enumerate}
 These rules lead to the following iterative algorithm:\\
-k = subset of intervals in the collection\\
-s = sum of the lengths of the collection\\
-A[k][s] = the smallest right endpoint of with k number of intervals and sum s\\
+$k$ = subset of intervals in the collection\\
+$s$ = sum of the lengths of the collection\\
+$A[k][s]$ = the smallest right endpoint of with $k$ number of intervals and sum $s$\\
 \begin{algorithm}[H]
 \For{$k \leftarrow 1$ to $n$}
 {\For{$s \leftarrow 0$ to $n$}
-{\uIf{$A[k][s]$ is defined}
-{$A[k+1][s] = \min(A[k+1][s], A[k][s])$}
-{$A[k+1][s+1] = \min(A[k+1][s+1], x_k)$}
+{\If{$A[k][s]$ is defined}
+{$A[k+1][s] = \min(A[k+1][s], A[k][s])$\\
+$A[k+1][s+1] = \min(A[k+1][s+1], x_k)$}
 }
 }
 {$return$ A[n][n]}
 \end{algorithm}
 \section*{Problem 11: }
 
-\subsection{Part A:}
+\subsection*{Part A:}
 
-Given the final array, backtracking to identify which items were added to the knapsack is fairly straight-forward. The value $V[n, S]$ is the maximum of the values $Value[n-1, S]$ and $Value[n-1, S-w(n)] + v(n)$. To determine which of those two terms was selected as the final value, look at those two cells in the table and determine which is larger: $Value[n-1, S]$ or $Value[n-1, S-w(n)] + v(n)$. 
-
-If the former is larger, then the nth item added was not added to the knapsack. Repeat this process starting at the cell $Value[n-1, S]$ until you terminate at the beginning of the array. 
-
+Given the final array, backtracking to identify which items were added to the knapsack is fairly straight-forward. The value $V[n, S]$ is the maximum of the values $Value[n-1, S]$ and $Value[n-1, S-w(n)] + v(n)$. To determine which of those two terms was selected as the final value, look at those two cells in the table and determine which is larger: $Value[n-1, S]$ or $Value[n-1, S-w(n)] + v(n)$.\\\\ 
+If the former is larger, then the nth item added was not added to the knapsack. Repeat this process starting at the cell $Value[n-1, S]$ until you terminate at the beginning of the array.\\\\ 
 If the latter is larger, then the nth item was added to the knapsack. Repeat this process starting at the cell $Value[n-1, S-w(n)] + v(n)$ until you terminate at the beginning of the array.
-
-\subsection{Part B:}
-
-To solve the Knapsack Problem using only O(L) space and in time O(nL), create an array $A$ of length $L$. The $i$th element in $A$ represents the maximum value available with a weight constraint $i$. Thus, the final element represents the solution. Populate the $i$th element in $A$ by taking the larger of the $A[i-1]$ and $A[i-w(i)] + v(i)$. The first of those two values is the maximum value when you do not add the $i$th element to the array (it is, of course, the maximum value of the previous weight). The second value is the maximum value available to the knapsack at weight $i$ if you definitely add the $i$th element to the knapsack.
-
+\subsection*{Part B:}
+To solve the Knapsack Problem using only \BigO{L} space and in time \BigO{nL}, create an array $A$ of length $L$. The $i^{th}$ element in $A$ represents the maximum value available with a weight constraint $i$. Thus, the final element represents the solution. Populate the $i^{th}$ element in $A$ by taking the larger of the $A[i-1]$ and $A[i-w(i)] + v(i)$. The first of those two values is the maximum value when you do not add the $i^{th}$ element to the array (it is, of course, the maximum value of the previous weight). The second value is the maximum value available to the knapsack at weight $i$ if you definitely add the $i^{th}$ element to the knapsack.
 \section*{Problem 17: }
 To develop a dynamic programming algorithm to determine if the
 set of gems $\mathcal{G}$ can be partitioned such that the two
@@ -119,7 +115,7 @@ either an \textit{emerald} or a \textit{ruby}.  Since the value
 between the two partitions has to be equal and the quantity of the
 gem type also has to be the same, these values need to be tracked.\\\\
 Tracking these values as the tree of all possible partitions is
-generated gives the following pruing rules.\\\\
+generated gives the following pruing rules.
 \begin{enumerate}
     \item If the value of either partition becomes greater than $\mathcal{L}/2$
           the tree can be pruned.  This is because if a partition has a value
