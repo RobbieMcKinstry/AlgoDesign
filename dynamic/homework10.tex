@@ -13,6 +13,81 @@
 \maketitle
 
 \section*{Problem 10: }
+\subsection*{(a)}
+In order to develop a recursive algorithm for this problem, we first need to know two pieces of information about the interval. First we need to know the sum of the length of the collection of intervals, and second we need to know the right endpoint of this collection. By knowing both of these, we are able to verify that we are only picking the most optimal intervals for each collection up to the maximum length. They are the most optimal because if two collections have the same sum, then we will choose the collection that ends with the smallest right endpoint. By choosing the collection with the smallest right endpoint we are able to have more options as to which interval we want to add to the end of this collection.\\\\
+The recursive algorithm is as follows:\\
+k = the number of intervals in the collection\\
+s = the sum of the collection\\
+maxCollection(k, s) = the smallest right endpoint with k number of intervals and sum s\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\SetKw{Inp}{Input: }
+\SetKw{Init}{Initialization: }
+\SetKw{EndInit}{End Initialization}
+\Func{maxCollection\\}
+\Inp{n intervals over the real line\\}
+\Init\\
+\For{$k\leftarrow 0$ to $n$}
+{\For{$s\leftarrow 1$ to $n$}
+{$maxCollection(k, s) = \infty$}
+}
+\For{$k\leftarrow 0$ to $n$}
+{$maxCollection(k, 0) = -\infty$}
+\EndInit\\
+\For{$k\leftarrow 0$ to $n$}
+{\For{$s\leftarrow 1$ to $n$}
+{\uIf{$x_k > maxCollection(k - 1, s - 1)$}
+{$\min(maxCollection(k - 1, s), maxCollection(k - 1, s - 1) + x_k)$}
+\Else{$return$ $maxCollection(k - 1, s)$}
+}
+}
+\end{algorithm}
+This can then be further developed in an iterative, array-based solution with a polynomial runtime.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\SetKw{Inp}{Input: }
+\SetKw{Init}{Initialization: }
+\SetKw{EndInit}{End Initialization}
+\Func{MaxCollection\\}
+\Inp{n intervals over the real line\\}
+\Init\\
+\For{$k\leftarrow 0$ to $n$}
+{\For{$s\leftarrow 1$ to $n$}
+{$maxCollection[k][s] = \infty$}
+}
+\For{$k\leftarrow 0$ to $n$}
+{$maxCollection[k][0] = -\infty$}
+\EndInit\\
+\For{$k\leftarrow 1$ to $n$}
+{\For{$s\leftarrow n$ down to $1$}
+{\uIf{$maxCollection[k][s]$ is defined}
+{\uIf{$x_k > maxCollection[k - 1][s - 1]$}
+{$maxCollection[k][s] = \min(maxCollection[k - 1][s], x_k)$}
+\Else{$maxCollection[k][s] = maxCollection[k - 1][s]$}
+}
+}
+}
+{$return$ $\max(maxCollection[n][n])$}
+\end{algorithm}
+\subsection*{(b)}
+In order to develop an algorithm for this problem, it is first necessary to set some pruning rules.\\\\
+Pruning Rules: \\
+1) If two nodes have the same sum and are at the same depth, prune the subtree with the larger right endpoint.\\
+2) If two nodes have the same right endpoint and are at the same depth, prune the subtree with the smaller sum.\\\\
+These rules lead to the following iterative algorithm:\\
+k = subset of intervals in the collection\\
+s = sum of the lengths of the collection\\
+A[k][s] = the smallest right endpoint of with k number of intervals and sum s\\
+\begin{algorithm}[H]
+\For{$k \leftarrow 1$ to $n$}
+{\For{$s \leftarrow 0$ to $n$}
+{\uIf{$A[k][s]$ is defined}
+{$A[k+1][s] = \min(A[k+1][s], A[k][s])$}
+{$A[k+1][s+1] = \min(A[k+1][s+1], x_k)$}
+}
+}
+{$return$ A[n][n]}
+\end{algorithm}
 \section*{Problem 11: }
 \section*{Problem 17: }
 \end{document}
