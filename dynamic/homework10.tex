@@ -5,6 +5,9 @@
 \usepackage{pst-node,pst-plot}
 \usepackage{amsmath}
 \usepackage{float}
+
+\newcommand{\BigO}[1]{\ensuremath{\operatorname{\mathcal{O}}\bigl(#1\bigr)}}
+
 \begin{document}
 \title{Homework 9}
 \author{Robbie McKinstry, Jack McQuown, Cyrus Ramavarapu}
@@ -15,4 +18,91 @@
 \section*{Problem 10: }
 \section*{Problem 11: }
 \section*{Problem 17: }
+To develop a dynamic programming algorithm to determine if the
+set of gems $\mathcal{G}$ can be partitioned such that the two
+partitions $\mathcal{P}$ and $\mathcal{Q}$ have the same value
+and the same number of rubies and emeralds all possible partitions
+can be initially considered.  Let the total value of all the gems
+be $\mathcal{L}$ and the total number of gems be $n$.\\\\
+In considering every possible partition, a new gem is added to 
+either $\mathcal{P}$ or $\mathcal{Q}$.  This gem, labeled
+$g_i$, will have a value $v_i$. Additionally, $g_i$ will be 
+either an \textit{emerald} or a \textit{ruby}.  Since the value 
+between the two partitions has to be equal and the quantity of the
+gem type also has to be the same, these values need to be tracked.\\\\
+Tracking these values as the tree of all possible partitions is
+generated gives the following pruing rules.\\\\
+\begin{enumerate}
+    \item If the value of either partition becomes greater than $\mathcal{L}/2$
+          the tree can be pruned.  This is because if a partition has a value
+          greater than half of the max value, the other partition can never
+          catch up.
+    \item If the number of emeralds or rubies in either partition becomes
+          greater than $n$, the tree can be pruned. This is because the other
+          partition will never be able to get enough gems of the necessary
+          type to restablish balance.
+    \item If two branches have the same value, same number of rubies, and
+          the same number of emeralds in both partitions, one branch can be
+          arbitrarily pruned.
+\end{enumerate}
+Using these pruning rules gives the following polynomial time algorithm.   
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{$Gem\ Partition$}\\
+\Inp{$\mathcal{G}$}\\
+\Glob{$A[\ ][\ ][\ ][\ ][\ ][\ ][\ ][\ ]$}\\
+\tcc{iterate through possible gems}
+\For{$l=1$ to $n$}{
+    \tcc{iterate through values for $\mathcal{P}$}
+    \For{$h=1$ to $\mathcal{L}/2$}{
+        \tcc{iterate through rubies for $\mathcal{P}$}
+        \For{$j=1$ to $n/2$}{
+            \tcc{iterate through emeralds for $\mathcal{P}$}
+            \For{$k$ to $n/2$}{
+                \tcc{iterate through values for $\mathcal{Q}$}
+                \For{$x=1$ to $\mathcal{L}/2$}{
+                    \tcc{iterate through rubies for $\mathcal{Q}$}
+                    \For{$y=1$ to $n/2$}{
+                        \tcc{iterate through emeralds for $\mathcal{Q}$}
+                        \For{$z$ to $n/2$}{
+                            \If{$A[l,h,j,k,x,y,z]$ is defined}{
+                                \uIf{$g_l$ is a ruby}{
+                                   $A[l+1,h+v_l,j+1,k,x,y,z]=1$\\ 
+                                   $A[l+1,h,j,k,x+v_l,y+1,z]=1$\\
+                                }
+                                \Else{
+                                   $A[l+1,h+v_l,j,k+1,x,y,z]=1$\\ 
+                                   $A[l+1,h,j,k,x+v_l,y,z+1]=1$\\ 
+                                }
+                            }
+                        }
+                    }
+                }
+            }                    
+        } 
+    }    
+}
+\tcc{check if partition is possible}
+\For{$i=1$ to $\mathcal{L}/2$}{
+    \For{$j=1$ to $n/2$}{
+        \For{$k=1$ to $n/2$}{
+            \If{$A[n,i,j,k,i,j,k]$ is defined}{
+                \If{$A[n,i,j,k,i,j,k] == 1$}{
+                    \Ret{1}
+                }
+            }
+        }
+    }
+}
+\Ret{0}
+\end{algorithm}
+The answer to if a partition is possible will be found by searching the space
+at the $n^{th}$ level where the values for partitions $\mathcal{P}$ and $\mathcal{Q}$
+are the same while also having the same number of rubies and emeralds.\\\\
+This algorithm runs in \BigO{n^5\mathcal{L}^2} time.  This is a $poly(n+\mathcal{L})$
+if $poly(x)=x^7$.
 \end{document}
