@@ -16,5 +16,48 @@
 \maketitle
 
 \section*{Problem 19: }
+
+\subsection{Part A}
+
+First, we will give our recursive solution, and then we will explain how it works. 
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Out}{Output:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{Maximum Matching Sequence (MMS)} \\
+
+\Inp{$T = t_{1}, \dots, t_{n}, P= p_{1}, \dots,  p_{n}, c_{i} \forall t_{i} \in T$}
+\Out{Integer}
+
+\If{$P$ is Empty}{
+	\Ret{0}
+}
+\If{$S$ is Empty}{
+	\Ret{0}
+}
+Let $subproblems = ZeroedArray[n]$
+
+\ForEach{$t_{i}$ in $T$}{
+	\If{$t_{i} = P_{n}$}{
+		$subproblem[i] = MMS(t[:i], p[:n-1]) + c_{i}$
+	}
+}
+\Ret{$Max(subproblems)$}
+\end{algorithm}
+
+We consider the final letter of $P$. That letter must match some letter in $T$, since it must be the last letter of the sequence. Thus, we search $T$ for all of the sites that could end the sequence. Each of those sites is a subproblem. The subproblem consists of all of the letters up to and excluding the matched letter in $T$ (as it was the final letter of the sequence thus far) and all of the letters in $P$ save the final one, which was just matched. The return value is the maximum cost subproblem, as defined in the problem specification.
+
+To convert this into a recursive solution, create a 2D array $A[n][n]$. Populate $A$ by iterating through the rows, and then the columns. The cell $A[i, j]$ represents the subproblem with $T_{i, j} = T[:i]$ and $P_{i, j} = P[:j]$. Thus, each cell is populated by looking at $c_{i} + A[i-1, j-1]$ if $T_{i} = P{j}$. The output is the final cell, and the sequence can be found by tracing back through the array and taking a letter from $T$ when value in the cell changes.
+
+\subsection{Part B}
+
+Notice first that the solution is obviously subcollection of $T$. Thus, one can identify a solution by search the space of all subcollections of $T$ until finding a match on $P$.
+
+To do this, for each $t_{i}$ in $T$, starting with the empty root node, populate the $i$th level of the tree by taking all nodes from the $i-1$ level and giving them two children, one for the sequence that concatenates the empty string, and one for the sequence that concatenates $t_{i}$ (the nodes of the tree store the subsequence). Next, prune any nodes on the same level that do not contain a prefix of $P$. If they do not contain a prefix of $P$, then they will never match $P$. Finally, prune the minimum-valued node if there are two nodes on the same level of the same length. (Since they are the same length and are prefixes, by the 1st rule, they are the same string.)
+
 \section*{Problem 22: }
 \end{document}
