@@ -17,25 +17,57 @@
 
 \section*{Problem 19: }
 \section*{Problem 22: }
-The solution for this problem is entirely dependent on what trip(s) the Bahncard is bought before. Therefore, the tree of possible solutions will look a little different than the typical trees that have been discussed both in class and in previous homework problems. Instead of including or not including the node, we will be including or not including a Bahncard before each trip {$T_i$}. Because of this, there will be many different possible solutions on a certain level of the tree of possible solutions which have a Bahncard bought right before a trip. In this problem, we assume that if a Bahncard is to be bought before a trip it will be purchased on the day of that trip.\\\\
-Which leads to the following pruning rule:\\
-1. If two nodes at the same depth in the tree have a Bahncard bought before a trip {$T_i$}, prune the node with the higher overall cost.\\\\
+The solution for this problem is entirely dependent on which trips the Bahncard is bought before.
+Therefore, the tree of possible solutions will look a little different than the typical trees that
+have been discussed both in class and in previous homework problems. Instead of including or not
+including the node, we will be including or not including a Bahncard before each trip $T_i$.
+Because of this, there will be many different possible solutions on a certain level of the tree
+of possible solutions which have a Bahncard bought right before a trip. In this problem,
+we assume that if a Bahncard is to be bought before a trip it will be purchased on the day of that trip.\\\\
+Which leads to the following pruning rule:
+\begin{enumerate}
+\item If two nodes at the same depth in the tree have a Bahncard bought trip for  trip $T_i$, prune the node with the higher overall cost.\\\\
+\end{enumerate}
 Using this pruning rule will give the following polynomial time algorithm:\\
-The data structure will be a 2-D array A[t, d].\\
+The data structure will be a 3-D array A[t, d, b].\\
 t = The subset of trips, where if t = 3 it will be {$T_1T_2T_3$}\\
 d = date at which the last Bahncard was bought\\
-A[t, d] = Stores the cost of the subset of trips with the corresponding Bahncards\\
+A[t, d, b] = Stores the cost of the subset of trips with the corresponding Bahncards\\
 \begin{algorithm}[H]
 \SetKw{Func}{Function: }
 \Func{Minimum Trip Cost}\\
 \For{$t\leftarrow 0$ to $n$}
 {\For{$d\leftarrow 0$ to $n$}
-{\If{$A[t,d]$ is defined}
-{$A[t+1,d] = \min(A[t+1,d], A[t,d])$\\
-$A[t+1,d+1] = \min(A[t+1,d+1], f_t)$}
+{
+    \If{$A[t,d,0]$ is defined}
+    {
+        $A[t+1,d, 0] = A[t,d,0] + \mathcal{P}(trip_t)$\\
+        
+        \For{$k\leftarrow t$ to 0}
+        {       
+            \If{$A[k,d,1]$ is defined}
+            {
+                \uIf{$date_t - date_k < \mathcal{L}$}
+                {
+                    $A[t+1,d,0] = \min{A[t+1,d,0], A[t,d,0] +.5\times price_t}$
+                }
+                \Else
+                {
+                    $A[t+1,d,1] = \min{A[t+1,d,1], A[t,d,1] + price_b +.5\times price_t}$
+                }
+                $break$
+            }
+        }                           
+        
+    }
 }
 }
-{$return \min\limits_{0 \leq s \leq n}(A[n, s])$}
+{$return \min\limits_{0 \leq s \leq n}(A[n, d, *])$}
 \end{algorithm}
-*{$f_t$} represents the cost of the subset of trips t.\\\\
+The result of the algorithm will be the minimum trip cost possible after
+all trips have been completed.  To recover the dates at which a Bahnkarte
+was purchased, the index of the minimum cost needs to be back traced
+until $A[t,d,1]$ is defined.  This will be last time a Bahnkarte was 
+purchased.  This processed can be repeated to discover the previous 
+time a Bahnkarte was purchased until all the possible dates are covered.  
 \end{document}
