@@ -59,5 +59,111 @@ Notice first that the solution is obviously subcollection of $T$. Thus, one can 
 
 To do this, for each $t_{i}$ in $T$, starting with the empty root node, populate the $i$th level of the tree by taking all nodes from the $i-1$ level and giving them two children, one for the sequence that concatenates the empty string, and one for the sequence that concatenates $t_{i}$ (the nodes of the tree store the subsequence). Next, prune any nodes on the same level that do not contain a prefix of $P$. If they do not contain a prefix of $P$, then they will never match $P$. Finally, prune the minimum-valued node if there are two nodes on the same level of the same length. (Since they are the same length and are prefixes, by the 1st rule, they are the same string.)
 
+\subsection*{C:}
+Instead of enumerating the possible subsequences of $\mathcal{T}$, the
+possible subsequences of $\mathcal{P}$ can be considered.  Unlike
+the tee developed for the subsequences of $\mathcal{T}$, this tree
+will have a variable branching factor depending on how many ways a 
+letter in $\mathcal{P}$ can be made using a letter in $\mathcal{T}$\\\\
+To create this tree, initially consider the first letter in $\mathcal{P}$. 
+Label this letter $p_0$.  Find all the instances where $p_0$ occurs in
+in $\mathcal{T}$.  These will be the branches from the first node $p_0$.
+Next consider all possible ways to make the second letter in $\mathcal{P}$,
+$p_1$.  These will be the branches from the second level.  This process
+is repeated until all possible ways to make $\mathcal{P}$ are enumerated.\\\\
+However, not all of these sequences may represent a valid subsequence in
+$\mathcal{T}$ due to ordering.  This gives rise to the first pruning rule.
+\begin{enumerate}
+\item If a child node occurs at an index less than its parent in $\mathcal{P}$,
+      prune it.
+\end{enumerate}
+Additionally, given this pruning rule, two branches may have the same value.  In
+this case, another pruning rule can be developed.
+\begin{enumerate}
+\item If two branches have teh same value, prune the one ending in the lowest index.
+\end{enumerate}
+Given these two pruning rules, the following algorithm can be developed.
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\SetKw{Ret}{Return:}
+\Func{$\mathcal{P} enumeration cost max$}\\
+\For{$i\leftarrow 0$ to $len(\mathcal{P})$}
+{
+    \For{$j\leftarrow 0$ to $len(\mathcal{T})$}
+    {
+        \If{$A[i,j]$ is defined and $A[i,j] < j$}
+        {
+            $A[i,j+c_j]=\min(A[i,j+c_j], j)$
+        }
+    }
+}
+\Ret{$Lowest\ value\ of\ k\ for\ which\ A[len(\mathcal{P}),k]\ is\ defined$}
+\end{algorithm}[H]
+This algorithm will return the minimum value for the subsequence in $\mathcal{T}$.
+Looking at the index value in $A$, will give the last index.  By subtracting the value
+and then looking from the point $k$ in $\mathcal{T}$ backwards allows for the correct
+subsequence to be reconstructed.         
+
 \section*{Problem 22: }
+The solution for this problem is entirely dependent on which trips the Bahncard is bought before.
+Therefore, the tree of possible solutions will look a little different than the typical trees that
+have been discussed both in class and in previous homework problems. Instead of including or not
+including the node, we will be including or not including a Bahncard before each trip $T_i$.
+Because of this, there will be many different possible solutions on a certain level of the tree
+of possible solutions which have a Bahncard bought right before a trip. In this problem,
+we assume that if a Bahncard is to be bought before a trip it will be purchased on the day of that trip.\\\\
+Which leads to the following pruning rule:
+\begin{enumerate}
+\item If two nodes at the same depth in the tree have a Bahncard bought trip for  trip $T_i$, prune the node with the higher overall cost.\\\\
+\end{enumerate}
+This pruning rule was motivated by the idea that if a ticket is bought, there is
+some sequence of ticket purchases upto that point that has a minimum value.  Since
+the price of a Bahnkarte is constant, it only makes sense to buy it for the sequence
+that has the lowest cost.  As a result, for every trip $t_i$ there will be only
+one instance in which a Bahnkarte will be bought right prior to the trip.\\\\
+Using this pruning rule will give the following polynomial time algorithm:\\
+The data structure will be a 3-D array $A[t, d, b]$ where $b={0,1}$\\
+$t$ is the trip count \\
+$d$ is the date at which the last Bahncard was bought\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\Func{Minimum Trip Cost}\\
+\For{$t\leftarrow 0$ to $n$}
+{\For{$d\leftarrow 0$ to $n$}
+{
+    \If{$A[t,d,0]$ is defined}
+    {
+        $A[t+1,d, 0] = A[t,d,0] + \mathcal{P}(trip_t)$\\
+        
+        \For{$k\leftarrow t$ to 0}
+        {       
+            \If{$A[k,d,1]$ is defined}
+            {
+                \uIf{$date_t - date_k < \mathcal{L}$}
+                {
+                    $A[t+1,d,0] = \min{A[t+1,d,0], A[t,d,0] +.5\times price_t}$
+                }
+                \Else
+                {
+                    $A[t+1,d,1] = \min{A[t+1,d,1], A[t,d,1] + price_b +.5\times price_t}$
+                }
+                $break$
+            }
+        }                           
+        
+    }
+}
+}
+{$return \min\limits_{0 \leq s \leq n}(A[n, d, *])$}
+\end{algorithm}
+The result of the algorithm will be the minimum trip cost possible after
+all trips have been completed.  To recover the dates at which a Bahnkarte
+was purchased, the index of the minimum cost needs to be back traced
+until $A[t,d,1]$ is defined.  This will be last time a Bahnkarte was 
+purchased.  This processed can be repeated to discover the previous 
+time a Bahnkarte was purchased until all the possible dates are covered.\\\\
+The runtime of this algorithm is \BigO{n^3}, where n is the number of trips, because all trips have to be
+considered, and each trip could possibly have a Bahnkarte purchased at
+the time of the trip, and a search needs to be done to find the last
+time a Bahnkarte was bought.
 \end{document}
