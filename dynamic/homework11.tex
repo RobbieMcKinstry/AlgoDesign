@@ -17,4 +17,25 @@
 
 \section*{Problem 19: }
 \section*{Problem 22: }
+The solution for this problem is entirely dependent on what trip(s) the Bahncard is bought before. Therefore, the tree of possible solutions will look a little different than the typical trees that have been discussed both in class and in previous homework problems. Instead of including or not including the node, we will be including or not including a Bahncard before each trip {$T_i$}. Because of this, there will be many different possible solutions on a certain level of the tree of possible solutions which have a Bahncard bought right before a trip. In this problem, we assume that if a Bahncard is to be bought before a trip it will be purchased on the day of that trip.\\\\
+Which leads to the following pruning rule:\\
+1. If two nodes at the same depth in the tree have a Bahncard bought before a trip {$T_i$}, prune the node with the higher overall cost.\\\\
+Using this pruning rule will give the following polynomial time algorithm:\\
+The data structure will be a 2-D array A[t, d].\\
+t = The subset of trips, where if t = 3 it will be {$T_1T_2T_3$}\\
+d = date at which the last Bahncard was bought\\
+A[t, d] = Stores the cost of the subset of trips with the corresponding Bahncards\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\Func{Minimum Trip Cost}\\
+\For{$t\leftarrow 0$ to $n$}
+{\For{$d\leftarrow 0$ to $n$}
+{\If{$A[t,d]$ is defined}
+{$A[t+1,d] = \min(A[t+1,d], A[t,d])$\\
+$A[t+1,d+1] = \min(A[t+1,d+1], f_t)$}
+}
+}
+{$return \min\limits_{0 \leq s \leq n}(A[n, s])$}
+\end{algorithm}
+*{$f_t$} represents the cost of the subset of trips t.\\\\
 \end{document}
