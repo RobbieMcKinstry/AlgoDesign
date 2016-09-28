@@ -17,8 +17,104 @@
 
 \section*{Problem 23: }
 
+We'll cover a recursive solution first, and then describe how to convert it into an iterative solution.
+
+First, let us define our function signature. We define our function header as follows: $def(k, a, R_{t}, \dots, R_{n}) \rightarrow (int, []int)$. Our initial call to this function is when $t=2$, and where $k$ is of course, our starting value for $k$. This is because at time $2$, the algorithm makes it's first decision. At time $1$, broadcasting will not affect any incoming requests, so starting at time 2 does will not prevent the algorithm from finding an optimal solution. Our accumulator variable, which will be described in more detail, is set to $R_{1}$.
+
+Now, let us address the two degenerate cases of our algorithm. Should $k=0$, then the algorithm returns $\infty$. This is because it has no opportunity to broadcast again, but we have yet to resolve outstanding requests, so the requests will be waiting forever. The second case is when $t=n+1$. When $t=n+1$, we must broadcast; this was given to us in the problem specification and the reasoning for optimality is obvious. 
+
+Now we address the inductive case. An algorithm at time $t$ can select either to broadcast or to not broadcast. Our algorithm considers both options. The optimal solution for a time $t$ is to choose to either broadcast at time $t$ or to not broadcast at time $t$, and to then combine that with the optimal case given the consequences of both of those choices.
+
+Should you choose to broadcast at time $t$, you are removing any of the waiting requests, so no amount of time is added to the final amount of time requests spent waiting. This means that at time $t+1$, the number of waiting calls is reset to 0, and the amount of time spent waiting thus far is the same as it was at time $t-1$.
+
+Should you choose not to broadcast at time $t$, you choose to let all of the waiting requests wait for another time unit, so the amount of time spent waiting is the amount of time spent waiting at $t-1$ summed with total number of requests waiting (times 1, which is the amount of time that they wait). The total number of requests waiting is the sum of the total number of requests waiting at time $t-1$ and the number of new requests waiting (which is $R_{t-1}$). An optimal solution will return the minimum of these two values.
+
+This brings us to the following recursive algorithm:
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{In}{Input:}
+\SetKw{Out}{Output:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{RecBroadcast}
+
+\In{$k, a, R_{t}, \dots, R_{n}$}
+\Out{int, []int}
+
+\If{$k = 0$}{
+	\Ret{$\infty, []$}
+}
+\If{$t = n + 1$}{
+	\Ret{$0, [n+1] $}
+}
+
+\tcc{The case where you don't broadcast}
+
+$w_{b}, history_{b} = RecBroadcast(k-1, 0, R_{t+1}, \dots, R_{n})$
+
+$history_{b} = history_{b} :: t $
+
+\tcc{The case where you choose to broadcast}
+
+Let $waiting = a + R_{t-1}$
+
+$w_{nb}, history_{nb} = RecBroadcast(k, waiting, R_{t+1}, \dots, R_{n} )$
+
+$w_{nb} = w_{nb} + waiting$
+
+\Ret{$min( (w_{b}, history_{b}), (w_{nb}, history_{nb})   ) $}
+
+\end{algorithm}
+
+This brings us to our iterative strategy. We operate on two arrays (indexed at 0, like our previous sequence) with length $k$ and width $n+1$; thus our iterative algorithm operates in in \BigO{nk}. The first array stores the amount of time spent waiting, and the second array stores the number of requests still waiting. Refer to the first array as $A$ and the second array as $B$. The first index into an array represents the current time and the second index represents the current value of $k$.
+
+Next, populate all cells of $A$ where $k=0$ to $\infty$. Then, initialize all cells in $A$ where $n=1$ to $0$, because no requests have waited. Then, initialize for all $k$, $B[2, k]$ to be $R_{1}$. This represents that at time 2, all of the initial requests are waiting and are about to start accumulating.
+
+Finally, iterate through the remaining cells ($i = 2 \to i = n$, $j = 1 \to j = k$ ) populating each one. You can populate the cell at $A[i, j]$ with the minimum value of cells $A[i-1, j-1]$ and $A[i-1, k] + B[i-1, j] + R_{i}$. If you take the former, populate $B[i, j]$ with 0. Otherwise, populate $B[i, j]$ with $B[i-1, j] + R_{i}$.
+
+The final output is $A[n, k]$, which represents the minimum wait time. You can determine which times the algorithm chose to broadcast by looking at $A[n, k]$ and tracing back along the $t$ axis until you find a cell in $B$ that is set to 0. Once you see the 0, you know that the accumulator was reset, so a broadcast must have occurred at that time $t$. Move up one row into $k-1$. Repeat this until you run out of bounds or reach $A[1, 1]$, then you'll have collected your schedule. Remember, of course, to append the value $(n+1)$ to the end of your collected list, because all optimal solutions have a broadcast at $n+1$ as previously stated.
 
 
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{In}{Input:}
+\SetKw{Out}{Output:}
+\SetKw{Glo}{Global:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{Broadcast}
+
+\Glo{$A[n+1, k], B[n+1, k]$}
+\In{$k, R_{1}, \dots, R_{n}$}
+\Out{$A[n, k]$}
+
+\For{$t = 1 \to n $}{
+	$A[t, 0] = \infty$
+}
+
+\For{$j = 1 \to k$}{
+	$A[1, j] = 0$
+}
+
+\For{$j = 1 \to k$}{
+	$B[2, j] = R_{1}$
+}
+
+\For{$i = 2 \to n$}{
+	\For{$j = 1 \to k$}{
+		\If{$A[i, j] < A[i-1, j] + B[i-1, j] + R_{i}$}{
+			$A[i, j] = A[i-1, j-1]$
+			$B[i, j] = 0$
+		}
+		\Else{
+			$A[i, j] = A[i-1, j] + B[i-1, j] + R_{i}$
+			$B[i, j] = B[i-1, j] + R_{i}$
+		}
+	}
+}
+
+\end{algorithm}
 
 
 
