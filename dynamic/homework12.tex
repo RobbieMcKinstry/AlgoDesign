@@ -4,9 +4,11 @@
 \usepackage[ruled, vlined]{algorithm2e}
 \usepackage{pst-node,pst-plot}
 \usepackage{amsmath}
+\usepackage{amsthm}
 \usepackage{float}
 
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{\mathcal{O}}\bigl(#1\bigr)}}
+\newtheorem*{prune}{Pruning Rule}
 
 \begin{document}
 \title{Homework X}
@@ -15,7 +17,7 @@
 \renewcommand{\baselinestretch}{1.5}
 \maketitle
 
-\section*{Problem 23: }
+\section*{Problem 23:}
 
 We'll cover a recursive solution first, and then describe how to convert it into an iterative solution.
 
@@ -116,7 +118,99 @@ The final output is $A[n, k]$, which represents the minimum wait time. You can d
 
 \end{algorithm}
 
-
-
-
+\section*{Problem 26:}
+A generalization of problem 23 would be to consider a requests across multiple pages, while
+still restricting the server to a finite number of broadcasts across all servers. For example,
+the server may have the following requests table.
+\begin{center}
+    \begin{tabular}{c|c|c|c}
+        Time & 1 & 2 & 3  \\
+        Page A & 0 & 2 & 0  \\
+        Page B & 1 & 3 & 4  \\
+    \end{tabular}
+\end{center}
+Additionally, the server could be limited to only $k=3$ total broadcasts over all times.  Ideally,
+the server will want to broadcasts the correct set of pages, $\mathcal{P}$, such that 
+the total wait time for all user requests is minimized while the server does not exceed
+its total number of broadcasts.\\\\
+One approach to this problem is to enumerate all the possible actions the server
+can take at every time and consider how each action will affect the total wait time
+and subsequent decisions.  In the above example, this leads to a tree structure for 
+the requests being considered at time $t_2$.
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+    level 1/.style={sibling distance=1.75cm},
+    level 2/.style={sibling distance=1.75cm}]
+    \node {$\emptyset$}
+        child {node {$\emptyset$}}
+        child {node {$A$}}
+        child {node {$B$}}
+        child {node {$AB$}
+        };
+\end{tikzpicture}
+\end{center} 
+For each of the leaves in the above tree, possible combinations would be considered
+for $t_3$.\\\\
+With the exception of the $\emptyset$, each other node in the tree incurs a penalty
+to the servers total broadcast count, $k$, equal to the number of pages broadcasted.
+As a result, certain paths may run out of available broadcasts prematurely.  This 
+provides justification for the following pruning rule.
+\begin{prune}
+If $k_{current} = 0$ for a given node prior to $t_{final}+1$, that node can be
+pruned because it will be unable to satisfy any requests made from $t_{current}$ 
+forward.  
+\end{prune}
+Although this pruning rule will eliminate redundancy, its effectiveness depends 
+upon the total time and the number of possible pages needed to be served.\\\\
+In addition to the variation of the broadcast counter $k$ of the server,
+the decision to broadcast or not at every time may result in pages being delayed,
+or an increase in the wait time as a function of the number pages not served
+and the total time since the page was requested.  Since different subsets of 
+pages can be served at a given time, it is possible that different decisions
+made by the server might produce identical results.  As an example, at time 
+$t_2$ in the above table of requests, the server might decide to serve $0$ pages
+or to serve only page $A$.  In both cases, the set of unsatisfied requests is $\{B\}$.
+As a result, the total wait that would carry over as a result of these decisions
+is the same.
+However, the decision to not broadcast does not deduct from the broadcast counter
+of the server.  As a result, another pruning rule can be developed. 
+\begin{prune}
+If the total total number of unsatisfied requests at two nodes that made
+different broadcasts decisions in the enumeration tree is the same, the
+node that has the lower broadcast counter, $k$, can pruned.  If both nodes
+have the same broadcast counter, the pruning can be done arbitrarily.
+\end{prune}
+This pruning rule guarantees that at every level, only the best choice
+for a given accumulated wait is taken.  As a result, only one choice
+will exist for each possible total delay.  Additionally, if the pruning
+is done arbitrarily as a result of the broadcast counter being equal
+amongst two nodes, the subsequence decision made from those nodes will
+all add the same values to identical current delays.\\\\
+Although the second pruning rule significantly reduces the number of nodes
+at each level, this process requires considering all possible subsets of
+size $k$ at every level.  Given a set of pages $\mathcal{P}$ with cardinality
+$p$, this results in $2^{k}\binom nk$ possible subsets.  Attempting to 
+search through all these subsets to find the correct subset of each size to consider
+broadcasting at each level would lead to an exponentially running algorithm
+dependent on $k$.\\\\
+To solve this problem a separate dynamic programming problem can be sovled
+to determine which subsets of each size should be considered.  In this 
+subproblem, the possible subsets of size $l\ through\  k$ can be enumerated.
+Broadcasting different subsets of each cardinality can lead to a different
+number of unsatisfied requests.  This enables the following pruning condition
+for this subproblem.
+\begin{prune}
+If two nodes have the same number of requests unsatisfied after serving
+the same number of pages, prune a node arbitrarily since the remaining
+unsatified pages will only go down by the same remaining possibilities
+in either case.
+\end{prune}
+Applying this pruning rule to this problem results in only one leaf for
+each possible wait time for each cardinality.  For each cardinality
+considered, only the subset that minimizes the total number of unsatisfied 
+requests needs to be considered.\\\\
+Combining the two pruning rules for the overall problem and the rule
+for the subproblem gives the following algorithm.\\\\
+\begin{algorithm}[H]
+\end{algorithm} 
 \end{document}
