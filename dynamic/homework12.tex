@@ -212,5 +212,53 @@ requests needs to be considered.\\\\
 Combining the two pruning rules for the overall problem and the rule
 for the subproblem gives the following algorithm.\\\\
 \begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\SetKw{Inp}{Input: }
+\SetKw{Init}{Initialization: }
+\SetKw{EndInit}{End Initialization}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{MultiBroadCast}\\
+\Inp{$T_{requests}$, $k$}\\
+\Glob{$A[\ ][\ ][\ ]$}\\
+\For{$i=2$ to $t_f$}
+    {\For{$j=0$ to $k$}
+        {\For{$l=0$ to $k$}
+           { 
+         \If{$A[i][j][l]$ is defined}
+            {
+                $subset_delay = FindSubset(T_{requests}[i],l)$
+                $A[i+1][j+1][l+1] = \min(A[i][j+1][l+1], subset_i + A[i][j][l])$
+            }
+        }
+    }
+    }
+\Ret{$\min(A[t_f][*][*])$}\\
+\Func{FindSubset}\\
+\Inp{$Array_{page}$, $l$}\\
+\Glob{$A[\ ][\ ]$}\\
+\For{$i=0$ to $n$}
+    {\For{$j=0$ to $l$}
+        {
+            \If{$A[i][j]$ is defined}
+                {
+                    $delay = A[i][j] - Array_{page}[i]$
+                    $A[i+1][delay] = j$
+                }
+        }
+    }
+\Ret{$\min(Array_{page}[n][*]$}
 \end{algorithm} 
+Although the \textit{FindSubset} function searches for the optimal subset
+at a given time, it does not need to return the actual subset.  By 
+returning only the value to the main function, the delay can be properly
+accumulated.\\\\
+To recover the broadcast times from the main program, the minimum total
+wait time is found in the lowest row of the table.  This value can then 
+be traced backward to see when the accumulated delay dropped to zero
+and for which pages.  These points indicate the times at which the
+server performed a broadcast and the pages served will have the requests
+for those pages cleared.  This process can be repeated till time $t_1$.\\\\
+The runtime for this algorithm is \BigO{nk^{3}t} due to the necessary
+subset search by dynamic programming.
 \end{document}
