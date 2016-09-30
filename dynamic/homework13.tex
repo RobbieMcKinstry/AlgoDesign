@@ -17,6 +17,129 @@
 
 \section*{Dynamic Programming}
 \subsection*{Problem 20: }
+Given a series of $n$ points in the Euclidean plane labeled
+$p_1,\dots,p_n$, dynammic programming can be used to find the 
+minimum routing distance to service these points in order
+with two tracers, $t_1$ and $t_2$.  In order tracing of these points
+implies that if $p_j$ is serviced aftered $p_i$ by either tracer, it 
+implies that $i<j$.\\\\
+A dynamic programming algorithm for this problem can be
+developed for this problem by initally considering all possible
+routes the two tracers can take after each point is considered. 
+This produces the following tree.
+%Actually properly write out the tree.
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+    level 1/.style={sibling distance=1.75cm},
+    level 2/.style={sibling distance=1.75cm},
+    level 3/.style={sibling distance=1.75cm}]
+    \node {$\emptyset$}
+        child {node {$\emptyset$}}
+        child {node {$A$}}
+        child {node {$B$}}
+        child {node {$AB$}
+        };
+\end{tikzpicture}
+\end{center} 
+At every level in the tree a new point is considered and can be
+taken by either $t_1$ or $t_2$.  However, if both $t_1$ and $t_2$
+are considered in the tree, significant duplication is observed
+at the leaves because the assignment of either $t_1$ or $t_2$ to
+a set of points is arbitrary.  For example, if the information
+in a leaf node is represented by the set ${pt_1,pt_2}$ where 
+$pt_1$ and $pt_2$ are the sets of points visited respectively
+by $t_1$ and $t_2$ then the node containing ${{p_1},{p_2,p_3}}$
+is equivalent to the node containing ${{p_2,p_3},{p_1}}$.  This
+is because the labels $t_1$ and $t_2$ do not really have meaning
+and can be interchanged.  As a consequence of this result, half the
+tree can be immediately eliminated.\\\\
+Although removing half of the initial tree significantly reduces
+the search space, the number of possible tours remaining is still
+$2^{|P|-1}$, where $|P|$ is the number of points in the entire 
+trace.  To further reduce the search space, two nodes at the same
+level have both $t_1$ and $t_2$ respectively at the same point, then
+the node with greater total distance traced can be pruned.  This is
+a consequence that adding the next point to either node will result
+in the same additional distance because the tracers $t_1$ and $t_2$
+are respectively equividistant from the next point.  As a result
+of this pruning rule, only the minimum of each combination of end points
+such as $(p1,p2)$, needs to be kept at every level.  Applying this
+rule to this problem produces the following algorithm, SlowPokeTaxi or
+SPT\@.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Out}{Output:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{SlowPokeTaxi}\\
+\Inp{$P={p_1,\ldots, p_2}$}\\
+\Glob{$A[\ ][\ ][\ ]$}\\
+\For{$i=0$ to $|P|$} {
+    \For{$j=0$ to $|P|$} {
+        \For{$k=0$ to $|P|$} {
+            \If{$A[i][j][k]$ is defined} {
+                $A[i+1][j][k] = \min(A[i+1][j][k], + A[i][j][k] + dist(j,i+1)$\\
+                $A[i+1][j+1][k] = \min(A[i+1][j+1][k] + A[i][j+1][k] + dist(j,i+1)$\\
+            }
+        }
+    }
+}
+\Ret{$\min(A[|P|][*][*])$}
+\end{algorithm}
+This algorithm runs in \BigO{n^3} because it has to consider all
+possible available end points at a given level.  In this case
+recovery of the actual sequence of traces requires determining
+which point from the previous matches the difference in the 
+distance between the current point and the previous.  This value
+be subtracted from the currently minimum traversed values of $t_1$
+and $t_2$.  Locating these values in the previous rows will 
+determine which tracer covered this point.\\\\
+This question now is if a faster algorithm can be developed.
+By the will of Cthulhu, it turns out an algorithm can be
+found to run in \BigO{n^2}.
+It is believed that this algorithm can be developed by recognizing that
+if two nodes contain information for $t_1$ and $t_2$ that are
+end on respectively opposite points, the node with the longer
+path can be pruned.  This results from the next point being
+equal distance from both tracers in each case; however,
+one tracer may have taken a longer route to the node.  Applying
+this pruning rule gives the following algorithm.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Out}{Output:}
+\SetKw{Glob}{Globals:}
+\SetKw{Def}{Define:}
+\SetKw{Ret}{Return:}
+\Func{FastPokeTaxi}\\
+\Inp{$P={p_1,\ldots, p_2}$}\\
+\Glob{$A[\ ][\ ][\ ]$}\\
+\For{$i=0$ to $|P|$} {
+    \For{$j=0$ to $|P|$} {
+        \tcc{$A[i][j][0]$ holds distance for $t_1$}
+        \tcc{$A[i][j][1]$ holds distance for $t_2$}
+        \If{$A[i][j][*]$ is defined} {
+            \tcc{Add to $t_1$} 
+            $A[i+1][j][0] = \min(A[i][j][0], A[i][j][0] + dist(j,i+1))$\\
+            $A[i+1][j][1] = A[i+1][j][1]$\\
+            \tcc{Add to $t_2$}
+            $A[i+1][j+1][1] = \min(A[i][j+1][1], A[i][j][1] + dist(j,i+1))$\\
+            $A[i+1][j][0] = A[i+1][j][0]$\\
+        }
+    }
+}
+\Ret{$\min(A[|P|][*][*])$}
+\end{algorithm}
+Since this algorithm only considers unique pairs and applies the pruning
+rule regarding opposite endpoints on the same node, it runs in \BigO{n^2}.\\\\
+To recover the exact sequence each tracer must travere, begin at the 
+index where the minimum value was found. From this index find the difference
+between points $n$ and the $n-1$.  This value can be subtracted from where the
+minimum depending on whether the point was added to $t_1$ or $t_2$ to recover
+the tracer of the previous point.  This processed can then be repated for all
+$n$.   
 \subsection*{Problem 21: }
 
 \section*{Reduction}
