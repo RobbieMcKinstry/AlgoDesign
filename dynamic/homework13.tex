@@ -21,5 +21,30 @@
 
 \section*{Reduction}
 \section*{Problem 1: }
+In order to show that there is a {$O(n^2)$} time algorithm for matrix multiplication, it is first necessary to reduce matrix multiplication (MM) to lower triangle multiplication (LTM). Because we reduce matrix multiplication to LTM, we have an algorithm for MM and are stating that LTM is at least as hard as MM.\\\\
+The reduction is as follows:\\
 
+Transform matrices A and B into matrices C and D to use as input for LTM, which will take {$O(n^2)$} time.\\\\
+$C = \begin{bmatrix}
+0 & \frac{A}{3}\\[0.3em]
+\frac{A}{3} & \frac{A}{3}
+\end{bmatrix}$
+$D = \begin{bmatrix}
+0 & \frac{B}{3}\\[0.3em]
+\frac{B}{3} & \frac{B}{3}
+\end{bmatrix}$\\\\
+Now from this transformed input, we can now use C and D in our LTM algorithm, which will also take {$O(n^2)$} time.\\\\
+LTM(C,D) = $\begin{bmatrix}
+\frac{AB}{9} & \frac{AB}{9}\\[0.3em]
+\frac{AB}{9} & \frac{2AB}{9}
+\end{bmatrix}$
+=
+{$\frac{1}{9}$} $\begin{bmatrix}
+AB & AB\\[0.3em]
+AB & 2AB
+\end{bmatrix}$ \\\\
+Get AB (the solution to MM(A,B)) from the above matrix in {$O(n^2)$} time\\\\
+{return $AB$}\\\\
+\noindent\rule{14cm}{0.4pt}\\\\
+Therefore, because there is a {$O(n^2)$} time algorithm for lower triangle multiplication that is used in the matrix multiplication algorithm and every other step is also no more than {$O(n^2)$}, there is a {$O(n^2)$} time algorithm for matrix multiplication.
 \end{document}
