@@ -15,6 +15,8 @@
 \renewcommand{\baselinestretch}{1.5}
 \maketitle
 
+\textbf{Please provide writing or oral feedback on this and future assignments.}
+
 \section*{Dynamic Programming}
 \subsection*{Problem 20: }
 Given a series of $n$ points in the Euclidean plane labeled
@@ -100,7 +102,7 @@ be subtracted from the currently minimum traversed values of $t_1$
 and $t_2$.  Locating these values in the previous rows will 
 determine which tracer covered this point.\\\\
 This question now is if a faster algorithm can be developed.
-By the will of Cthulhu, it turns out an algorithm can be
+By the will of Cthulhu, we found an algorithm can be
 found to run in \BigO{n^2}.
 It is believed that this algorithm can be developed by recognizing that
 if two nodes contain information for $t_1$ and $t_2$ that are
@@ -141,12 +143,27 @@ To recover the exact sequence each tracer must travere, begin at the
 index where the minimum value was found. From this index find the difference
 between points $n$ and the $n-1$.  This value can be subtracted from where the
 minimum depending on whether the point was added to $t_1$ or $t_2$ to recover
-the tracer of the previous point.  This processed can then be repated for all
-each previous $n$ upto the first point.   
+the tracer of the previous point.  This processed can then be repeated for all
+each previous $n$ up to the first point.
 \subsection*{Problem 21: }
 
+Since all points are colinear, any visit to a point $P_{i}$ if $P_{i} < 0 \implies \forall P_{j} : P_{i} < P_{j} < 0$, an optimal good path must visit $P_{j}$ before visiting $P_{i}$. This is obvious because any trip that skips over a point in between $P{i}$ and the origin would have to spend time traveling back to $P_{j}$, and this would increase the response time. An immediate corollary is that this is also true for all points farther along the real line in the positive direction as well.
+
+Thus, an algorithm to find the optimal good path has one one choice: include in the path either the next point less than the current point, or the next point greater than the current point (colloquially, go left or go right). The search tree for an optimal good path can be represented as a tree of nodes storing a triple: the set of points unvisited on the left, the current position, and the set of points unvisited on the right. Each child node is populated by selecting either the greatest number of the left set (the first point on the left) or the least number in the second set (the first number on the right) and visiting that point. As a result, each parent has two children in the general case. When either set is empty, the remaining choices are obvious, and thus the node becomes a leaf. Without loss of generality, this occurs when the good path moves from the origin left $l$ times before moving right $r$ times, where $l$ is the total number of node left of the origin and $r$ is the total number of nodes right of the origin.
+
+There are $l$ ways to move left before moving right (take the first point, take the first point and the second point, take the first point and ... and the $n$th point). Then, once moving right, there are $r$ ways to move right. Thus, there are $lr$ ways to move when changing direction no more than twice. The number of times you can change direction is limited the minimum of $l$ and $r$, since the number of times you can interleave right and left can not exceed the total number of times moving right and it cannot exceed the total number of times moving left. Assume $l$ is larger than $r$, without loss of generality. Then the total number of unique good paths is $l^{2}r$.
+
+This leads to the following iterative algorithm:
+
+Let $k$ be the minimum of $r$ and $l$. $\forall i < k$ consider changing direction $i$ times:
+
+while $ k > 0$:
+$\forall j < 1+ l - k$, go left $j$ times, before changing direction.
+$\forall m < 1 + r - k$ go right $m$ times before changing direction.
+Decrement $k$ by 1. Jump to the while condition.
+
 \section*{Reduction}
-\section*{Problem 1: }
+\subsection*{Problem 1: }
 In order to show that there is a {$O(n^2)$} time algorithm for matrix multiplication, it is first necessary to reduce matrix multiplication (MM) to lower triangle multiplication (LTM). Because we reduce matrix multiplication to LTM, we have an algorithm for MM and are stating that LTM is at least as hard as MM.\\\\
 The reduction is as follows:\\
 
