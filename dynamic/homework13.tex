@@ -30,14 +30,17 @@ This produces the following tree.
 %Actually properly write out the tree.
 \begin{center}
 \begin{tikzpicture}[level distance=1.5cm,
-    level 1/.style={sibling distance=1.75cm},
-    level 2/.style={sibling distance=1.75cm},
-    level 3/.style={sibling distance=1.75cm}]
+    level 1/.style={sibling distance=5.40cm},
+    level 2/.style={sibling distance=2.25cm},
+    level 3/.style={sibling distance=1.85cm}]
     \node {$\emptyset$}
-        child {node {$\emptyset$}}
-        child {node {$A$}}
-        child {node {$B$}}
-        child {node {$AB$}
+        child {node {${\{{p_1},\emptyset}\}$}
+            child {node {${\{\{p_1,p_2\},\emptyset}$\}}}
+            child {node {${\{\{p_1\},\{p_2\}\}}$}}
+        }
+        child {node {$\{{\emptyset,\{p_1\}\}}$}
+            child {node {${\{\{p_1\},\{p_2\}\}}$}}
+            child {node {$\{\emptyset,\{p_1,p_2\}\}$}}
         };
 \end{tikzpicture}
 \end{center} 
@@ -139,7 +142,7 @@ index where the minimum value was found. From this index find the difference
 between points $n$ and the $n-1$.  This value can be subtracted from where the
 minimum depending on whether the point was added to $t_1$ or $t_2$ to recover
 the tracer of the previous point.  This processed can then be repated for all
-$n$.   
+each previous $n$ upto the first point.   
 \subsection*{Problem 21: }
 
 \section*{Reduction}
