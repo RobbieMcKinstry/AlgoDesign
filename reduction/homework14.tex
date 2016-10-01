@@ -21,6 +21,78 @@
 
 \section*{Reductions}
 \subsection*{Problem 2:}
+A relationship between inverting a matrix and multiplying arbitrary
+square matrices can be developed to show that if there exists a
+\BigO{n^k} for $k\geq2$ for matrix inversion ($MI$), a \BigO{n^k} algorithm
+for matrix multiplication ($MM$) can also be found.  Essentially, this
+means the following.
+\[
+Matrix\ Multiplication\leq_{p} Matrix\ Inversion  
+\]
+This reduction means that there exists an incomplete algorithm for
+MM that at some point calls an algorithm for MI\@.  Prior to making the
+call to MI, MM must transform its input, arbitrary matrices $A$ and $B$,
+into an appropriate form for MI, a nonsignular matrix.  Additionally,
+the output of MI will have to be transformed into the output of MM,
+which is the product $AB$. Since, the  algorithm for MI operates in
+\BigO{n^k} time for $k\geq2$, the two transformations must occur in
+at most \BigO{n^k} time, otherwise the transformation will become
+the rate limiting step. Pictorially this can be represented in the
+following arrow diagram.
+\begin{center}
+\begin{tikzpicture}[node distance=4cm, auto]
+    \node (S) {$MM_{input}$};
+    \node (F) [below of=S] {$MM_{output}$};
+    \node (Mo) [right of=F] {$MI_{output}$};
+    \node (Mi) [right of=S] {$MI_{input}$};
+    \draw[->] (S) to node {$\leq$\BigO{n^k}} (Mi);
+    \draw[->, dashed] (Mi) to node {\BigO{n^k}} (Mo); 
+    \draw[->] (Mo) to node {$\leq$\BigO{n^k}} (F);
+\end{tikzpicture}
+\end{center}
+
+Using the above diagram as a guideline, the following transformation
+can be considered.  Given two arbitrary matrices $A$ and $B$ as input
+to MM, a new matrix $Z$ can be created as follows.
+\[
+Z =
+    \begin{pmatrix}
+    I & A & 0 \\
+    0 & I & B \\
+    0 & 0 & I 
+    \end{pmatrix}
+\]
+To show that $Z$ constitutes appropriate input for $MI$ is a straight
+forward process using the Laplace expansion for determinants to show
+that $\det(Z)$ is $1$ and hence nonzero and independent of $A$ and $B$.\\\\
+Although the details of the \BigO{n^k} algorithm for matrix inversion
+are unknown, the inverse can be found through a slower procedure and 
+used as output of $MI$.\footnote{Matrix inverse are unique.  This can
+be easily showed by assuming two matrices $A$ and $B$ have the same inverse
+$C$.  Therefore the following holds.
+\[
+A = AI = A(CB) = (AC)B = IB = B
+\]
+}
+Consequently, $Z^{-1}$ can be found by performing Gaussian elimination
+on $[Z|I]$ and converting it into $[I|Z^{-1}]$.  This process yields the
+following value for $Z^{-1}$.
+\[
+Z^{-1} =
+    \begin{pmatrix}
+    I & -A & AB \\
+    0 & I & -B \\
+    0 & 0 & I 
+    \end{pmatrix}
+\]
+Since this is the output of $MI$, it must be transformed into the output
+of $MM$ using a process that is maximally \BigO{n^k} for $k\geq2$.  The
+output of $MM$ is the product $AB$, which can be recovered by searching 
+all the values in $Z^{-1}$.  This value can then be returned from $MM$.\\\\
+This method of matrix multiplication had two transformations, creating
+$Z$ and searching $Z^{-1}$, both of which take \BigO{n^2} time.  As a result
+the entire process will be bounded by $MI$ and will therefore be at least
+\BigO{n^2} due to the restriction placed on $k$.
 \subsection*{Problem 4:}
 
 \end{document}
