@@ -94,5 +94,63 @@ $Z$ and searching $Z^{-1}$, both of which take \BigO{n^2} time.  As a result
 the entire process will be bounded by $MI$ and will therefore be at least
 \BigO{n^2} due to the restriction placed on $k$.
 \subsection*{Problem 4:}
-
+A relationship between a varient of the minimum Steiner tree problem ($STP$) and 
+sorting ($SRT$) can be developed to show that if the Steiner tree can be formed
+in \BigO{n} time, a set of numbers can also be sorted in \BigO{n}.  Essentially,
+this means that $SRT$ is reducible to $STP$.
+\[
+Sorting \leq_{p} Minimum\ Steiner\ Tree
+\]
+This reduction means that there exists an incomplete algorithm for $SRT$ 
+that at some point calls the algorithm for $STP$.  However, since the 
+the input for $SRT$ is a set of numbers, $\mathcal{N}$, and the input for 
+$STP$ is a set of of points, $\mathcal{P}$, $SRT$ will have to transform its
+input into an appropriate input for $STP$.  Similarily, the adjacency list
+$STP$ outputs to represent the tree will have to transformed into the output
+for $SRT$.  Both of these transformations must occur in at most \BigO{n} time,
+otherwise they will become the rate limiting step in the sorting algorithm. This
+relationship between the two algorithms can be represented pictorially as follows. 
+\begin{center}
+\begin{tikzpicture}[node distance=4cm, auto]
+    \node (S) {$SRT_{input}$};
+    \node (F) [below of=S] {$SRT_{output}$};
+    \node (STPo) [right of=F] {$STP_{output}$};
+    \node (STPi) [right of=S] {$STP_{input}$};
+    \draw[->] (S) to node {$\leq$\BigO{n}} (Mi);
+    \draw[->, dashed] (Mi) to node {\BigO{n}} (Mo); 
+    \draw[->] (Mo) to node {$\leq$\BigO{n}} (F);
+\end{tikzpicture}
+\end{center}
+One possible transform to apply on $\mathcal{N}$ so that it is acceptable input 
+for $STP$ is to map every element in $\mathcal{N}$ onto the $x\ axis$.
+\[
+    \forall n\in\mathcal{N}:n\rightarrow(n,0)
+\]
+When the \BigO{n} algorithm for $STP$ operates on these points, it will only connect
+adjacent points together because each point must be reachable from any other point
+and roads may not cross.  As a result, if the set of points given to $STP$ is
+$\{(0,0),(1,0),(2,0),(3,0)\}$ the following adjacency list will be produced.
+\begin{center}
+\begin{tabular}{c|c}
+Point & Adjacents\\ \hline
+(0,0) & (1,0)\\
+(1,0) & (0,0) (2,0)\\
+(2,0) & (1,0) (2,0)\\ 
+(3,0) & (2,0)\\
+\end{tabular} 
+\end{center}
+To transform the adjacency list output of $STP$ into a sorted list for $SRT$, the
+smallest within the adjacency list must be found.  This can be done by going through 
+the list of points and keeping track of the element with the smallest abscissa.  Once
+this element is found, the adjacency list can be followed from this point only
+considering points that have not already been seen.  With the exception of the 
+end points, where $1$ point is adjacent, only $2$ points will have to be considered
+at every point visited to determine which point is new.\\\\
+The two transformations performed in this version of the $SRT$ algorithm both 
+occur in \BigO{n} time because each process requires iterating through all the elements.
+Mapping the $SRT$ input onto the real line requires a conversion of each element and 
+finding the element with the minimum abscissa in the adjacency list is also a linear
+search.  The last transformation requries looking at $2n$ items because each internal
+point on the line will have two points adjacent.  Since each intermediate step only takes
+\BigO{n} time, sorting will occur in \BigO{n} time. 
 \end{document}
