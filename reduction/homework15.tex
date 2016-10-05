@@ -58,7 +58,7 @@ This is our transformation: Copy the graph $G$ into a new graph $G'$, except whe
 
 This is the most interesting of the three reductions. Maintaining correctness proved tricky.
 
-We have two phrases of the algorithm. The first phase is a preprocessing step. The second phase simply calls \textit{ undirectedISOEdge}.
+We have two phrases of the algorithm. The first phase is a preprocessing step. The second phase simply calls \textit{undirectedISOEdge}.
 
 First, prove that there exists a bijection between nodes in $G$ and $H$ such that each node in $G$ is mapped to another node in $H$ with the name tuple of in and out degrees. We do this with the following procedure.
 
@@ -95,6 +95,6 @@ Given $G$, create empty graphs $G'$. For each vertex $v$ in $G$, add two vertice
 
 Our second approach is as follows:
 
-Given $G$, create empty graphs $G'$. For each vertex $v$ in $G$, add a vertices in $G'$, $v'$. Finally, add to $G'$ a complete graph of of degree $k$ disconnected to the rest of $G'$. That way $\textit{2Clique }$ will find the clique in the disconnected complete subgraph which will count as the first of the two cliques. Finally, call $\textit{2Clique(G', k}$ and return its result.
+Given $G$, create empty graphs $G'$. For each vertex $v$ in $G$, add a vertices in $G'$, $v'$. Finally, add to $G'$ a complete graph of of degree $k$ disconnected to the rest of $G'$. That way $\textit{2Clique }$ will find the clique in the disconnected complete subgraph which will count as the first of the two cliques. Finally, call $\textit{2Clique(G', k)}$ and return its result.
 
 \end{document}
