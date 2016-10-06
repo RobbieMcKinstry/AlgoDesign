@@ -19,6 +19,66 @@
 \section*{Problem:8}
 \section*{Problem:12}
 \subsection*{a}
+Determining if a graph $\mathcal{G}$ with $n$
+vertices has a clique of size $\frac{3n}{4}$ can be shown to be
+\textbf{NP-Hard} by reducing any problem belonging to the set
+\textbf{NP-Complete} to this problem, which will be called \textit{$\frac{3}{4}\ Clique$}.
+In this case, the chosen problem will be the \textit{k-Clique} problem.
+\[
+k-Clique \leq_{p} \frac{3}{4}\ Clique
+\]
+For this reduction, the input of \textit{k-Clique} must be transformed
+into an input for $\frac{3}{4}\ Clique$.  This transformation must
+consider three different cases:
+\begin{enumerate}
+    \item When the clique size given to \textit{k-Clique} is larger than
+          $\frac{3n}{4}$, where $n$ is the number of vertices.
+    \item When the clique size given to \textit{k-Clique} is less than
+          $\frac{3n}{4}$, where $n$ is the number of vertices.   
+    \item When the clique size given to \textit{k-Clique} is equal to 
+          $\frac{3n}{4}$, where $n$ is the number of vertices.   
+\end{enumerate}
+$Case\ 3$ is the easiest to handle since the input to \textit{k-Clique}
+can be given directly to $\frac{3}{4}\ Clique$.  If the output of 
+$\frac{3}{4}\ Clique$ is true, then \textit{k-Clique} also returns true.
+Otherwise it returns false.\\\\
+$Case\ 1$ and $Case\ 2$ are more involved; however, they can be handled
+simulatenously.  When the input to \textit{k-Clique} is larger, disjoint
+vertices can be added to the graph inorder to increase the number of vertices,
+thereby lowering the ratio.  In the case when the input is smaller, the
+Clique being requested can be grown by $1$ by adding a vertex and 
+connecting all vertices in the original graph to the new vertex.
+All of these transformations are captured in the following algorithm.\\\\    
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{Clique}\\
+\Inp{Graph G, int k}\\
+\tcc{$V_G$ is the number of vertrices in graph G}
+\While{$k \neq 0.75V_G$}
+{
+    \uIf{$k > 0.75V_G$}
+    {
+        \tcc{argument $G$ is modified through function}
+        add\_disjoint\_vertex($G$)   
+    }
+    \Else{
+        \tcc{argument $G$ is modified through function}
+        add\_connected\_vertex($G$)\\
+        $k$++
+    }
+}
+\Ret{$\frac{3}{4}\ Clique(G)$}
+\end{algorithm}
+Two conditions for this reduction must be satisfied: the necessary and sufficient
+condition on the transformation and the polynomial time bound on the transformation.
+The necessary and sufficient condition can be proven by construction of graphs.  A
+runtime analysis of the algorithm shows that there are only $2$ loops in this 
+algorithm.  The outerloop determines if the process has converged and an implicit
+loop is used to determine how many vertices are in the graph.  As a result, this
+reduction shows $\frac{3}{4}\ Clique(G)$ is \textbf{NP-Hard}. 
 \subsection*{b}
 \subsection*{c}
 \subsection*{d}
