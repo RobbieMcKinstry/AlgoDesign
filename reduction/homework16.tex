@@ -81,6 +81,16 @@ loop is used to determine how many vertices are in the graph.  As a result, this
 reduction shows $\frac{3}{4}\ Clique(G)$ is \textbf{NP-Hard}. 
 \subsection*{b}
 \subsection*{c}
+In order to prove that problem (c) is NP-Hard, we need to reduce an NP-Complete problem to (c). We will call (c) {$Algo$}, where the input to {$Algo$} is a graph H and an integer j. The problem that will be reduced to {$Algo$} is Independent Set, in this problem we will use the abbreviation {$IS$}.\\\\
+The basic idea of this reduction is to transform the input of {$IS$}, a graph G and an integer k, to the input for {$Algo$} and then return the output from {$Algo$}.\\
+The reduction is as follows: \\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Algorithm}
+\Func{IS(graph G, integer k)}\\
+{$H =  G$ + a Clique of size k, where each vertex in the Clique is connected to each vertex in the graph G}\\
+{$j = k$}\\
+{$return$  $Algo(H, j)$}
+\end{algorithm}
 \subsection*{d}
 \subsection*{e}
 \subsection*{f}
