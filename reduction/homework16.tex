@@ -70,7 +70,7 @@ can be given directly to $\frac{3}{4}\ Clique$.  If the output of
 $\frac{3}{4}\ Clique$ is true, then \textit{k-Clique} also returns true.
 Otherwise it returns false.\\\\
 $Case\ 1$ and $Case\ 2$ are more involved; however, they can be handled
-simulatenously.  When the input to \textit{k-Clique} is larger, disjoint
+simultaneously.  When the input to \textit{k-Clique} is larger, disjoint
 vertices can be added to the graph inorder to increase the number of vertices,
 thereby lowering the ratio.  In the case when the input is smaller, the
 Clique being requested can be grown by $1$ by adding a vertex and 
@@ -83,7 +83,7 @@ All of these transformations are captured in the following algorithm.\\\\
 \SetKw{Ret}{Return:}
 \Func{Clique}\\
 \Inp{Graph G, int k}\\
-\tcc{$V_G$ is the number of vertrices in graph G}
+\tcc{$V_G$ is the number of vertices in graph G}
 \While{$k \neq 0.75V_G$}
 {
     \uIf{$k > 0.75V_G$}
@@ -107,6 +107,66 @@ algorithm.  The outerloop determines if the process has converged and an implici
 loop is used to determine how many vertices are in the graph.  As a result, this
 reduction shows $\frac{3}{4}\ Clique(G)$ is \textbf{NP-Hard}. 
 \subsection*{b}
+Determining if a graph $\mathcal{G}$ with $n$
+vertices has an Independent Set of size $\frac{3n}{4}$ can be shown to be
+\textbf{NP-Hard} by reducing any problem belonging to the set
+\textbf{NP-Complete} to this problem, which will be called \textit{$\frac{3}{4}\ IS$}.
+In this case, the chosen problem will be the \textit{k-IS} problem.
+\[
+k-IS \leq_{p} \frac{3}{4}\ IS
+\]
+For this reduction, the input of \textit{k-IS} must be transformed
+into an input for $\frac{3}{4}\ IS$.  This transformation must
+consider three different cases:
+\begin{enumerate}
+    \item When the IS size given to \textit{k-IS} is larger than
+          $\frac{3n}{4}$, where $n$ is the number of vertices.
+    \item When the IS size given to \textit{k-IS} is less than
+          $\frac{3n}{4}$, where $n$ is the number of vertices.   
+    \item When the IS size given to \textit{k-IS} is equal to 
+          $\frac{3n}{4}$, where $n$ is the number of vertices.   
+\end{enumerate}
+$Case\ 3$ is the easiest to handle since the input to \textit{k-IS}
+can be given directly to $\frac{3}{4}\ IS$.  If the output of 
+$\frac{3}{4}\ IS$ is true, then \textit{k-IS} also returns true.
+Otherwise it returns false.\\\\
+$Case\ 1$ and $Case\ 2$ are more involved; however, they can be handled
+simultaneously.  When the input to \textit{k-IS} is larger, the
+IS being requested can be lowered by $1$ by adding a vertex and 
+connecting all vertices in the original graph to the new vertex. In the case when the input is smaller, disjoint
+vertices can be added to the graph inorder to increase the number of vertices,
+thereby increasing the ratio.
+All of these transformations are captured in the following algorithm.\\\\    
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{Clique}\\
+\Inp{Graph G, int k}\\
+\tcc{$V_G$ is the number of vertices in graph G}
+\While{$k \neq 0.75V_G$}
+{
+    \uIf{$k > 0.75V_G$}
+    {
+        \tcc{argument $G$ is modified through function}
+         add\_connected\_vertex($G$)\\
+         $k$++
+    }
+    \Else{
+        \tcc{argument $G$ is modified through function}
+        add\_disjoint\_vertex($G$)
+    }
+}
+\Ret{$\frac{3}{4}\ IS(G)$}
+\end{algorithm}
+Two conditions for this reduction must be satisfied: the necessary and sufficient
+condition on the transformation and the polynomial time bound on the transformation.
+The necessary and sufficient condition can be proven by construction of graphs.  A
+runtime analysis of the algorithm shows that there are only $2$ loops in this 
+algorithm.  The outerloop determines if the process has converged and an implicit
+loop is used to determine how many vertices are in the graph.  As a result, this
+reduction shows $\frac{3}{4}\ IS(G)$ is \textbf{NP-Hard}.
 \subsection*{c}
 In order to prove that problem (c) is NP-Hard, we need to reduce an NP-Complete problem to (c). We will call (c) {$Algo$}, where the input to {$Algo$} is a graph H and an integer j. The problem that will be reduced to {$Algo$} is Independent Set, in this problem we will use the abbreviation {$IS$}.\\\\
 The basic idea of this reduction is to transform the input of {$IS$}, a graph G and an integer k, to the input for {$Algo$} and then return the output from {$Algo$}.\\
