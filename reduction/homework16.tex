@@ -8,6 +8,8 @@
 
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{\mathcal{O}}\bigl(#1\bigr)}}
 
+ \linespread{1.35}
+
 \begin{document}
 \title{Homework X}
 \author{Robbie McKinstry, Jack McQuown, Cyrus Ramavarapu}
@@ -15,8 +17,33 @@
 \renewcommand{\baselinestretch}{1.5}
 \maketitle
 
+
+\textbf{Please provide written or oral feedback on this and all future homeworks. :)}
+
 \section*{Problem:7}
+A problem is self-reducible \textit{iff} the optimization form of the problem reduces to the decision form in poly time.
+
+Thus, we show $ \textit{OptSubsetSum } \leq \textit{DecisionSubsetSum }$
+
+We implement the optimization problem using the decision problem as follows:
+
+Given a mutable collection $C$ of integers $x_{1} \dots x_{n}$ and a goal sum $L$, first declare a result set, $S$.
+For each $i$ from 1 to $n$, remove $x_{i}$ from $C$. If the decision is no longer satisfiable, then add $x_{i}$ to $S$ and back into $C$. Return $S$ after reaching all $n$. Note that if before entering the loop, the decision function returns false, then the empty set should be returned, as this implies no such subset exists.
+
+The logic is as follows: If an element can be removed from the collection and there is still a remaining subset sum, then that element doesn't need to be in the set for there to be a subset sum since there is still a sum remaining within the elements inside the collection. Conversely, if an element, when removed from the collection, changes the decision from a pass to a fail, then that element must be required in the subset, since a sum existed prior to it's removal but did not exist after it's removal. (thus, the removed element was a member of the subset). The final items in the set are exactly the items needed to construct the sum.
+
 \section*{Problem:8}
+
+The logic for this solution is extremely similar to the logic for the above solution. In general, this is going to be true of almost all self-reducibility proofs.
+
+We show $ \textit{OptHamCycle } \leq \textit{DecisionHamCycle }$.
+
+We represent a cycle as a set of edges. The assumption here is that each edge has a pointer to the nodes it connects so that a trace may be easily recreated given the edge set. We implement the optimization problem using the decision problem as follows:
+
+Given a graph $G$, first declare a result set, $S$. Should the decision problem return false, then return the empty set since no Hamiltonian cycle exists. For each edge in $G$, remove the edge from $G$, creating $G'$. If $G'$ does not have a Hamiltonian cycle, then add that edge to $S$ and back into $G'$. Set $G$ to $G'$.
+
+Similarly to \textbf{Problem 7}, if an edge can be removed from the graph and there is still a Hamiltonian cycle present, then that edge is not needed for the Hamiltonian cycle (and may in fact invalidate the cycle by visiting an already visited vertex). By adding to the set an edge if and only if that edge is required for the cycle, you of course wind up with the cycle represented exactly by the set.
+
 \section*{Problem:12}
 \subsection*{a}
 Determining if a graph $\mathcal{G}$ with $n$
