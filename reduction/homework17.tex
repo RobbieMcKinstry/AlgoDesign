@@ -34,6 +34,7 @@ reduction under the assumption of a polynomial time algorithm for the decision p
 \Func{$Clique_{opt}$}\\
 \Inp{$Graph\ \mathcal{G}$}\\
 \tcc{$n$ is the number of vertices in graph G}
+\tcc{this loop will eventually exit via return.  All graphs have a $1$ clique}
 \While{$n\neq 0$}{
 \uIf{$Clique_{dec}(\mathcal{G}, n)$}
 {      
@@ -74,5 +75,13 @@ The following algorithm demonstrates this reduction.\\
 $\mathcal{G'}=add\_connected\_vertex(\mathcal{G})$\\
 \Ret{$4-coloring(\mathcal{G'})$}
 \end{algorithm}
-The reason this algorithm works is because.
+The reason this algorithm works is because if a graph had a \textit{3-coloring}, the
+addition of a vertex connected to all vertices forces the addition of a new color because
+if any of the three original colors are given to the new vertex, it will create a
+violation of the coloring.  As a result, the new graph will have a \textit{4-coloring}.
+In a similar manner, the addition of a new vertex to a graph that did not originally
+have a \textit{3-coloring} will not result in a \textit{4-coloring}.\\\\
+Lastly, the addition of a new vertex and the subsequent connecting of all the original
+vertices to the new vertex can be done in polynomial time.  This is apparent if the 
+original graph was stored in an adjacency matrix and a new row and column are added.
 \end{document}
