@@ -15,6 +15,8 @@
 \renewcommand{\baselinestretch}{1.5}
 \maketitle
 
+\textbf{Please provide feedback on this and all future homeworks :) }
+
 \section*{Problem 9:}
 The optimization version of the clique problem with returns the large clique in
 undirected graph $\mathcal{G}$ can be shown to be self reducible in polynomial
@@ -54,8 +56,54 @@ reduction under the assumption of a polynomial time algorithm for the decision p
 }
 }
 \end{algorithm}
+
+
 \section*{Problem 10:}
+The vertex cover problem is self-reducible \textit{iff} the optimization form reduces to the decision form. Let \textit{OptVC} represent the optimization form, and \textit{DecVC} represent the decision form. Our algorithm operates in \BigO{n} times the time of \textit{DecVC}.
+
+In order to find the \textit{smallest} vertex cover, we first for a vertex cover of size 1, then size 2, up until the decision problem returns true. Note that this can take up to $n$ searches, and that this will always terminate because all graphs have a cover of size $n$. Once we've identified the size of the smallest vertex cover, which we call $k$, we then iterate through each vertex in the graph, removing the vertex if it's presence does not have an impact on the decision solution. If it does have an impact on the decision solution (\textit{i.e.} removing it causes \textit{DecVC} to return false), then it must me a member the smallest remaining vertex cover since removing it caused there to be no remaining smallest vertex cover. We return all remaining vertices.
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{\textit{OptVC}}\\
+\Inp{$Graph\ \mathcal{G}$}\\
+
+Let k := 0
+\While{true}{
+	\If{$DecVC(G, k)$}{
+		break;
+	}
+	k++
+}
+
+Let $S$ be an empty set
+
+\ForEach{$v \in G$}{
+	$G' = G - v$
+	
+	\If{not $DecVC(G', k)$}{
+		$S = S \cup v$
+		
+		$G' = G$
+	}
+	
+	$G = G$
+}
+\Ret{S}
+\end{algorithm}
+
+
 \section*{Problem 13:}
+
+We call the problem of finding a satisfying assignment of values to linear variables \textit{SMT}. While the literature usually refers to \textit{SMT} as a slightly more general invariant, for our purposes this name is descriptive enough. 
+
+To show that $\textit{CNF-SAT} \leq_{poly} \textit{SMT}$, we translate each of the conjunctive clauses individually into linear inequalities. We provide a 1 to 1 mapping from propositional logic formulas to linear inequalities that maintains correctness (that is, the formula is satisfiable \textit{iff} the inequality is satisfiable). The correctness invariant should be fairly obvious.
+
+Iterate through the propositional logic conjunctions. For each formula $x_{1} \vee x_{2} \vee \dots x_{n}$, convert each singleton literal $x_{i}$ into the inequality $x_{i} > 0$ if the literal is not negated and $x_{i} \leq 0 $ if the literal is negated. This encodes each of the literals as a negative number if negated, and a non-negative number if not negated. For each disjunction in each conjunctive clause, encode the disjunction $a \vee b$ as $a + b > 0$, where each singleton literal $a$ is converted as above. Obviously, this inequality is satisfiable \textit{iff} the proposition is satisfiable due to the properties of order fields (transitivity of addition).
+
 \section*{Problem 14:}
 It can be shown by reduction that if there exists a polynomial time algorithm
 for the \textit{4-coloring} problem there also exists a polynomial time algorithm
