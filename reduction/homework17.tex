@@ -16,9 +16,72 @@
 \maketitle
 
 \section*{Problem 9:}
+The optimization version of the clique problem with returns the large clique in
+undirected graph $\mathcal{G}$ can be shown to be self reducible in polynomial
+time if the decision version of the clique problem has a polynomial time algorith.
+Symbollically, this means the following.
+\[
+Clique_{opt} \leq_{poly} Clique_{eq}
+\]
+Since the optimization version of the clique problem returns the largest clique within
+the graph $\mathcal{G}$, the following algorithm demonstrates the polynomial time
+reduction under the assumption of a polynomial time algorithm for the decision problem.\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$Clique_{opt}$}\\
+\Inp{$Graph\ \mathcal{G}$}\\
+\tcc{$n$ is the number of vertices in graph G}
+\tcc{this loop will eventually exit via return.  All graphs have a $1$ clique}
+\While{$n\neq 0$}{
+\uIf{$Clique_{dec}(\mathcal{G}, n)$}
+{      
+    \While{$Vert_{\mathcal{G}}\geq n$}{
+        $v = Remove_Vertex(\mathcal{G},\ n)$\\
+        \uIf{$Clique_{dec}(\mathcal{G}, n)$}
+        {   continue }
+        \Else{
+            $mark\_vertex(v)$\\
+            $Read\_Vertext{\mathcal{G},\ v}$
+        }
+    }
+    \Ret{$\mathcal{G}_{verts}$} 
+}
+\Else{
+    $n--$
+}
+}
+\end{algorithm}
 \section*{Problem 10:}
 \section*{Problem 13:}
 \section*{Problem 14:}
-
-
+It can be shown by reduction that if there exists a polynomial time algorithm
+for the \textit{4-coloring} problem there also exists a polynomial time algorithm
+\textit{3-coloring}.  Mathematically this relationship can be expressed as follows.
+\[
+3\-coloring \leq_{poly} 4\-coloring
+\]
+The following algorithm demonstrates this reduction.\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$3-Coloring$}\\
+\Inp{$Graph\ \mathcal{G}$}\\
+\tcc{$n$ is the number of vertices in graph G}
+$\mathcal{G'}=add\_connected\_vertex(\mathcal{G})$\\
+\Ret{$4-coloring(\mathcal{G'})$}
+\end{algorithm}
+The reason this algorithm works is because if a graph had a \textit{3-coloring}, the
+addition of a vertex connected to all vertices forces the addition of a new color because
+if any of the three original colors are given to the new vertex, it will create a
+violation of the coloring.  As a result, the new graph will have a \textit{4-coloring}.
+In a similar manner, the addition of a new vertex to a graph that did not originally
+have a \textit{3-coloring} will not result in a \textit{4-coloring}.\\\\
+Lastly, the addition of a new vertex and the subsequent connecting of all the original
+vertices to the new vertex can be done in polynomial time.  This is apparent if the 
+original graph was stored in an adjacency matrix and a new row and column are added.
 \end{document}
