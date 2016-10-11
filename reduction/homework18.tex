@@ -20,14 +20,12 @@
 The dominating set problem can be shown to be \textbf{NP-Hard} via 
 a reduction to the vertex cover problem.  In the vertex cover problem,
 the goal is to find a set of vertices of given cardinality \textit{k} 
-that touches every edge.  For example, the following graph $\mathcal{G}$
-has a vertex cover of $3$.\\\\
+that touches every edge.\\\
 %Insert graph
 The dominating set problem, on the otherhand, produces the minimum set 
 of vertices, $\mathcal{S}$, from the input graph $\mathcal{H}$ such that every element
 not in the dominating set $\mathcal{S}$ is adjacent to an element in the
-dominating set $\mathcal{S}$.  This is demonstrated by the following example.\\\\
-%Insert graph
+dominating set $\mathcal{S}$.\\\\
 The strategy to show vertex cover can be solved if there is a polynomial time 
 algorithm for the dominating set problem will be local reduction.  Since in the
 vertex cover problem there exists a minimum number of vertices that must be
@@ -42,7 +40,6 @@ different than this minimum value, the decision for this problem can be solved
 by a comparison to check if the input value is greater than or less than the
 result from the dominating set problem.  If it is greater than, the vertex cover
 problem will return true; otherwise, it will return false.\\\\
-%Insert graph
 Algorithmically, this process is represented by the following code.\\
 \begin{algorithm}[H]
 \SetKw{Func}{Function:}
