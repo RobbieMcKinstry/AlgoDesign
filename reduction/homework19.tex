@@ -16,10 +16,78 @@
 \maketitle
 
 \section*{Problem 17: }
+The Fixed Hamiltonian path problem determines if an undirected graph
+$\mathcal{G}$ has a simple path that spans all vertices in $\mathcal{G}$
+between two given vertices $x$ and $y$.  If there exists a polynomial
+time algorithm for this problem, it can be shown by reduction, that
+there exists a polynomial time algorithm for the Hamiltonian Cycle
+problem.\\\\
+The Hamiltonian cycle problem takes an undirected graph $\mathcal{H}$
+and determines if there is a simple cycle spanning all the vertices
+of $\mathcal{H}$. If it is assumed that the Fixed Hamiltonian path
+problem can be solved in polynomial time, this problem can also be
+solved in polynomial time as demonstrated by the following algorithm.\\\\ 
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$HamCycle$}\\
+\Inp{$\mathcal{G}$}\\
+\For{$Vertex\ v\ in\ \mathcal{G}$}
+{
+\tcc{Neighborhood(Vertex v, Graph G)}
+\tcc{Returns the set of vertices adjacent to v in graph G}
+    \For{$Vertex\ u\ in Neighborhood(v,\mathcal{G})$}
+{\If{$FixedHamPath(v,u,\mathcal{G})==1$}
+{\Ret{$1$}}
+}
+}
+\Ret{$0$}
+\end{algorithm}
+Since it is assumed that the $FixedHamPath$ algorithm runs
+in polynomial time, this algorithm also runs in polynomial time because
+it only through all the vertices in the outerloop and in the innerloop
+will loop through a maximum of $n-1$ vertices.  As a result, the
+$FixedHamPath$ problem will be called \BigO{n^2} times.  Therefore
+this algorithm will run in Poly-time.\\\\
+Although the above algorithm demonstrates the reduction of the
+Fixed Hamiltonian path problem from the Hamiltonian cycle problem, the
+repeat calls to $FixedHamPath$ are inelegant. The reduction can be 
+performed with a single call to $FixedHamPath$ by transforming the
+input graph $\mathcal{G}$ in such a way that there will only be a
+Fixed Hamiltonian Path if and only if there is also a Hamiltonian 
+Cycle.  This can be accomplished by adding two disjoint vertices
+to the original graph named $a$ and $b$.  Both $a$ and $b$ are then
+made adjacent to an arbitrary node in the original graph $\mathcal{G}$.
+The new graph, $\mathcal{H}$ will only have a Fixed Hamiltonian Path
+between $a$ and $b$ if there is a cycle that spans all the nodes in
+the original graph.  This arises from the lack of a `start point' in
+the cycle.  Pictorially this is represented by the following
+sketch:\\\\\\\\\\\\\\\\\\   
 
-
-
-
+Algorithmically, this is covered by the following code once again
+assuming that there exists a polynomial time algorithm for the
+Fixed Hamiltonian path problem.\\\\ 
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$HamCycle$}\\
+\Inp{$\mathcal{G}$}\\
+\Begin{$\mathcal{H} = add\_disjoint\_vertex(a,\mathcal{G})$\\
+$\mathcal{H} = add\_disjoint\_vertex(b,\mathcal{H})$\\
+\tcc{$u$ is an arbitrary vertex in $\mathcal{H}$}
+$\mathcal{H} = create\_edge(a,u,\mathcal{H})$\\
+$\mathcal{H} = create\_edge(b,u,\mathcal{H})$\\
+\Ret{$FixedHamPath(a,b,\mathcal{H})$}
+}
+\end{algorithm}
+Due to the lack of explicit loops in this algorithm, it is obvious it
+runs in polynomial time under the aforementioned assumptions.  However,
+for the sake of clarity, vertices and edges can be added in Poly-time
+depending on the datastructure used to store the graph.
 \section*{Problem 18: }
 
 \end{document}
