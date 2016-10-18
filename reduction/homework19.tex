@@ -24,9 +24,13 @@ there exists a polynomial time algorithm for the Hamiltonian Cycle
 problem.\\\\
 The Hamiltonian cycle problem takes an undirected graph $\mathcal{H}$
 and determines if there is a simple cycle spanning all the vertices
-of $\mathcal{H}$. If it is assumed that the Fixed Hamiltonian path
-problem can be solved in polynomial time, this problem can also be
-solved in polynomial time as demonstrated by the following algorithm.\\\\ 
+of $\mathcal{H}$.  It is obvious that if the graph contains a vertex
+with a neighborhood size $\leq 1$, there cannot be a cycle because this
+vertex will either represent a deadend or an unreachable vertex.  
+Accounting for this problem and iff it is assumed that the Fixed
+Hamiltonian path problem can be solved in polynomial time, this
+problem can also be solved in polynomial time as demonstrated
+by the following algorithm.\\\\ 
 \begin{algorithm}[H]
 \SetKw{Func}{Function:}
 \SetKw{Inp}{Input:}
@@ -34,6 +38,10 @@ solved in polynomial time as demonstrated by the following algorithm.\\\\
 \SetKw{Ret}{Return:}
 \Func{$HamCycle$}\\
 \Inp{$\mathcal{G}$}\\
+\For{$Vertex\ v\ in \mathcal{G}$}
+{\If{$Neighborhood(v, \mathcal{G}\leq 1$}
+{\Ret{$0$}}
+}
 \For{$Vertex\ v\ in\ \mathcal{G}$}
 {
 \tcc{Neighborhood(Vertex v, Graph G)}
@@ -59,16 +67,19 @@ input graph $\mathcal{G}$ in such a way that there will only be a
 Fixed Hamiltonian Path if and only if there is also a Hamiltonian 
 Cycle.  This can be accomplished by adding two disjoint vertices
 to the original graph named $a$ and $b$.  Both $a$ and $b$ are then
-made adjacent to an arbitrary node in the original graph $\mathcal{G}$.
-The new graph, $\mathcal{H}$ will only have a Fixed Hamiltonian Path
-between $a$ and $b$ if there is a cycle that spans all the nodes in
+made adjacent to two members in the neighborhood of an arbitrary node, $x$,
+in the original graph $\mathcal{G}$.  The new graph, $\mathcal{H}$
+will only have a Fixed Hamiltonian Path between $a$ and $b$
+if there is a cycle that spans all the nodes in
 the original graph.  This arises from the lack of a `start point' in
-the cycle.  Pictorially this is represented by the following
+the cycle and the need to bridge $x$.
+Pictorially this is represented by the following
 sketch:\\\\\\\\\\\\\\\\\\   
 
 Algorithmically, this is covered by the following code once again
 assuming that there exists a polynomial time algorithm for the
-Fixed Hamiltonian path problem.\\\\ 
+Fixed Hamiltonian path problem and the abscence of any vertices with
+a neighborhood $\leq 1$.\\\\ 
 \begin{algorithm}[H]
 \SetKw{Func}{Function:}
 \SetKw{Inp}{Input:}
@@ -77,10 +88,15 @@ Fixed Hamiltonian path problem.\\\\
 \Func{$HamCycle$}\\
 \Inp{$\mathcal{G}$}\\
 \Begin{$\mathcal{H} = add\_disjoint\_vertex(a,\mathcal{G})$\\
+{\If{$Neighborhood(v, \mathcal{G}\leq 1$}
+{\Ret{$0$}}
+}
 $\mathcal{H} = add\_disjoint\_vertex(b,\mathcal{H})$\\
 \tcc{$u$ is an arbitrary vertex in $\mathcal{H}$}
-$\mathcal{H} = create\_edge(a,u,\mathcal{H})$\\
-$\mathcal{H} = create\_edge(b,u,\mathcal{H})$\\
+\tcc{$u+1$ is a member of neighborhood(u) in $\mathcal{H}$}
+\tcc{$u-1$ is a member of neighborhood(u)$\neq$ u+1 in $\mathcal{H}$}
+$\mathcal{H} = create\_edge(a,u+1,\mathcal{H})$\\
+$\mathcal{H} = create\_edge(b,u-1,\mathcal{H})$\\
 \Ret{$FixedHamPath(a,b,\mathcal{H})$}
 }
 \end{algorithm}
