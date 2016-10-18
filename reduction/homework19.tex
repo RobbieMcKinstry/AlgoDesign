@@ -104,6 +104,20 @@ Due to the lack of explicit loops in this algorithm, it is obvious it
 runs in polynomial time under the aforementioned assumptions.  However,
 for the sake of clarity, vertices and edges can be added in Poly-time
 depending on the datastructure used to store the graph.
+
 \section*{Problem 18: }
+
+Personally, we found that the Hint got us 90\% of the way through this problem, and that last 10\% did not require much creativity.
+ The Hint did all of the heavy lifting.
+ 
+ Given a graph $H$ and an integer $\ell$, we seek to solve vertex cover using an algorithm for the problem described, which we call \textit{MinimumConnection} or \textit{MinCon} for short. We show that vertex cover can be solved in poly time if \textit{MinCon} can be solved in polytime. Below is an high-level description of our algorithm.
+
+First, let $G$ be a graph with a single vertex, \textit{Center}. Label each vertex in $H$ uniquely, and for each vertex in $H$ add a vertex in $G$ and connect that vertex to \textit{C}, maintaining the label from $H$ in $G$. This constructs $G$ such that a path exists from any vertex to another by passing through \textit{C}. Now, for each edge $e$ in $H$, add a vertex $v$ to $G$. Connect $v$ to another node $v'$ if and only if $e$ is an edge of the vertex with the label $v'$ in $H$. (Recall that the labels were copied over, so a vertex $v'$ in $G$ has a correspondingly vertex in $H$.) This results in each vertex added in this manner possessing two edges (since every edge in $H$ connects exactly two vertices). These edges are also connected to each other by pathing through \textit{Center}. 
+
+Let \textit{Nodes} be the set of vertices in $G$ labeled as corresponding to a vertex in $H$ (and thus not an edge in $H$). Let \textit{count(edges)} be the number of edges in $H$. Finally, let $R = \{ x \in G\} - \textit{Nodes}$. Return the result of \textit{MinCon(G, R, 1+ $\ell + \textit{count(edges)}$)} 
+
+\textit{MinCon} is satisfiable \textit{iff} there exists a vertex cover of size $\ell$ on $H$. An algorithm for \textit{MinCon} must add to $U$ all of the nodes in $R$, which is \textit{Center} and all of the vertices in $G$ representing edges in $H$ (that is, all of the vertices in $G$ not representing vertices in $H$). This leaves $\ell$ vertices left to be added to the set $U$, and only the vertices left in \textit{Nodes} to select from. Selecting a vertex $v$ from \textit{Nodes} creates a path connecting all of $v$'s edges to \textit{Center} since $v$ is connected to \textit{Center}, so all of the vertices in $R$ will be connected to each other if at least one of the vertices in \textit{Nodes} and also in $U$ has an edge to that vertex.
+
+This algorithm operates in polynomial time (iff \textit{MinCon} operates in polynomial time). 
 
 \end{document}
