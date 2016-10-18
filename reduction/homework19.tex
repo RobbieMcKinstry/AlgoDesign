@@ -94,9 +94,8 @@ a neighborhood $\leq 1$.\\\\
 $\mathcal{H} = add\_disjoint\_vertex(b,\mathcal{H})$\\
 \tcc{$u$ is an arbitrary vertex in $\mathcal{H}$}
 \tcc{$u+1$ is a member of neighborhood(u) in $\mathcal{H}$}
-\tcc{$u-1$ is a member of neighborhood(u)$\neq$ u+1 in $\mathcal{H}$}
 $\mathcal{H} = create\_edge(a,u+1,\mathcal{H})$\\
-$\mathcal{H} = create\_edge(b,u-1,\mathcal{H})$\\
+$\mathcal{H} = create\_edge(b,u,\mathcal{H})$\\
 \Ret{$FixedHamPath(a,b,\mathcal{H})$}
 }
 \end{algorithm}
