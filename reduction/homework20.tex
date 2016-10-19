@@ -21,5 +21,92 @@
 
 \section*{Parallel}
 \subsection*{Problem 1: }
-
+\subsubsection*{a}
+The AND of $n$ bits can be solved in \BigO{\log n} time on an
+EREW PRAM using the following divide and conquer algorithm.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$AND\_EREW\_1$}\\
+\Inp{$Bits\ b_a\_b_n$,$Processors\ n$}\\
+\If{$n==1$}
+{\Ret{$b$}}
+\Ret{$AND\_EREW\_1(b_1\dots b_{n/2},n/2)\land AND\_EREW\_1(b_{n/2 + 1}\dots b_{n},n/2)$}
+\end{algorithm}
+This algorithm takes \BigO{\log n} time because each recursive
+call halves the problem and the call tree continues down until 
+each processor has a single bit whereupon it is a constant
+time operation to perform an AND.\\\\
+The efficiency of this algorithm is defined as:
+\[
+E=\frac{T_{serial}(n,p)}{pT_{parallel}(n,p)}
+\]
+Since there are n processors in this problem, the actual running
+time for the parallel algorithm can be solved as $T(n,n) = 1 + \log(n)$.
+Solving for the efficiency using the sertial run time of $T(n,1) = n$
+gives $E=\frac{n}{1+n\log(n)}$.\\\\
+Using the folding principle, an upper bound to the runtime of the parallel
+algorithm if $n^{1/3}$ processors are used to be $T(n,n^{1/3})=n^{2/3}(1+\log(n))$.
+\subsubsection*{b}
+Similar to the algorithm for $AND\_EREW\_1$, the same divide an conquer
+strategy can be used to develop a parallel algorithm for the AND problem
+using only $\frac{n}{\log n}$ processors that still runs in \BigO{\log n}
+time.  The reason the same strategy works is that although the recursive
+tree for divide and conquer will have fewer levels and each processor
+will now do more work, the work done by each processor in parallel will
+now dominate.  This work is bounded by $\frac{n}{n\log n}$ or
+equivalently $\log n$ for each processor.  Algorithmically this process can be written
+as follows.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$AND\_EREW\_2$}\\
+\Inp{$Bits\ b_a\_b_n$,$Processors\ n$}\\
+\If{$n==1$}
+{$temp=1$\\
+\For{$Bit\ b\ in [b_a,b_n]$}
+{$temp=temp\land b$}
+}
+\Ret{$AND\_EREW\_2(b_1\dots b_{n/2},n/2)\land AND\_EREW\_2(b_{n/2 + 1}\dots b_{n},n/2)$}
+\end{algorithm}
+The efficiency of this algorithm can be calculated in the same way as
+$AND\_EREW\_1$ to give $E=\frac{n}{n+p\log p}$ with $p$ set to $\frac{n}{\log n}$
+this gives an asymptotic efficiency of $1$.\\\\
+Using the folding principle an upper bound to the running time of this algorithm
+with $n^{2/3}$ processors can be determined because the running time of the parallel
+program will increase by a factor of at most $n^{2/3}$.  This gives the following 
+run time: $T(n,n^{1/3})\leq n^{2/3}(\log n + \log(n/\log n))$.
+\subsubsection*{b}
+Transitioning to an algorithm for the AND problem that runs on a CRCW PRAM in
+\BigO{1} using $n$ processors requires a fundamental change in the algorithm
+in comparison to the $AND\_EREW$ algorithms.  This is accomplished by 
+giving each of the $n$ processors an individual bit.  If the bit belonging to
+the processor is a $0$, the processor will write to the shared result memory
+location a $0$.  All of these writes will be done in parallel and and hence
+the algorithm will take \BigO{1}.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{$AND\_CRCW$}\\
+\Inp{$Bits\ b_a\_b_n$,$Processors\ n$}\\
+\tcc{Result exists in shared memory}
+$Result = 1$
+\tcc{Each Processor gets a bit}
+\If{$b==0$}
+{$Result=0$}
+\end{algorithm}
+This algorithm operates on the weakest type of CRCW PRAM, COMMON, because if a processor
+writes to the shared memory location, it writes the same value as any other
+processor that writes to the shared location.\\\\
+The efficiency of this algorithm can be computed as before by taking
+the ratio of the speed up to the number of processors.  Since there are
+$n$ processors, the efficiency is $1$\\\\
+By the folding principle an upper bound on this algorithm if only $n^{2/3}$
+processors are used.  In this case the time will be $T(n, n^{2/3}) = n^{1/3}$   
 \end{document}
