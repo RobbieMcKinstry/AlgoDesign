@@ -40,9 +40,28 @@ Let $p=n$
 
 $E(n, p) = \frac{S}{pT(n, p)} = \frac{n}{nlg(n)} = \frac{1}{lg(n)}$
 
-By the folding principle, your run time would be no worse than $n^{\frac{2}{3}}$.
+By the folding principle, your run time would be no worse than $n^{\frac{2}{3}}\log n$.
 
-Next, we provide a CRCW Common algorithm. This one is much easier! Simply have one core allocate the array of size $n$, and for each uniquely numbered core from $i := 1 \to n$, have the $i$th core copy $x$ into the $i$th index of the array. Return that array!
+Next, an EREW PRAM algorithm can be developed in an identical manner as the above EREW algorithm except
+$\frac{n}{\log n}$ processors are used.  However, unlike the previous problem where at the leaves of the
+recursive tree each processor has only $1$ assignment to do, in this algorithm each processor will have
+to do $\log n$ assignments into the array and will have to allocate an array of size $\log n$ greater
+than the previous processor to provide the necessary exclusive read slots.
+
+The efficiency of this algorithm can be calculated as follows:
+\[
+E(n,p) = \frac{S}{p}\]
+\[
+E(n,p) = \frac{n}{(n/\log n)\log n}
+\]
+\[
+E(n,p) = 1 
+\]
+ 
+Finally, by the folding principle, decreasing the number of processors by a factor of $n^{\frac{2}{3}}$
+will result in a runtime no worse than $n^{\frac{2}{3}}\log n$ 
+
+Lastly, we provide a CRCW Common algorithm. This one is much easier! Simply have one core allocate the array of size $n$, and for each uniquely numbered core from $i := 1 \to n$, have the $i$th core copy $x$ into the $i$th index of the array. Return that array!
 
 Technically, since we're only reading from shared memory and writing, our algorithm is CREW, but all CREW algorithms are also CRCW algorithms. Our algorithm runs in constant time since each core only performs a single task once (other than the initial array allocation).
 
