@@ -19,6 +19,24 @@
 \subsection*{Problem 19: }
 \subsection*{Problem 22: }
 
+This problem is vertex cover in disguise! My reasoning is that I tried a bunch of different graphs and anything that worked for vertex cover also worked for the River Crossing problem, and anything that worked for the River Crossing problem also worked for vertex cover.
+
+More formally, given a graph $G$, the first boat-trip will take $k$ resources across the bridge and thus covering $k$ edges; if at that time there remains an uncovered edge, then the resources devour each other and both the River Crossing problem and vertex cover fail to find a solution. Conversely, if there are no uncovered edges, then there are no mutually exclusive resources. Additionally, because each return trip acts on a subgraph of $G$, then any satisfying trip implies the existence of an additional satisfying trip, since there are no more vertices in a subgraph than there are in the graph from which the subgraph is derived. 
+
+Finally, we must show that if there exists a safe first trip, then all following trips can ultimately terminate successfully. Each trip can move at least one resources across the bridge without introducing conflict on the other side (since no edges are left uncovered as stated above). Let $k$ be the number of resources the boat is holding and $j$ be the number of resources on the original side of the bridge. The first trip can set down at least 1 resource on the other side of the bridge safely, since a single vertex has a degree of 0, and because the initial side of the bridge is fully covered by the assumption that there exists a safe first trip. At this point in time, the boat holds at most $k-1$ resources and there are still $j$ resources left on the initial side. The boat returns, and can pick up another resource on the initial side, which obviously won't introduce any uncovered edges in the new subgraph of $j-1$ resources since you're removing a vertex from the graph. Now, upon return to the destination-side of the river, you can place down the most recently received resource and pick up the first resource placed. Now, the origin-side of the river contains $j-1$ resources and the destination-side contains $1$ resource, while the boat contains $k$ resources. This process repeats, transferring at least one resource at a time across the river until all $j$ resources are successfully transferred. Both sides of the river are always satisfied because there make up a partition of the $j$ resources, which themselves are disjoint, so any two subsets of two disjoint sets are themselves disjoint. Thus, River Crossing can terminate if there is an initial satisfying trip.
+
+Since vertex cover on a graph $G$ with covering vertices $k$ is satisfiable if and only if River Crossing on $G$ with a boat of size $K$ is satisfiable, then vertex cover reduces to River Crossing (and River Crossing reduces to vertex cover). This implies that River Crossing is NP-Hard since an NP-Complete problem reduces to it.
+
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Glob}{Globals:}
+\SetKw{Ret}{Return:}
+\Func{Vertex Cover}\\
+\Inp{Graph $G$, Integer $k$}\\
+\Ret{RiverCrossing($G, k$)}
+\end{algorithm}
+
 \section*{Parallel}
 \subsection*{Problem 1: }
 \subsubsection*{a}
