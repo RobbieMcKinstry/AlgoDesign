@@ -17,6 +17,75 @@
 
 \section*{Problem 4: }
 \section*{Problem 6: }
+\subsection*{A:}
+Given $n^2$ processors on a CREW PRAM a \BigO(n) parallel algorithm
+can be developed for matrix multiplication.  The technique used to 
+create this algorithm is the fabled \textit{stare at the serial code}
+method.  In this case, the serial code for matrix multiplication is as
+follows:\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Ret}{Return:}
+\Func{\textit{Serial Matrix Mult}}\\
+\Inp{\textit{Matrix $A_{n\times n}$, Matrix $B_{n\times n}$}}\\
+\textit{Zero Matrix $C_{n\times n}$}\\
+\For{\textit{i=0 to n}}
+{\For{\textit{j=0 to n}}
+{\For{\textit{k=0 to n}}
+{\textit{C[i,j] += A[i,k]*B[k,j]}}
+}
+}
+\Ret{\textit{C}}
+\end{algorithm}
+Given $n^2$ processors, the outer two loops can be parallelized easily
+since there is no data dependence between them and concurrent reading
+is allowed.  This gives the following algorithm:\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Ret}{Return:}
+\Func{\textit{Serial Matrix Mult}}\\
+\Inp{\textit{Matrix $A_{n\times n}$, Matrix $B_{n\times n}$}}\\
+\textit{Zero Matrix $C_{n\times n}$}\\
+\tcc{PRAGMA: parallel for}
+\For{\textit{i=0 to n}}
+{\tcc{PRAGMA: parallel for}
+    \For{\textit{j=0 to n}}
+{\For{\textit{k=0 to n}}
+{\textit{C[i,j] += A[i,k]*B[k,j]}}
+}
+}
+\Ret{\textit{C}}
+\end{algorithm}
+Since giving a processor to the first two loops exhausts the number
+of available processors, the processors given to the inner loop
+must each carry out the $n$ multiplications and summations
+needed for \textit{C[i,j]}.  This leads to a runtime of \BigO{n} for 
+this algorithm.\\\\
+The efficiency of this algorithm can be found by the following equation:
+\[
+    E(n,p) = \frac{S(n)}{pT(n,p)}
+\]
+Where \textit{S(n)} is the serial run time for the problem and \textit{T(n,p)}
+is the parallel run time using \textit{p} processors.  Using the values for the
+above algorith, \textit{E(n,p)} can be found to be:
+\[
+    E(n,p) = \frac{S(n)}{pT(n,p)} = \frac{n^3}{n^2 n} = 1
+\]
+This algorithm is therefore perfectly efficient.\\\\
+However, if the number of processors is reduced to $n^{1/4}$ the folding
+principle can be used to derive an upper bound on the new run time of 
+this parallel algorithms.  Since the number of processors decreased,
+the amoung of work each remaining processor must do increases.  As
+a result, the new run will be at most $n^{11/4}$.
+\subsection*{B:}
+Similar to the algorithm given in \textbf{A}, an algorithm for 
+matrix multiplication that runs in \BigO{\log n} time can be
+developed using $n^3$ processors.  The primary modification
+to the algorithm in \textbf{A} is that the innermost loop
+can now be parallelized as the CREW SUM problem which takes 
+\BigO{\log n} time.   
 \section*{Problem 7: }
 \section*{Problem 8: }
 
