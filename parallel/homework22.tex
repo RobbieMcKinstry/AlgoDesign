@@ -20,31 +20,7 @@
 The algorithm that can be used in order to get parallel prefix to run in {O(log n)} time is called Scan. It is an established parallel 
 pattern that is used when the main goal is to compute partial reductions of the entire collection, however in order to Scan to work 
 correctly the operators used must be associative.\\\\
-The general idea of the algorithm is to generate a tree where on the first "pass" the algorithm does, it will compute the partial
-sums of all the leaves in 
-its respective subtree, i.e. bottom-up. The algorithm will then do another pass, but this time starting at the root and working its 
-way down the tree. During this pass the root is initially set to some value and the right child is equal to the current node + the left 
-child, while the left child of the current node is equal to the value of the current node.\\\\
-\begin{algorithm}[H]
-\SetKw{Func}{Function: }
-\Func{PP(A [])}\\
-\tcc{First Pass}
-\For{$i \gets 0, \log n$} {
-\For{parallel $j \gets 0, n$}
-	{$A[j + 2^{i+1} - 1] = A[j + 2^i-1] + A[j + 2^{i+1} - 1]$}
-}
-\tcc{Second Pass}
-{$A[n-1] = 0$}
-\tcc{Initialize the root to some value, i.e. 0}
-\For{$i \gets \log n, 0$} {
-\For{parallel $j \gets 0, n$} {
-	{$curr = A[j + 2^i -1]$} \tcc*{Save current node}
-	{$A[j + 2^i - 1] = A[j + 2^{i+1} - 1]$} \tcc*{Set left child}
-	{$A[j + 2^{i+1} - 1] = curr + A[j + 2^{i+1} -1]$} \tcc*{Set right child}
-	}
-}
-\end{algorithm}
-It is clear to see from this algorithm that each "pass" takes only {$\log n$} time because of the for loops from 0 to {$\log n$} and {$\log n$} down to 0. The other two loops are parallelized, therefore both taking only {$O(1)$} time.
+
 \section*{Problem 6: }
 \section*{Problem 7: }
 \section*{Problem 8: }
