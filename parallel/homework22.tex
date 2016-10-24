@@ -56,7 +56,7 @@ is allowed.  This gives the following algorithm:\\\\
 {\textit{C[i,j] += A[i,k]*B[k,j]}}
 }
 }
-\Ret{\textit{C}}
+\Ret{\textit{C}}\\
 \end{algorithm}
 Since giving a processor to the first two loops exhausts the number
 of available processors, the processors given to the inner loop
@@ -84,8 +84,91 @@ Similar to the algorithm given in \textbf{A}, an algorithm for
 matrix multiplication that runs in \BigO{\log n} time can be
 developed using $n^3$ processors.  The primary modification
 to the algorithm in \textbf{A} is that the innermost loop
-can now be parallelized as the CREW SUM problem which takes 
-\BigO{\log n} time.   
+can now be parallelized as a variation of the parallel SUM
+problem which takes \BigO{\log n} through a divide and conquer
+strategy.  The variation to the parallel sum in this case
+is that initially the processors will multiply as the first
+operation and then sum.
+In this case, the algorithm is as follows:
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Ret}{Return:}
+\Func{\textit{Serial Matrix Mult}}\\
+\Inp{\textit{Matrix $A_{n\times n}$, Matrix $B_{n\times n}$}}\\
+\textit{Zero Matrix $C_{n\times n}$}\\
+\tcc{PRAGMA: parallel for}
+\For{\textit{i=0 to n}}
+{\tcc{PRAGMA: parallel for}
+    \For{\textit{j=0 to n}}
+{
+   \textit{C[i,j]} = \textit{ParallelDotProduct($row_i(A)$,$col_j(B)$,n)}\\ 
+}
+}
+\Ret{\textit{C}}
+\end{algorithm}
+The runtime of this algorithm is analyzed in the same way as
+the algorithm developed in \textbf{A}.  Since the two outer 
+loops are completely parallelized, the occur in constant time.
+Most of the work will be done within the ParallelDotProduct
+function, which, like the parallel SUM, problem takes \BigO{\log n}
+time.  As a result, the overall runtime of this algorithm is
+\BigO{\log n}.\\\\
+The efficiency of this algorithm is also calculated in an 
+identical manner.  Substituting the appropriate values for
+this algorithm into the above equation results in the
+following efficiency calculation:
+\[
+    E(n,p) = \frac{S(n)}{pT(n,p)} = \frac{n^3}{n^3 \log n} = \frac{1}{\log n}
+\]
+If the number of processors is reduced to $n^{1/4}$, the folding principle
+can be used to derive an upper bound on the new runtime.  Since the number
+of processors has decreased, the remaining processors will now have to do 
+more work.  The factor by which the processors decreased is $n^{11/4}$.
+As a result the runtime of the algorithm on these constrained resources
+will be at most $n^{11/4} \log n$
+\subsection*{C:}
+If only $n^3 / \log n$ processors are available, the algorithm
+developed in \textbf{B} can still be used to perform parallel matrix
+multiplication in \BigO{\log n} time.  This is because, $n^2$ processors
+will still be used to parallelize the outermost loops for matrix
+multiplication.  The remaining $n/\log n$ processors will then be
+given to the \textit{ParallelDotProduct} problem.  Like the 
+\textit{ParallelSum} problem, the run time of the problem stays the
+same despite the reduction of processors because the recursive,
+divide and conquer tree becomes shallower; however, the amount of 
+work done at the leaves increases.\\\\
+Given these factors, the algorithm for this problem is identical to
+the one given in \textbf{B}, but is repeated here for clarity.\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function:}
+\SetKw{Inp}{Input:}
+\SetKw{Ret}{Return:}
+\Func{\textit{Serial Matrix Mult}}\\
+\Inp{\textit{Matrix $A_{n\times n}$, Matrix $B_{n\times n}$}}\\
+\textit{Zero Matrix $C_{n\times n}$}\\
+\tcc{PRAGMA: parallel for}
+\For{\textit{i=0 to n}}
+{\tcc{PRAGMA: parallel for}
+    \For{\textit{j=0 to n}}
+{
+   \textit{C[i,j]} = \textit{ParallelDotProduct($row_i(A)$,$col_j(B)$,n)}\\ 
+}
+}
+\Ret{\textit{C}}
+\end{algorithm}
+Substituting the appropriate values into the efficiency calculation
+for this algorithm reveals an improvement in the efficiency as 
+compared to the conditions given in \textbf{B}.
+\[
+    E(n,p) = \frac{S(n)}{pT(n,p)} = \frac{n^3 \log n}{n^3 \log n} = 1 
+\]
+Under these conditions, the algorithm is perfectly efficient.\\\\
+The folding principle can be once again applied to this problem to
+place an upper bound on the runtime of this algorithm under the more
+restrictive conditions of having only $n^{1/4}$ processors. Similar to 
+problem \textbf{B}, the runtime will be no worse than $n^{11/4}$ because        
+the number of processors decreased by a factor of $n^{11/4}/ \log n$.
 \section*{Problem 7: }
 \section*{Problem 8: }
 
