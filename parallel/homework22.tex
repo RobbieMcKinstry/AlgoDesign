@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage{algorithm2e}
+\usepackage{graphicx}
 
 \newcommand{\BigO}[1]{\ensuremath{\operatorname{\mathcal{O}}\bigl(#1\bigr)}}
 
@@ -22,26 +23,7 @@ pattern that is used when the main goal is to compute partial reductions of the 
 correctly the operators used must be associative.\\\\
 The basic idea of scan is to first compute the sums of every two elements in the collection, i.e. (1+2), (3+4), (5+6), {$\cdots$} The second step is to then sum these values with each other, so (1+2)+(3+4), (5+6)+(7+8), {$\cdots$} The third step is to then bring the first element down into its respective spot in the final collection, and continue the pattern of adding the previous summations
 [(1+2)+(3+4)]+[(5+6)+(7+8)]. The fourth step is to then take [(1+2)+(3+4)]+(5+6). The final step is to then add [(1+2)]+3, [(3+4)]+5, and [(5+6)]+7.\\\\
-This explanation is better illustrated with the table below\\
-\begin{table}[]
-\centering
-\caption{Scan Table}
-\label{my-label}
-\begin{tabular}{c|c|c|c|c|c|c|c|c|}
-                       & 1              & 2       & 3           & 4       & 5                       & 6     & 7                         & 8                                   \\\cline{2-9} 
- & {$\searrow$} &{$\downarrow$}&{$\searrow$}&{$\downarrow$}&{$\searrow$}&{$\downarrow$}&{$\searrow$}&\\\cline{2-9}
-1 &                & (1+2)   &             & (3+4)   &                         & (5+6) &                           & (7+8)\\\cline{2-9}
-&                &{$\searrow$}&             &{$\swarrow$}&&{$\searrow$}& &{$\swarrow$} \\\cline{2-9}
-2&                &         & (1+2)+(3+4) &         &                         &       & (5+6)+(7+8)               &  \\\cline{2-9}
-&&         &{$\downarrow$}&{$\rightarrow$}&{$\rightarrow$}&{$\rightarrow$}& {$\searrow$}&   \\\cline{2-9}
-3& 1              &         &{$\downarrow$}  &         &                         &       &                           & $\sum\limits_{i=1}^{8} i$\\\cline{2-9}
-& {$\downarrow$} &         &             & {$\searrow$} &                         &       &                           &        {$\downarrow$} \\\cline{2-9}
-4&{$\downarrow$}&         &             &         &  &       &                           &   {$\downarrow$} \\\cline{2-9}
-& {$\downarrow$}&         &             &         &                         &       &                           &{$\downarrow$}  \\\cline{2-9}
-5& {$\downarrow$}& (1+2)+3 &             & (3+4)+5 &                         &       &  &      {$\downarrow$} \\\cline{2-9}
-&                &         &             &         &                         &       &                           &                                    
-\end{tabular}
-\end{table}
+At each level of Scan there are no data dependencies to worry about, which means that the calculations at each level can be done in parallel. Unfortunately because we are limited to {$n/\log n$} processors at each level we will have to do potentially {$n/p$} work. With {$\log n$} levels and {$n/p$} work at each level, the total runtime for this algorithm is {$O(n/p + n/\log n)$}.
 \section*{Problem 6: }
 \section*{Problem 7: }
 \section*{Problem 8: }
