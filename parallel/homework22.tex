@@ -178,7 +178,15 @@ restrictive conditions of having only $n^{1/4}$ processors. Similar to
 problem \textbf{B}, the runtime will be no worse than $n^{11/4}$ because        
 the number of processors decreased by a factor of $n^{11/4}/ \log n$.
 \section*{Problem 7: }
+
+Let $c$ be the vector of coefficients, and $c_i$ to be the coefficient for $n^{i}$ in $p(x)$. Now, to calculate $p(k)$ for a specific $k$, schedule in parallel each core to calculate the value of each term of the polynomial, which is $c_{i}*k^{i}$ for the $i$th term. With \BigO{\frac{n}{lg n}} cores, this occurs in \BigO{lg n} operations since there are $n$ terms. Then, sum the terms using parallel addition like we have in the past, having each core add two terms together before adding the sum of that term and the next in the following step, until only one term remains. As we've demonstrated in the past, operations that are associative, like this addition, occur in \BigO{lg n} time because each addition happens in constant time, but there are \BigO{lg n} additions. As such, the time complexity is the sum of two \BigO{lg n} operations, which makes the resultant time complexity of the algorithm \BigO{lg n}, when there are \BigO{n lg n} cores.
+
 \section*{Problem 8: }
 
+First, initialize an array of size $n$, with the zeroth and first indices set to 1. Next repeat the following: Populate the next $2i$ positions in the array in parallel where $i$ is the number of repeats performed thus far. Consequently, the number of array iterations is \BigO{lg n}. 
+
+The crux of the problem is how to populate each of the individual array entries. At a given time, a core will have access to an array with $i$ populated entires, and it will be tasked with populating some entry $k$, where $i < k \leq 2i$. The key is to compose the $k$th entry as a selection of smaller entires until $k$ is only composed of known entries.  For example, all entires up to $F(11)$ are known, $F(13)$ may be calculated as $F(12) + F(11)$, and $F(12)$ can be calculated as $F(11) + F(10)$. Thus, $F(13) =  2F(11) + F(10)$. As such, for each unknown $F(N)$, you add one to the number of times $F(N-1$ must be summed and the number of times $F(N-2)$ must be summed, and you repeat this until you have only known terms and their coefficients. An optimization necessary for logarithmic time complexity is to be able to calculate what the coefficients are by knowing the distance from the $k$th term and the $i$th term. 
+
+The final entry in the array is the nth Fib number.
 
 \end{document}
