@@ -16,6 +16,13 @@
 \maketitle
 
 \section*{Problem 4: }
+The algorithm that can be used in order to get parallel prefix to run in {O(log n)} time is called Scan. It is an established parallel pattern that is used when the main goal is to compute partial reductions of the entire collection, however in order to Scan to work correctly the operators used must be associative.\\
+The general idea of the algorithm is that on the first "pass" the algorithm does, it will compute the partial sums of all the leaves in its respective subtree, i.e. bottom-up. The algorithm will then do another pass, but this time starting at the root and working its way down the tree. During this pass the root is initially set to some value \\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\Func{PP(A [])}
+
+\end{algorithm}
 \section*{Problem 6: }
 \section*{Problem 7: }
 \section*{Problem 8: }
