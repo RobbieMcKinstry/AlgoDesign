@@ -16,8 +16,55 @@
 \maketitle
 
 \section*{Problem 9: }
+In order to compute a prefix that is also a suffix, we can look to the Knuth-Morris-Pratt string pattern matching algorithm. In KMP, the first step is to build a table out of the pattern we are searching for. In this table at each letter in the pattern a number is stored which is equal to the longest prefix that is also a suffix at that point in the pattern.\\\\
+This is demonstrated in the table below:\\
+\begin{table}[H]
+\centering
+\caption{KMP Table}
+\label{my-label}
+\begin{tabular}{lllllllll}
+                             & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\ \cline{2-9} 
+\multicolumn{1}{l|}{Pattern} & a & b & a & b & a & b & c & a \\
+\multicolumn{1}{l|}{Value}   & 0 & 0 & 1 & 2 & 3 & 4 & 0 & 1
+\end{tabular}
+\end{table}
+If the length of the pattern is {$n$}, then the time required to generate this table sequentially is also \BigO n. Unfortunately, on a EREW system, this table generation cannot be parallelized because of the data dependencies in that previous table index values are sometimes needed in order to compute the current table index value, i.e. table[i] = table[i-1].\\\\
+To go through this table, we can use the same method of finding the maximum number given a sequence of integers that we did in class.\\
+The code for this is below:\\\\
+\begin{algorithm}[H]
+\SetKw{Func}{Function: }
+\Func{$Max(int x_1 \cdots x_n, p)$}
+\tcc{p = number of processors}
+return {$max (Max(x_1 \cdots x_{n/2}, p/2), Max(x_{(n/2) +1} \cdots x_n, p/2))$}
+\end{algorithm}
+This algorithm takes {$O(n/p + \log n)$} time to run on p processors.\\\\
+Therefore, these two algorithms combined with p = n processors will run in \BigO{ n\log n} time.
 \section*{Problem 10: }
+This problem is basically the same as the previous problem, except that now we are on a CRCW system. This means that now we can effectively parallelize the KMP table generation. This can be done by assigning a processor to a certain chunk, n/p, of the table generation algorithm. Which is the number of processors p {$\geq$} n, then the KMP table generation algorithm will run in \BigO 1 time.\\\\
+Then we can use the CRCW max algorithm that was done in class in order to parallelize find the max value in the KMP table. The algorithm generates a 2D array T, where each index is either a 0 or 1. If a 1 is placed at index T[i, j], then {$x_i < x_j$}, this is then repeated for each i and j. In order to find which is the max value, we can just OR each row in the table and which ever is filled with 0's is the max value.\\\\
+The algorithm is as follows:\\
+\begin{algorithm}[H]
+\SetKw{Func}
+\Func{$Max(x_1 \cdots x_n, p)$}
+\tcc{p = number of processors}
+\If {$x_i < x_j$}
+	{$T[i,j] = 1$}
+\Else
+	{$T[i,j] = 0$}
+\end{algorithm}
+Finding the max value from this table T:\\
+\begin{algorithm}[H]
+\SetKw{Func}
+\Func{$FindMax(T[][], p)$}
+\tcc{p = number of processors}
+{$A[i] = 0$}
+\tcc{Create a new array A for each row}
+\If {$T[i,j] = 1$}
+	{$A[i] = 1$}
+\If {$A[i] = 0$}
+	{return $x_i$}
+\end{algorithm}
+Because the table T has {$n^2$} elements, p = {$n^2$} processors would allow the {$Max$} function to run in \BigO 1, or constant time. The {$FindMax$} function also has {$n^2$} elements to go through, again requiring p = {$n^2$} processors in order to reach \BigO 1 time.\\\\
+Therefore, running the KMP table generation, {$Max$}, and {$FindMax$} with p = {$n^2$} processors will achieve \BigO 1 time.
 \section*{Problem 11: }
-
-
 \end{document}
