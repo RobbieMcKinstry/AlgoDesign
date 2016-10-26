@@ -40,8 +40,8 @@ return {$max (Max(x_1 \cdots x_{n/2}, p/2), Max(x_{(n/2) +1} \cdots x_n, p/2))$}
 This algorithm takes {$O(n/p + \log n)$} time to run on p processors.\\\\
 Therefore, these two algorithms combined with p = n processors will run in \BigO{ n\log n} time.
 \section*{Problem 10: }
-This problem is basically the same as the previous problem, except that now we are on a CRCW system. This means that now we can effectively parallelize the KMP table generation. This can be done by assigning a processor to a certain chunk, n/p, of the table generation algorithm. Which is the number of processors p {$\geq$} n, then the KMP table generation algorithm will run in \BigO 1 time.\\\\
-Then we can use the CRCW max algorithm that was done in class in order to parallelize find the max value in the KMP table. The algorithm generates a 2D array T, where each index is either a 0 or 1. If a 1 is placed at index T[i, j], then {$x_i < x_j$}, this is then repeated for each i and j. In order to find which is the max value, we can just OR each row in the table and which ever is filled with 0's is the max value.\\\\
+This problem is basically the same as the previous problem, except that now we are on a CRCW system. This means that now we can effectively parallelize the KMP table generation. This can be done by assigning a processor to a certain chunk, n/p, of the table generation algorithm in which each processor can compute the value of an index in the table. Which if the number of processors p {$\geq$} n, then the KMP table generation algorithm will run in \BigO 1 time.\\\\
+Then we can use the CRCW max algorithm that was done in class in order to parallelize finding the max value in the KMP table. The algorithm generates a 2D array T, where each index is either a 0 or 1. If a 1 is placed at index T[i, j], then {$x_i < x_j$}, else a 0 is placed at T[i,j]. This is then repeated for each i and j. In order to find which is the max value, we can just OR each row in the table, and which ever row is filled only with 0's is the max value.\\\\
 The algorithm is as follows:\\
 \begin{algorithm}[H]
 \SetKw{Func}
@@ -64,7 +64,7 @@ Finding the max value from this table T:\\
 \If {$A[i] = 0$}
 	{return $x_i$}
 \end{algorithm}
-Because the table T has {$n^2$} elements, p = {$n^2$} processors would allow the {$Max$} function to run in \BigO 1, or constant time. The {$FindMax$} function also has {$n^2$} elements to go through, again requiring p = {$n^2$} processors in order to reach \BigO 1 time.\\\\
+Because the table T has {$n^2$} elements, p = {$n^2$} processors would allow the {$Max$} function to run in \BigO 1, or constant time by assigning a processor to each index in the table. The {$FindMax$} function also has {$n^2$} elements to go through, again requiring p = {$n^2$} processors in order to reach \BigO 1 time.\\\\
 Therefore, running the KMP table generation, {$Max$}, and {$FindMax$} with p = {$n^2$} processors will achieve \BigO 1 time.
 \section*{Problem 11: }
 \end{document}
