@@ -18,6 +18,22 @@
 \section*{Problem 12: }
 \section*{Problem 13: }
 \section*{Problem 14: }
-
+In order to think of Longest Common Subsequence (LCS) as a graph, we can represent both sequences A and B as a 2D array. Where one index {$i$} will represent the index of a letter in the sequence A, and {$j$} will represent the index of a character in the sequence B.\\
+An example of this can be seen in the table below:
+\begin{table}[H]
+\centering
+\caption{LCS Table}
+\label{my-label}
+\begin{tabular}{ccccccc}
+                       & 1 & 5 & 6 & 8 & 2 & 9 \\ \cline{2-7} 
+\multicolumn{1}{c|}{0} & 0 & 0 & 0 & 0 & 0 & 0 \\
+\multicolumn{1}{c|}{5} & 0 & 1 & 0 & 0 & 0 & 0 \\
+\multicolumn{1}{c|}{8} & 0 & 0 & 0 & 1 & 0 & 0 \\
+\multicolumn{1}{c|}{2} & 0 & 0 & 0 & 0 & 1 & 0 \\
+\multicolumn{1}{c|}{7} & 0 & 0 & 0 & 0 & 0 & 0 \\
+\multicolumn{1}{c|}{6} & 0 & 0 & 1 & 0 & 0 & 0
+\end{tabular}
+\end{table}
+This table is filled with both 0's and 1's, where the 0 indicates that {$A[i] \neq B[j]$} and a 1 indicates that {$A[i] \equiv B[j]$}.\\
 
 \end{document}
