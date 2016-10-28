@@ -17,6 +17,15 @@
 
 \section*{Problem 12: }
 \section*{Problem 13: }
+A possible modification to the CREW parallel all pairs shortest
+path algorithm would be to perform the minimization step in 
+alternate, thereby removing the concurent read of the distance
+table.\\\\
+As each processor finds the minimum for the first $2^n$ length
+paths, it can also label the entry in the distance table with the
+node that resulted in the minimum entry.  Starting from the initial
+node, the actual path can then be recovered by following the 
+list of labels.
 \section*{Problem 14: }
 In order to think of Longest Common Subsequence (LCS) as a graph, we can represent both sequences A and B as a 2D array. Where one index {$i$} will represent the index of a letter in the sequence A, and {$j$} will represent the index of a character in the sequence B.\\
 An example of this can be seen in the table below:
