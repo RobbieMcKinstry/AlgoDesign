@@ -55,6 +55,9 @@ As a result of cutting the size of the problem into progressively
 smaller groups as the recursive tree returns, this algorithm
 will have a run time of $\log \log n$.
 \section*{Problem 18: }
+The CRCW Priority system works in such a way that the processor with the lowest value will have the highest priority, and therefore will be the one that will write its data to a location. Using this, we can develop an algorithm to find the max value of a sequence of integers {$x_1 \cdots x_n$} with each x having a range from 1 to n.\\\\
+The idea of this algorithm is fairly simple. For each integer {$x_i$} in the sequence assign a processor to it, then give this processor an identifier value of {$n - x-i$}. For example, if {$x_2 = 3$} and {$n = 7$}, then {$p_2 = 7 - 3 = 4$}.\\\\
+Using this method of assigning priority values to processors, we can guarantee that the processor with the highest value in the sequence {$x_1 \cdots x_n$} will have the lowest priority identifier. Multiple processors may have the same identifier value, however it won't matter because if that is the case then each processor with the same identifier value will also have the same value for x.
 \section*{Problem 19: }
 
 \end{document}
