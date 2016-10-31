@@ -15,6 +15,8 @@
 \renewcommand{\baselinestretch}{1.5}
 \maketitle
 
+\textbf{Please provide written or oral feedback on this and future homeworks :)}
+
 \section*{Problem 17: }
 Although a CRCW Common algorithm for finding the max of $n$ numbers
 was developed earlier, it required $n^2$ processors and could be shown
@@ -54,7 +56,21 @@ a number to two or more processors.\\\\
 As a result of cutting the size of the problem into progressively
 smaller groups as the recursive tree returns, this algorithm
 will have a run time of $\log \log n$.
+
 \section*{Problem 18: }
+
+This was a fun problem.
+
+First, initialize a bitarray $A$ of length $n$, will all bits zeroed. The $i$th bit from the right represents whether or not the value $i$ has been found in the input sequence $x_{1} \dots x_{n}$. Now, assign each of the $n$ processes a unique value $i$ from 1 to $n$. Have the $i$th processor look at $x_{i}$. Let that value be $k$. Flip the $k$th bit from the right in the bit array $A$. This operation occurs in constant time, since there are $n$ indexes into the sequence $x_{1} \dots x_{n}$, and each operation takes constant time. Notice that if a value occurs twice in the input sequence, then the same index in $A$ will be accessed by multiple processors at once, but they will be writing a common value.
+
+Finally, assuming each processor is assigned a unique priority from 1 to $n$ as per the problem description, have the processor with priority $y$ look at the bit $A[n - y + 1]$, and if it's set, it will write $n - y + 1$ to the output register. (That is, assign the highest priority processor to the highest index in the bit array, and write that index to output if the value at that index is set). Because the highest priority processor takes precedence to all lower priority processes, the highest value will be written to the output register.
+
 \section*{Problem 19: }
+
+The beginning steps of Problem 19 are the same as problem 18. I will repeat them here for the sake of completeness, but feel free to skip to the final paragraph if you understand what I'm attempting to communicate.
+
+First, initialize a bitarray $A$ of length $n$, will all bits zeroed. The $i$th bit from the right represents whether or not the value $i$ has been found in the input sequence $x_{1} \dots x_{n}$. Now, assign each of the $n$ processes a unique value $i$ from 1 to $n$. Have the $i$th processor look at $x_{i}$. Let that value be $k$. Flip the $k$th bit from the right in the bit array $A$. This operation occurs in constant time, since there are $n$ indexes into the sequence $x_{1} \dots x_{n}$, and each operation takes constant time. Notice that if a value occurs twice in the input sequence, then the same index in $A$ will be accessed by multiple processors at once, but they will be writing a common value.
+
+Finally, we need to find a way in constant time to write out the highest bit in the array. This is actually fairly easy; cast the bit array as an integer (making the unrealistic assumption that we can perform computation with $2^{n}$ bits, like we have with past problems). Let that value be $B$. Write to the output register the value $\left \lfloor lg({B}) \right \rfloor $. This is, of course, constant time arithmetic. 
 
 \end{document}
