@@ -16,6 +16,44 @@
 \maketitle
 
 \section*{Problem 17: }
+Although a CRCW Common algorithm for finding the max of $n$ numbers
+was developed earlier, it required $n^2$ processors and could be shown
+to be highly inefficient.  An improvement to the parallel efficiency of
+this problem can be made at the sacrifice of runtime if only $n$ 
+processors are used.  Unlike the \BigO{1} CRCW algorithm originally
+developed, this algorithm is modeled after the EREW divide and
+conquer algorithm.\\\\
+In the EREW algorithm, recursive calls were made to divide the 
+initial set of numbers into halves with each half given half
+the processors.  This process continues until each processor
+is assigned a single number at which point two processors
+assigned neighboring numbers make a comparison to determine the
+larger.  The larger value is then returned from the recursive
+call.\\\\
+In a similar manner, for this CRCW common algorithm recursive
+calls can be made until each processor is assigned a single 
+number.  However, instead of each processor only comparing
+with the neighboring processor, it can communicate with both
+of neighbors (Note: there is only one neighbor for processors
+assigned numbers at the end).  This CR done by the three 
+neighboring processors can be used to determine which of 
+the processors holds the largest number.  Since the rank
+of the processor holding the largest number will be
+a common value, it can be safely written to a single location
+which can then be returned from the recursive call.  In the
+case that two processors are assigned the same number,
+an arbitrary decision can be made, since in this case,
+the commonality will be the number written to the shared
+location.\\\\
+As the process returns from its recursive call tree, the number of
+available numbers to be assigned processors decreases; however,
+instead of having the processors unassigned do no work, the can be
+used to further reduce the problem size by expanding the size
+of the local group for which a max is found by double assigning
+a number to two or more processors.\\\\ 
+As a result of cutting the size of the problem into progressively
+smaller groups as the recursive tree returns, this algorithm
+will have a run time of $\log \log n$.
 \section*{Problem 18: }
 \section*{Problem 19: }
 
