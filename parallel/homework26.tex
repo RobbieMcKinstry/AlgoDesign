@@ -18,4 +18,14 @@
 \section*{Problem 16: }
 \section*{Problem 20: }
 
+We propose a divide and conquer algorithm for solving this problem.
+
+First, assign to each index a unique processor, and let that index be $k$
+
+Repeat the following for all $i \in Z^{+} < lg(n)$.
+
+We logically separate the arrays $A$ and $B$ into boxes of size $2*2^{i-1}$, where the $j$th box contains the values of $A[2^{j-1}]$ to $A[2^{j}]$ and $B[2^{j-1}]$ to $B[2^{j}]$. Obviously, since this logical distinction does not actually move values, it doesn't have a time complexity since it does not take time to accomplish.
+
+Now, the $k$th processor looks at $B[k]$. If that index is in the same box as that processor, it knows that it can access  $A[B[k]]$ and write that out to $C[k]$. This access is exclusive because in the next step we guarantee that there are a sufficient number of copies of $A[k]$ to ensure that there exists a bijection between any accessing processor and the copies of $A$. If that index is not in the box, that processor does not act, because there might not enough enough copies to guarantee exclusivity. Next, the $k$th processor makes a copy of all cells in $A$ that are also in it's box. This step is bounded above by $n/2$ time, which unfortunately makes the time complexity linear in the worst case, but much closer to logarithmic in cases that are not pathological.
+
 \end{document}
