@@ -1,6 +1,7 @@
 \documentclass[12pt]{article}
 
 \usepackage{tikz}
+\usetikzlibrary{calc,shapes.multipart,chains,arrows}
 \usepackage[ruled, vlined]{algorithm2e}
 \usepackage{pst-node,pst-plot}
 \usepackage{amsmath}
@@ -16,7 +17,90 @@
 \maketitle
 
 \section*{Problem 21: }
-\section*{Problem 22: }
+On an EREW PRAM, the leave nodes of an arbitrary tree with $n$ nodes
+can be numbered in order in \BigO{\log n} time using $n$ processors
+if initially each of the $n$ processors is assigned to a unique node.\\\\
+Initially, each processor will have to determine whether or not it is
+assigned a leaf node.  This can be done in parallel in \BigO{1} time
+by having each processor check if has any children.  If the processor
+has children, it will hold the value $0$.  If the processor is 
+assigned to a leaf node it will hold the value $1$.\\\\
+After numbering all the internal nodes as $0$ and all the leaf nodes as
+$1$, an \textit{Eulerian Tour} can be performed starting from the root
+of the tree headed left.  Each edge will be marked with a $+0$ and the
+result of the tour will be a linked list where each node will either
+contribute $1$ to the sum, if it is a leaf, or a $0$ if it is an internal
+node.  The parallel prefix problem can then be solved on this linked list,
+and the resulting sequence of consecutive numbers will number the leaves
+from left to right.\\\\
+To demonstrate this algorithm, consider the following tree:\\\\  
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+    level 1/.style={sibling distance=3.40cm},
+    level 2/.style={sibling distance=1.25cm},
+    level 3/.style={sibling distance=1.15cm}]
+    \node {$A$}
+        child {node {$B$}
+            child {node {$C$}}
+            child {node {$D$}
+                child {node {$E$}}
+                child {node {$F$}}
+            }
+        }
+        child {node {$G$}
+        };
+\end{tikzpicture}
+\end{center} 
+After the initial step that will number each node as either a $0$ or
+$1$ depending if the node is a leaf or an internal node, the tree
+will look as follows:\\\\ 
+\begin{center}
+\begin{tikzpicture}[level distance=1.5cm,
+    level 1/.style={sibling distance=3.40cm},
+    level 2/.style={sibling distance=1.25cm},
+    level 3/.style={sibling distance=1.15cm}]
+    \node {$A, 0$}
+        child {node {$B, 0$}
+            child {node {$C, 1$}}
+            child {node {$D, 0$}
+                child {node {$E, 1$}}
+                child {node {$F, 1$}}
+            }
+        }
+        child {node {$G, 1$}
+        };
+\end{tikzpicture}
+\end{center} 
+The \textit{Eulerian Tour} of the tree will begin at $A$ and then
+track values as makes progress beginning from the left.  This linked
+list will look like the following.\\\\ 
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+HAND DRAW LINKED LIST....Making it in LaTex was not fun...
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+\\\\
+Using the pointer doubling technique, the parallel prefix problem on
+the linked list can be solved in \BigO{\log n} time.  Since all the
+other steps were doable in \BigO{1} time, the overall runtime of the
+algorithm will be \BigO{\log n}.
 
+
+\section*{Problem 22: }
+%Fairly sure that this is the same as 21 except do the Eulerian tour
+% + on the left/right and - on the right/left (Depending how the balance
+% goes.  Should lead to some runtime of log n/2 which is O(log n)
+% all nodes will have to contribute 1 to the sum.
 
 \end{document}
