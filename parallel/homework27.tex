@@ -102,5 +102,10 @@ algorithm will be \BigO{\log n}.
 % + on the left/right and - on the right/left (Depending how the balance
 % goes.  Should lead to some runtime of log n/2 which is O(log n)
 % all nodes will have to contribute 1 to the sum.
-
+On an EREW PRAM, the balance factor for each node of an arbitrary tree with $n$ nodes
+can be done in \BigO{\log n} time using $n$ processors
+if initially each of the $n$ processors is assigned to a unique node.\\\\
+Initially, each processor will have to know the height of the node it is pointing to. In order to find the height of each node in the tree we can do an \textit{Euler Tour} of the tree and have each node hold the value of its respective height like we did in class. The process for finding the height of each node is by keeping a sum which increments when going down a level and decrements when going back up a level. The sum is then stored at each node when the node is visited. This \textit{Euler Tour Technique} can be done in \BigO 1 time, which then leaves the process of finding the balance factor at each node.\\\\
+To find the balance factor for each node, we can use a simple equation {$Balance(x) = Height(x.left) - Height(x.right)$}. This Balance(x) calculation can be done in parallel in that we can start from the leaves and work our way up the tree and calculate the balance for every node at a certain level in the tree.\\\\
+The leaves of the tree will initially have a balance set to 0, which can be done in \BigO 1 time. We can then progress up the tree and at each level calculate the Balance(x) for each node at that level in parallel. Using this technique we can achieve a runtime of \BigO{ \lg n}.
 \end{document}
