@@ -16,6 +16,67 @@
 \maketitle
 
 \section*{Problem 23: }
+The parallel evaluation of an expression tree containing
+integers at the leaves and the four primary arithmetic 
+operations at the internal nodes can be performed in
+a manner very similar to the parallel evaluation of a
+similar expression tree with only addition and subtraction
+as the key operations.  To simplify the following argument,
+these two problems will be referred to as \textit{4-ExTree}
+and \textit{2-ExTree}.\\\\
+When solving \textit{2-ExTree}, the original expression tree
+is generalized through a cutting process of the internal nodes
+in order to transform the symbolic operation on the node to
+the evaluation of a function on the edges. For example,
+the processor on the '+' sign in the second level would
+perform the following transformation:
+\begin{center}
+\begin{tikzpicture}[level distance=.75cm,
+    level 1/.style={sibling distance=1.40cm},
+    level 2/.style={sibling distance=1.25cm},
+    level 3/.style={sibling distance=1.15cm}]
+    \node {$-$}
+        child {node {$+$}
+            child {node {$3$}}
+            child {node {$-$}
+                child {node {$1$}}
+                child {node {$5$}}
+            }
+        }
+        child {node {$6$}
+        };
+\end{tikzpicture}
+\end{center}
+and produce:
+\begin{center}
+\begin{tikzpicture}[level distance=.75cm,
+    level 1/.style={sibling distance=1.40cm},
+    level 2/.style={sibling distance=1.25cm},
+    level 3/.style={sibling distance=1.15cm}]
+    \node {$-$}
+        child {node {$-$}
+            child {node {$1$}}
+            child {node {$5$}}
+        }
+        child {node {$6$}
+        };
+\end{tikzpicture}
+\end{center}
+This process can be repeated for every other node, since this
+problem is being solved on an CREW PRAM\@.  However, the difficulty
+arises when the nodes must be partitioned into two halves.  This
+can be done by an \textit{Eulerian Tour} over the tree after
+each cut by labeling the leaves either a $0$ or a $1$.\\\\
+After each cutting process the number of evaluations that
+need to be computed will go down by ${1/8}^{th}$ of the original
+problem size.  Together with the renumbering, this gives a runtime
+for \textit{2-ExTree} of \BigO{\log^2 n}.\\\\
+Generalizing this problem to an expression tree also containing
+multiplication and division requires expanding the possible functional
+evaluations made on the edges to include new operations.  The only
+difference that this problem has with \textit{2-ExTree} is that the
+expressions will now include '$\times$' and '$\div$'.  Since the
+same algorithm can be still used, the runtime will remain \BigO{\log^2 n}.   
 \section*{Problem 24: }
 
 \end{document}
