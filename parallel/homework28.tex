@@ -28,7 +28,7 @@ When solving \textit{2-ExTree}, the original expression tree
 is generalized through a cutting process of the internal nodes
 in order to transform the symbolic operation on the node to
 the evaluation of a function on the edges. For example,
-the processor on the '+' sign in the second level would
+the processor on the ``+" sign in the second level would
 perform the following transformation:
 \begin{center}
 \begin{tikzpicture}[level distance=.75cm,
@@ -75,8 +75,13 @@ Generalizing this problem to an expression tree also containing
 multiplication and division requires expanding the possible functional
 evaluations made on the edges to include new operations.  The only
 difference that this problem has with \textit{2-ExTree} is that the
-expressions will now include '$\times$' and '$\div$'.  Since the
+expressions will now include ``$\times$" and ``$\div$".  Since the
 same algorithm can be still used, the runtime will remain \BigO{\log^2 n}.   
+
+The case where division by zero occurs is one of language semantics. This behavior is naturally undefined in an abstract machine; any particular semantic interpretation fails to translate into concrete interpretations. Because this form of the problem is undefined, the behavior is likewise undefined in our algorithm. Any interpretation is outside of the scope of this problem because it's semantics specific.
+
 \section*{Problem 24: }
+
+The solution this problem is the same as the above problem. Just as addition, subtraction multiplication, and division are closed over the Real numbers, AND, NOT, and OR are closed over binary numbers. To solve a bitwise form of the binary expression tree evaluation problem, simple replace the arithmetic function compositions with logical function compositions.
 
 \end{document}
